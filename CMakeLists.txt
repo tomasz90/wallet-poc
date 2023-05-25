@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/util/seed.h src/util/seed.cpp)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/util/seed.h src/util/seed.cpp src/util/display.h src/util/display.cpp src/util/interuptive.h src/util/interuptive.cpp)

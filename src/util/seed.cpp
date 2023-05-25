@@ -4,6 +4,8 @@
 
 std::vector<uint8_t> Seed::entropy;
 
+BIP39::word_list Seed::passphrase;
+
 Seed::Seed() = default;
 
 void Seed::generateEntropy() {
@@ -17,7 +19,7 @@ void Seed::generateEntropy() {
     }
 }
 
-BIP39::word_list Seed::createMnemonic() {
+void Seed::createMnemonic() {
     Seed::generateEntropy();
-    return BIP39::create_mnemonic(entropy, BIP39::language::en);
+    passphrase = BIP39::create_mnemonic(entropy, BIP39::language::en);
 }
