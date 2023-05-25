@@ -10,6 +10,8 @@ bool Interaptive::_nextClicked = false;
 Interaptive::Interaptive() = default;
 
 void Interaptive::begin(uint8_t previousButton, uint8_t nextButton) {
+    pinMode(previousButton, INPUT);
+    pinMode(nextButton, INPUT);
     attachInterrupt(previousButton, Interaptive::clickPrevious(), RISING);
     attachInterrupt(nextButton, Interaptive::clickNext(), RISING);
 }
