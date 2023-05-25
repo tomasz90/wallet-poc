@@ -19,4 +19,6 @@ private:
     static void newOrOld();
 
     static void generateSeed();
+
+    static bool previous();
 };

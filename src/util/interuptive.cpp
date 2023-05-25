@@ -48,6 +48,7 @@ bool Interaptive::isActive() {
 
 bool Interaptive::previousClicked() {
     bool was = _previousClicked;
+    flashLed(was);
     _previousClicked = false;
     return was;
 }

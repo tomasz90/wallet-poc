@@ -6,7 +6,7 @@
 #include "util/menu.h"
 
 #define NEXT_BUTTON 0
-#define PREVIOUS_BUTTON 34
+#define PREVIOUS_BUTTON 12
 #define LED 23
 
 void setup() {
