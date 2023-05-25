@@ -32,7 +32,14 @@ void Interaptive::setupLed(uint8_t _led) {
 
 void (*Interaptive::clickPrevious())() {
     return [] {
-        if(isActive(previousButtonTime)) {
+        bool previousActive = isActive(previousButtonTime);
+        if(_nextClicked && previousActive) {
+            _bothClicked = true;
+            setInActive(previousButtonTime);
+            setInActive(nextButtonTime);
+            return;
+        }
+        if(previousActive) {
             _previousClicked = true;
             setInActive(previousButtonTime);
         }
@@ -41,7 +48,14 @@ void (*Interaptive::clickPrevious())() {
 
 void (*Interaptive::clickNext())() {
     return [] {
-        if(isActive(nextButtonTime)) {
+        bool nextActive = isActive(nextButtonTime);
+        if(_previousClicked && nextActive) {
+            _bothClicked = true;
+            setInActive(previousButtonTime);
+            setInActive(nextButtonTime);
+            return;
+        }
+        if(nextActive) {
             _nextClicked = true;
             setInActive(nextButtonTime);
         }
@@ -67,6 +81,13 @@ bool Interaptive::nextClicked() {
     bool was = _nextClicked;
     flashLed(was);
     _nextClicked = false;
+    return was;
+}
+
+bool Interaptive::bothClicked() {
+    bool was = _bothClicked;
+    flashLed(was);
+    _bothClicked = false;
     return was;
 }
 

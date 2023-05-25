@@ -29,6 +29,9 @@ public:
     static bool previousClicked();
     static bool nextClicked();
     static void begin(uint8_t previousButton, uint8_t nextButton, uint8_t led);
+
+    static bool bothClicked();
+
 private:
     static bool _previousClicked;
     static bool _nextClicked;

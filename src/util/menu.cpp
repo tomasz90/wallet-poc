@@ -15,6 +15,7 @@ void Menu::begin() {
     State* S0 = machine.addState(&welcome);
     State* S1 = machine.addState(&newOrOld);
     State* S2 = machine.addState(&generateSeed);
+    State* S3 = machine.addState(&confirm);
 
     S0->addTransition(&next,S1);  // S0 transition to S1
     S1->addTransition(&next,S2);  // S1 transition to S2
@@ -23,6 +24,10 @@ void Menu::begin() {
     S2->addTransition(&previous,S1);  // S0 transition to S1
     S1->addTransition(&previous,S0);  // S1 transition to S2
     S0->addTransition(&previous,S2);  // S2 transition to S0
+
+    S0->addTransition(&both,S3);  // S0 transition to S1
+    S1->addTransition(&both,S3);  // S1 transition to S2
+    S2->addTransition(&both,S3);  // S2 transition to S0
 }
 
 bool Menu::next(){
@@ -31,6 +36,10 @@ bool Menu::next(){
 
 bool Menu::previous(){
     return Interaptive::previousClicked();
+}
+
+bool Menu::both(){
+    return Interaptive::bothClicked();
 }
 
 void Menu::welcome() {

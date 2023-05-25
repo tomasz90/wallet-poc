@@ -23,4 +23,6 @@ private:
     static bool previous();
 
     static void confirm();
+
+    static bool both();
 };
