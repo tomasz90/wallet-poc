@@ -3,26 +3,43 @@
 #include "display.h"
 #include "seed.h"
 
-int Interaptive::wordIndex = -1;
 unsigned long Interaptive::lastButtonTime = 0;
-
-void Interaptive::innerNextWord() {
-    unsigned long buttonTime = millis();
-    if (buttonTime - lastButtonTime > 700) {
-        lastButtonTime = buttonTime;
-        wordIndex++;
-        std::string humanIndex = std::to_string(wordIndex + 1).append(". ");
-        Display::_word = Seed::passphrase.getWordAt(wordIndex);
-        Display::_word.insert(0, humanIndex);
-    }
-}
-
-void Interaptive::begin(uint8_t previousButton, uint8_t nextButton) {
-    attachInterrupt(nextButton, Interaptive::nextWord(), RISING);
-}
-
-void (*Interaptive::nextWord())() {
-    return innerNextWord;
-}
+bool Interaptive::_previousClicked = false;
+bool Interaptive::_nextClicked = false;
 
 Interaptive::Interaptive() = default;
+
+void Interaptive::begin(uint8_t previousButton, uint8_t nextButton) {
+    attachInterrupt(previousButton, Interaptive::clickPrevious(), RISING);
+    attachInterrupt(nextButton, Interaptive::clickNext(), RISING);
+}
+
+void (*Interaptive::clickPrevious())() {
+    return [] { _previousClicked = isActive(); };
+}
+
+void (*Interaptive::clickNext())() {
+    return [] { _nextClicked = isActive(); };
+}
+
+bool Interaptive::isActive() {
+    unsigned long buttonTime = millis();
+
+    bool isActive = buttonTime - lastButtonTime > 300;
+    if (isActive) {
+        lastButtonTime = buttonTime;
+    }
+    return isActive;
+}
+
+bool Interaptive::previousClicked() {
+    bool was = _previousClicked;
+    _previousClicked = false;
+    return was;
+}
+
+bool Interaptive::nextClicked() {
+    bool was = _nextClicked;
+    _nextClicked = false;
+    return was;
+}

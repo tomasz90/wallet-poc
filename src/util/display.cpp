@@ -19,7 +19,6 @@ void Display::begin() {
         while (true);
     }
     delay(200);
-    setText("Hello!");
 }
 
 void Display::setText(std::string text) {
