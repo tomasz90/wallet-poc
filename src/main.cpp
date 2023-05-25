@@ -1,7 +1,6 @@
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 #include <Arduino.h>
-#include <random>
 #include "bip39/bip39.h"
 
 #define SCREEN_WIDTH 128  // OLED display width, in pixels
@@ -16,10 +15,19 @@ BIP39::word_list passphrase;
 int wordIndex = -1;
 std::string _word;
 unsigned long previousMillis;
+unsigned long lastButtonTime = 0;
 bool blink;
-unsigned long previousMillisButton;
 
-bool active = true;
+void IRAM_ATTR nextWord() {
+    unsigned long buttonTime = millis();
+    if (buttonTime - lastButtonTime > 700) {
+        lastButtonTime = buttonTime;
+        wordIndex++;
+        std::string humanIndex = std::to_string(wordIndex + 1).append(". ");
+        _word = passphrase.getWordAt(wordIndex);
+        _word.insert(0, humanIndex);
+    }
+}
 
 void setText(std::string text) {
     display.clearDisplay();
@@ -30,7 +38,8 @@ void setText(std::string text) {
     display.display();
 }
 
-void animateText(unsigned long currentMillis) {
+void animateText() {
+    unsigned long currentMillis = millis();
     if (currentMillis - previousMillis > 500) {
         previousMillis = currentMillis;
         std::string word;
@@ -54,13 +63,11 @@ void generateEntropy(std::vector<uint8_t>& entropy, size_t numBytes) {
 void setup() {
     Serial.begin(115200);
     pinMode(BUTTON, INPUT);
+    attachInterrupt(BUTTON, nextWord, RISING);
     std::vector<uint8_t> entropy;
     size_t numBytes = 256;
-
     generateEntropy(entropy, numBytes);
-
     passphrase = BIP39::create_mnemonic(entropy, BIP39::language::en);
-
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {  // Address 0x3D for 128x64
         Serial.println(F("SSD1306 allocation failed"));
         while (true);
@@ -70,19 +77,9 @@ void setup() {
 }
 
 void loop() {
-    bool clicked = digitalRead(BUTTON);
-    unsigned long currentMillis = millis();
-    active = currentMillis - previousMillisButton > 500;
-    if (clicked && active) {
-        previousMillisButton = currentMillis;
-        wordIndex++;
-        _word = passphrase.getWordAt(wordIndex);
-        std::string humanIndex = std::to_string(wordIndex + 1).append(". ");
-        _word.insert(0, humanIndex);
-    }
     if (wordIndex > 11) {
         setText("Done!");
     } else if (wordIndex != -1) {
-        animateText(currentMillis);
+        animateText();
     }
 }
