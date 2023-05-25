@@ -3,15 +3,18 @@
 #include "display.h"
 #include "seed.h"
 
+uint8_t Interaptive::led;
 unsigned long Interaptive::lastButtonTime = 0;
 bool Interaptive::_previousClicked = false;
 bool Interaptive::_nextClicked = false;
 
 Interaptive::Interaptive() = default;
 
-void Interaptive::begin(uint8_t previousButton, uint8_t nextButton) {
+void Interaptive::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
     pinMode(previousButton, INPUT);
     pinMode(nextButton, INPUT);
+    pinMode(_led, OUTPUT);
+    led = _led;
     attachInterrupt(previousButton, Interaptive::clickPrevious(), RISING);
     attachInterrupt(nextButton, Interaptive::clickNext(), RISING);
 }
@@ -42,6 +45,15 @@ bool Interaptive::previousClicked() {
 
 bool Interaptive::nextClicked() {
     bool was = _nextClicked;
+    flashLed(was);
     _nextClicked = false;
     return was;
+}
+
+void Interaptive::flashLed(bool flash) {
+    if (flash) {
+        digitalWrite(led, HIGH);
+        delay(50);
+        digitalWrite(led, LOW);
+    }
 }

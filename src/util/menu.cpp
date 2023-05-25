@@ -4,7 +4,6 @@
 #include "interuptive.h"
 
 StateMachine machine = StateMachine();
-uint8_t Menu::led;
 
 Menu::Menu() = default;
 
@@ -12,9 +11,7 @@ void Menu::run() {
     machine.run();
 }
 
-void Menu::begin(uint8_t _led) {
-    pinMode(_led, OUTPUT);
-    led = _led;
+void Menu::begin() {
     State* S0 = machine.addState(&welcome);
     State* S1 = machine.addState(&newOrOld);
     State* S2 = machine.addState(&generateSeed);
@@ -25,17 +22,7 @@ void Menu::begin(uint8_t _led) {
 }
 
 bool Menu::next(){
-    bool clicked = Interaptive::nextClicked();
-    flashLed(clicked);
-    return clicked;
-}
-
-void Menu::flashLed(bool flash) {
-    if(flash) {
-        digitalWrite(led, HIGH);
-        delay(200);
-        digitalWrite(led, LOW);
-    }
+    return Interaptive::nextClicked();
 }
 
 void Menu::welcome() {

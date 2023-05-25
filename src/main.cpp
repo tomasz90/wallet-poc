@@ -13,8 +13,8 @@ void setup() {
     Serial.begin(115200);
     Seed::createMnemonic();
     Display::begin();
-    Interaptive::begin(PREVIOUS_BUTTON, NEXT_BUTTON);
-    Menu::begin(LED);
+    Interaptive::begin(PREVIOUS_BUTTON, NEXT_BUTTON, LED);
+    Menu::begin();
 }
 
 void loop() {

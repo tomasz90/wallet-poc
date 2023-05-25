@@ -7,11 +7,9 @@
 
 class Menu {
 public:
-    static void begin(uint8_t led);
+    static void begin();
     static void run();
 private:
-    static uint8_t led;
-
     Menu();
 
     static bool next();
@@ -21,6 +19,4 @@ private:
     static void newOrOld();
 
     static void generateSeed();
-
-    static void flashLed(bool flash);
 };
