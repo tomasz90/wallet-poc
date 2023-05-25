@@ -10,12 +10,11 @@
 class Button {
 public:
     Button();
-    bool isPendingClick();
+    bool isPendingClick() const;
     void setPending();
-    bool isActive();
     void setClicked();
 
-    bool canBeClicked();
+    bool canBeClicked() const;
 
 private:
     bool pendingClick;

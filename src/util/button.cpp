@@ -9,22 +9,18 @@ Button::Button() {
     pendingClick = false;
 }
 
-bool Button::isActive() {
-    return !pendingClick && millis() - plannedMillisClick > 200;
-}
-
 void Button::setPending() {
     pendingClick = true;
-    plannedMillisClick = millis() + 500;
+    plannedMillisClick = millis() + 300;
 }
 
 // for both
-bool Button::isPendingClick() {
+bool Button::isPendingClick() const {
     return pendingClick;
 }
 
 // for one
-bool Button::canBeClicked() {
+bool Button::canBeClicked() const {
     long till = millis() - plannedMillisClick;
     return pendingClick && till > 0;
 }

@@ -30,8 +30,7 @@ void Interaptive::setupLed(uint8_t _led) {
 
 void (*Interaptive::clickPrevious())() {
     return [] {
-        bool active = previous.isActive();
-        if(active) {
+        if(!previous.isPendingClick()) {
             previous.setPending();
         }
     };
@@ -39,8 +38,7 @@ void (*Interaptive::clickPrevious())() {
 
 void (*Interaptive::clickNext())() {
     return [] {
-        bool active = next.isActive();
-        if(active) {
+        if(!next.isPendingClick()) {
             next.setPending();
         }
     };
@@ -76,6 +74,6 @@ bool Interaptive::bothClicked() {
 
 void Interaptive::flashLed() {
     ledcWrite(ledChannel, 2);
-    delay(50);
+    delay(20);
     ledcWrite(ledChannel, 0);
 }
