@@ -1,16 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   interuptive.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tomasz <tomasz@student.1337.ma>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/25 16:08:43 by tomasz            #+#    #+#             */
-/*   Updated: 2023/05/25 20:18:03 by tomasz           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <esp_attr.h>
+#include "button.h"
 
 #ifndef WALLET_POC_INTERUPTIVE_H
 #define WALLET_POC_INTERUPTIVE_H
@@ -33,13 +22,9 @@ public:
     static bool bothClicked();
 
 private:
-    static bool _previousClicked;
-    static bool _nextClicked;
-    static bool _bothClicked;
+    static Button previous;
+    static Button next;
     Interaptive();
-    static void flashLed(bool flash);
-
+    static void flashLed();
     static void setupLed(uint8_t _led);
-    static bool isActive(unsigned long lastClicked);
-    static void setInActive(unsigned long &lastClicked);
 };

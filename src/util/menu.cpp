@@ -25,9 +25,11 @@ void Menu::begin() {
     S1->addTransition(&previous,S0);  // S1 transition to S2
     S0->addTransition(&previous,S2);  // S2 transition to S0
 
-    S0->addTransition(&both,S3);  // S0 transition to S1
-    S1->addTransition(&both,S3);  // S1 transition to S2
-    S2->addTransition(&both,S3);  // S2 transition to S0
+    S0->addTransition(&both,S3);
+    S1->addTransition(&both,S3);
+    S2->addTransition(&both,S3);
+
+    S3->addTransition(&both,S0);
 }
 
 bool Menu::next(){
@@ -43,15 +45,15 @@ bool Menu::both(){
 }
 
 void Menu::welcome() {
-    Display::animateText("Hello!");
+    Display::animateText("0");
 }
 
 void Menu::newOrOld() {
-    Display::animateText("NewOrdOld");
+    Display::animateText("1");
 }
 
 void Menu::generateSeed() {
-    Display::animateText("generateSeed");
+    Display::animateText("2");
 }
 
 void Menu::confirm() {
