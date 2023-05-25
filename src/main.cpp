@@ -7,13 +7,14 @@
 
 #define NEXT_BUTTON 0
 #define PREVIOUS_BUTTON 34
+#define LED 23
 
 void setup() {
     Serial.begin(115200);
     Seed::createMnemonic();
     Display::begin();
     Interaptive::begin(PREVIOUS_BUTTON, NEXT_BUTTON);
-    Menu::begin();
+    Menu::begin(LED);
 }
 
 void loop() {
