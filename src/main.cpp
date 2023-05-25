@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 #include <Arduino.h>
-#include "bip39/bip39.h"
+#include "util/seed.h"
 
 #define SCREEN_WIDTH 128  // OLED display width, in pixels
 #define SCREEN_HEIGHT 64  // OLED display height, in pixels
@@ -50,24 +50,11 @@ void animateText() {
     }
 }
 
-void generateEntropy(std::vector<uint8_t>& entropy, size_t numBytes) {
-    // Resize the vector to accommodate the desired number of bytes
-    entropy.resize(numBytes);
-
-    // Generate random numbers using esp_random() and store them in the vector
-    for (size_t i = 0; i < numBytes; ++i) {
-        entropy[i] = static_cast<uint8_t>(esp_random());
-    }
-}
-
 void setup() {
     Serial.begin(115200);
     pinMode(BUTTON, INPUT);
     attachInterrupt(BUTTON, nextWord, RISING);
-    std::vector<uint8_t> entropy;
-    size_t numBytes = 256;
-    generateEntropy(entropy, numBytes);
-    passphrase = BIP39::create_mnemonic(entropy, BIP39::language::en);
+    passphrase = Seed::createMnemonic();
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {  // Address 0x3D for 128x64
         Serial.println(F("SSD1306 allocation failed"));
         while (true);
