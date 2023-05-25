@@ -31,20 +31,29 @@ void Interaptive::setupLed(uint8_t _led) {
 }
 
 void (*Interaptive::clickPrevious())() {
-    return [] { _previousClicked = isActive(previousButtonTime); };
+    return [] {
+        if(isActive(previousButtonTime)) {
+            _previousClicked = true;
+            setInActive(previousButtonTime);
+        }
+    };
 }
 
 void (*Interaptive::clickNext())() {
-    return [] { _nextClicked = isActive(nextButtonTime); };
+    return [] {
+        if(isActive(nextButtonTime)) {
+            _nextClicked = true;
+            setInActive(nextButtonTime);
+        }
+    };
 }
 
-bool Interaptive::isActive(unsigned long& lastClicked) {
-    unsigned long buttonTime = millis();
-    bool isActive = buttonTime - lastClicked > 300;
-    if (isActive) {
-        lastClicked = buttonTime;
-    }
-    return isActive;
+bool Interaptive::isActive(unsigned long lastClicked) {
+    return millis() - lastClicked > 300;
+}
+
+void Interaptive::setInActive(unsigned long& lastClicked) {
+    lastClicked = millis();
 }
 
 bool Interaptive::previousClicked() {

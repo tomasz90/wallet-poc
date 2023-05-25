@@ -29,13 +29,14 @@ public:
     static bool previousClicked();
     static bool nextClicked();
     static void begin(uint8_t previousButton, uint8_t nextButton, uint8_t led);
-    static bool isActive(unsigned long& lastClicked);
 private:
     static bool _previousClicked;
     static bool _nextClicked;
     static bool _bothClicked;
     Interaptive();
-
     static void flashLed(bool flash);
+
     static void setupLed(uint8_t _led);
+    static bool isActive(unsigned long lastClicked);
+    static void setInActive(unsigned long &lastClicked);
 };
