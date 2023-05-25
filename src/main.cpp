@@ -13,6 +13,12 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 BIP39::word_list passphrase;
 int wordIndex = -1;
+std::string _word;
+unsigned long previousMillis;
+bool blink;
+unsigned long previousMillisButton;
+
+bool active = true;
 
 void setText(std::string text) {
     display.clearDisplay();
@@ -22,16 +28,18 @@ void setText(std::string text) {
     display.println(text.c_str());
     display.display();
 }
-void animateText(std::string word) {
-    while (true) {
+
+void animateText(unsigned long currentMillis) {
+    if (currentMillis - previousMillis > 500) {
+        previousMillis = currentMillis;
+        std::string word;
+        word.assign(_word);
+        if (blink) word.append(" >");
         setText(word);
-        word.append(" >");
-        delay(800);
-        setText(word);
-        word.erase(word.length() - 2);
-        delay(800);
+        blink = !blink;
     }
 }
+
 void setup() {
     Serial.begin(115200);
     pinMode(BUTTON, INPUT);
@@ -47,11 +55,18 @@ void setup() {
 
 void loop() {
     bool clicked = digitalRead(BUTTON);
-    Serial.println(clicked);
-    if (clicked) {
+    unsigned long currentMillis = millis();
+    active = currentMillis - previousMillisButton > 500;
+    if (clicked && active) {
+        previousMillisButton = currentMillis;
         wordIndex++;
-        std::string word = passphrase.getWordAt(wordIndex);
+        _word = passphrase.getWordAt(wordIndex);
         std::string humanIndex = std::to_string(wordIndex + 1).append(". ");
-        animateText(word.insert(0, humanIndex));
+        _word.insert(0, humanIndex);
+    }
+    if (wordIndex > 11) {
+        setText("Done!");
+    } else if (wordIndex != -1) {
+        animateText(currentMillis);
     }
 }
