@@ -20,7 +20,8 @@
 class Interaptive {
 public:
     static int wordIndex;
-    static unsigned long lastButtonTime;
+    static unsigned long previousButtonTime;
+    static unsigned long nextButtonTime;
 
     static void (*clickPrevious())();
     static void (*clickNext())();
@@ -28,10 +29,11 @@ public:
     static bool previousClicked();
     static bool nextClicked();
     static void begin(uint8_t previousButton, uint8_t nextButton, uint8_t led);
-    static bool isActive();
+    static bool isActive(unsigned long& lastClicked);
 private:
     static bool _previousClicked;
     static bool _nextClicked;
+    static bool _bothClicked;
     Interaptive();
 
     static void flashLed(bool flash);

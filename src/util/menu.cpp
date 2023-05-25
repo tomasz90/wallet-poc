@@ -45,3 +45,7 @@ void Menu::generateSeed() {
     Display::animateText("generateSeed");
 }
 
+void Menu::confirm() {
+    Display::animateText("confirmed");
+}
+

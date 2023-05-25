@@ -7,9 +7,11 @@ uint8_t led;
 const int ledChannel = 0;    // LEDC channel (0-15)
 const int pwmResolution = 8; // PWM resolution (8-bit: 0-255)
 
-unsigned long Interaptive::lastButtonTime = 0;
+unsigned long Interaptive::previousButtonTime = 0;
+unsigned long Interaptive::nextButtonTime = 0;
 bool Interaptive::_previousClicked = false;
 bool Interaptive::_nextClicked = false;
+bool Interaptive::_bothClicked = false;
 
 Interaptive::Interaptive() = default;
 
@@ -29,19 +31,18 @@ void Interaptive::setupLed(uint8_t _led) {
 }
 
 void (*Interaptive::clickPrevious())() {
-    return [] { _previousClicked = isActive(); };
+    return [] { _previousClicked = isActive(previousButtonTime); };
 }
 
 void (*Interaptive::clickNext())() {
-    return [] { _nextClicked = isActive(); };
+    return [] { _nextClicked = isActive(nextButtonTime); };
 }
 
-bool Interaptive::isActive() {
+bool Interaptive::isActive(unsigned long& lastClicked) {
     unsigned long buttonTime = millis();
-
-    bool isActive = buttonTime - lastButtonTime > 300;
+    bool isActive = buttonTime - lastClicked > 300;
     if (isActive) {
-        lastButtonTime = buttonTime;
+        lastClicked = buttonTime;
     }
     return isActive;
 }

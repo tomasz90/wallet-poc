@@ -21,4 +21,6 @@ private:
     static void generateSeed();
 
     static bool previous();
+
+    static void confirm();
 };
