@@ -6,7 +6,7 @@
 /*   By: tomasz <tomasz@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 16:08:43 by tomasz            #+#    #+#             */
-/*   Updated: 2023/05/25 18:43:36 by tomasz           ###   ########.fr       */
+/*   Updated: 2023/05/25 20:18:03 by tomasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ public:
 private:
     static bool _previousClicked;
     static bool _nextClicked;
-    static uint8_t led;
     Interaptive();
 
     static void flashLed(bool flash);
+    static void setupLed(uint8_t _led);
 };

@@ -26,14 +26,14 @@ bool Menu::next(){
 }
 
 void Menu::welcome() {
-    Display::animateText();
+    Display::animateText("Hello!");
 }
 
 void Menu::newOrOld() {
-    Display::setText("NewOrdOld");
+    Display::animateText("NewOrdOld");
 }
 
 void Menu::generateSeed() {
-    Display::setText("generateSeed");
+    Display::animateText("generateSeed");
 }
 

@@ -7,8 +7,6 @@
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 Adafruit_SSD1306 Display::display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
-std::string Display::_word;
-unsigned long Display::previousMillis;
 bool Display::blink;
 
 Display::Display() = default;
@@ -30,14 +28,11 @@ void Display::setText(std::string text) {
     display.display();
 }
 
-void Display::animateText() {
-    unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis > 500) {
-        previousMillis = currentMillis;
-        std::string word;
-        word.assign(_word);
-        if (blink) word.append(" >");
-        setText(word);
-        blink = !blink;
-    }
+void Display::animateText(std::string _text) {
+    std::string text;
+    text.assign(_text);
+    if (blink) text.append(" >");
+    setText(text);
+    delay(500);
+    blink = !blink;
 }

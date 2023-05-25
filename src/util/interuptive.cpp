@@ -3,7 +3,10 @@
 #include "display.h"
 #include "seed.h"
 
-uint8_t Interaptive::led;
+uint8_t led;
+const int ledChannel = 0;    // LEDC channel (0-15)
+const int pwmResolution = 8; // PWM resolution (8-bit: 0-255)
+
 unsigned long Interaptive::lastButtonTime = 0;
 bool Interaptive::_previousClicked = false;
 bool Interaptive::_nextClicked = false;
@@ -13,10 +16,16 @@ Interaptive::Interaptive() = default;
 void Interaptive::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
     pinMode(previousButton, INPUT);
     pinMode(nextButton, INPUT);
-    pinMode(_led, OUTPUT);
-    led = _led;
+    setupLed(_led);
     attachInterrupt(previousButton, Interaptive::clickPrevious(), RISING);
     attachInterrupt(nextButton, Interaptive::clickNext(), RISING);
+}
+
+void Interaptive::setupLed(uint8_t _led) {
+    led = _led;
+    pinMode(led, OUTPUT);
+    ledcSetup(ledChannel, 5000, pwmResolution);  // Set PWM frequency and resolution
+    ledcAttachPin(led, ledChannel);
 }
 
 void (*Interaptive::clickPrevious())() {
@@ -52,8 +61,8 @@ bool Interaptive::nextClicked() {
 
 void Interaptive::flashLed(bool flash) {
     if (flash) {
-        digitalWrite(led, HIGH);
-        delay(50);
-        digitalWrite(led, LOW);
+        ledcWrite(ledChannel, 2);
+        delay(100);
+        ledcWrite(ledChannel, 0);
     }
 }
