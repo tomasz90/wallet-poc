@@ -17,6 +17,10 @@ void Interaptive::innerNextWord() {
     }
 }
 
+void Interaptive::begin(uint8_t previousButton, uint8_t nextButton) {
+    attachInterrupt(nextButton, Interaptive::nextWord(), RISING);
+}
+
 void (*Interaptive::nextWord())() {
     return innerNextWord;
 }

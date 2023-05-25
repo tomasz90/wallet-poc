@@ -9,6 +9,8 @@ class Interaptive {
 public:
     static int wordIndex;
     static void (*nextWord())();
+    static void begin(uint8_t previousButton, uint8_t nextButton);
+
 private:
     static unsigned long lastButtonTime;
     Interaptive();
