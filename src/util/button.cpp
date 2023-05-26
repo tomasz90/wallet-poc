@@ -8,7 +8,7 @@ Button::Button() {
 
 void Button::setPending() {
     pendingClick = true;
-    plannedMillisClick = millis() + 500;
+    plannedMillisClick = millis() + 250;
 }
 
 bool Button::isPendingClick() const {
@@ -16,7 +16,7 @@ bool Button::isPendingClick() const {
 }
 
 bool Button::canBeClicked() const {
-    long till = millis() - plannedMillisClick + 100;
+    long till = millis() - plannedMillisClick;
     return pendingClick && till > 0;
 }
 

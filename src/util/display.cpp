@@ -30,6 +30,7 @@ void Display::setText(std::string text) {
 }
 
 void Display::animateText(std::string _text) {
+    delay(20);
     unsigned long currentMillis = millis();
     if (currentMillis - previousMillis > 500) {
         previousMillis = currentMillis;
