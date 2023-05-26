@@ -23,14 +23,14 @@ void Menu::begin() {
     // TRANSITIONS
     S0->addTransition(&next, S1);
     S1->addTransition(&next, S2_0);
-    S2_0->addTransition(&nextWithoutRefresh, S2_1);
-    S2_1->addTransition(&nextWithoutRefresh, S2_0);
+    S2_0->addTransition(&nextSubChoice, S2_1);
+    S2_1->addTransition(&nextSubChoice, S2_0);
     S3->addTransition(&next, S4);
 
     S4->addTransition(&previous, S3);
     S3->addTransition(&previous, S2_1);
-    S2_1->addTransition(&previousWithoutRefresh, S2_0);
-    S2_0->addTransition(&previousWithoutRefresh, S2_1);
+    S2_1->addTransition(&previousSubChoice, S2_0);
+    S2_0->addTransition(&previousSubChoice, S2_1);
     S1->addTransition(&previous, S0);
     S0->addTransition(&previous, S4);
 
@@ -44,6 +44,7 @@ bool Menu::next() {
     bool transition = Interaptive::isNextClicked();
     if (transition) {
         Display::clearDisplay();
+        Display::setChoiceMenuNeedUpdate();
     }
     return transition;
 }
@@ -52,16 +53,25 @@ bool Menu::previous() {
     bool transition = Interaptive::isPreviousClicked();
     if (transition) {
         Display::clearDisplay();
+        Display::setChoiceMenuNeedUpdate();
     }
     return transition;
 }
 
-bool Menu::nextWithoutRefresh() {
-    return Interaptive::isNextClicked();
+bool Menu::nextSubChoice() {
+    bool transition = Interaptive::isNextClicked();
+    if (transition) {
+        Display::setChoiceMenuNeedUpdate();
+    }
+    return transition;
 }
 
-bool Menu::previousWithoutRefresh() {
-    return Interaptive::isPreviousClicked();
+bool Menu::previousSubChoice() {
+    bool transition = Interaptive::isPreviousClicked();
+    if (transition) {
+        Display::setChoiceMenuNeedUpdate();
+    }
+    return transition;
 }
 
 bool Menu::both() {
@@ -81,13 +91,13 @@ void Menu::s1() {
 }
 
 void Menu::s2_0() {
-    Display::blinkTextWithSign("Do you want to set as new device?");
     Display::drawNo();
+    Display::blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s2_1() {
-    Display::blinkTextWithSign("Do you want to set as new device?");
     Display::drawYes();
+    Display::blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s3() {

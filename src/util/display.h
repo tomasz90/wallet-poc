@@ -13,13 +13,14 @@ public:
     static void drawNo();
     static void drawYes();
     static void clearDisplay();
-
+    static void setChoiceMenuNeedUpdate();
 private:
     static Adafruit_SSD1306 display;
     static bool blink;
     static unsigned long lastTextBlinked;
-    static unsigned long lastMenuChanged;
+    static unsigned long needsUpdate;
     static void animateText(const std::string &text1, const std::string &text2);
     static void clearText();
+
     static void clearBoxes();
 };

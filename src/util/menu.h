@@ -34,7 +34,7 @@ private:
 
     static void s2_1();
 
-    static bool previousWithoutRefresh();
+    static bool previousSubChoice();
 
-    static bool nextWithoutRefresh();
+    static bool nextSubChoice();
 };

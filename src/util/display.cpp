@@ -10,6 +10,7 @@
 Adafruit_SSD1306 Display::display;
 bool Display::blink;
 unsigned long Display::lastTextBlinked;
+unsigned long Display::needsUpdate;
 
 void Display::begin(Adafruit_SSD1306 &_display) {
     display = _display;
@@ -29,12 +30,13 @@ void Display::blinkTextWithSign(const std::string &text) {
     std::string text2;
     text2.assign(text);
     text2.append(" >");
-    delay(20);
     animateText(text, text2);
 }
 
 void Display::drawNo() {
+    if (!needsUpdate) return;
     clearBoxes();
+    needsUpdate = false;
     display.fillRect(5, 43, 50, 20, WHITE);
     display.drawRect(6, 44, 48, 18, BLACK);
 
@@ -47,10 +49,11 @@ void Display::drawNo() {
     display.setTextColor(WHITE);
     display.setCursor(89, 49);
     display.println("YES");
-    display.display();
 }
 
 void Display::drawYes() {
+    if (!needsUpdate) return;
+    needsUpdate = false;
     clearBoxes();
     display.drawRect(5, 43, 50, 20, WHITE);
 
@@ -64,7 +67,6 @@ void Display::drawYes() {
     display.setCursor(25, 49);
     display.setTextColor(WHITE);
     display.println("NO");
-    display.display();
 }
 
 void Display::animateText(const std::string &text1, const std::string &text2) {
@@ -86,4 +88,8 @@ void Display::clearBoxes() {
 
 void Display::clearDisplay() {
     display.clearDisplay();
+}
+
+void Display::setChoiceMenuNeedUpdate() {
+    needsUpdate = true;
 }
