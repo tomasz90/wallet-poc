@@ -16,19 +16,19 @@ private:
 
     static bool next();
 
-    static void welcome();
+    static void s0();
 
-    static void newOrOld();
+    static void s2();
 
-    static void generateSeed();
+    static void s3();
 
     static bool previous();
 
-    static void confirm();
+    static void s5();
 
     static bool both();
 
-    static void setPin();
+    static void s1();
 
-    static void enterSeed();
+    static void s4();
 };

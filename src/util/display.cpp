@@ -10,13 +10,14 @@
 
 Adafruit_SSD1306 Display::display;
 bool Display::blink;
-unsigned long Display::previousMillis;
+unsigned long Display::lastChange;
 
 void Display::begin(Adafruit_SSD1306 &_display) {
     display = _display;
 }
 
 void Display::setText(const std::string &text) {
+    clearText();
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(5, 5);
@@ -25,19 +26,15 @@ void Display::setText(const std::string &text) {
 }
 
 void Display::clearText() {
-    display.fillRect(0,0, 128, 43, BLACK);
-    display.display();
+    display.fillRect(0, 0, 128, 43, BLACK);
 }
 
-void Display::animateText(const std::string &_text) {
+void Display::animateText(const std::string &text1, const std::string &text2) {
     delay(20);
     unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis > 500) {
-        previousMillis = currentMillis;
-        std::string text;
-        text.assign(_text);
-        if (blink) text.append(" >");
-        setText(text);
-        blink = !blink;
-    }
+    if (currentMillis - lastChange < 500) return;
+    std::string text = blink ? text1 : text2;
+    setText(text);
+    lastChange = currentMillis;
+    blink = !blink;
 }

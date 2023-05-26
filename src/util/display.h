@@ -9,13 +9,13 @@ class Display {
 public:
     static void begin(Adafruit_SSD1306 &_display);
     static void setText(const std::string& text);
-    static void animateText(const std::string &_text);
+    static void animateText(const std::string &text1, const std::string &text2);
 
     static void clearText();
 
 private:
     static Adafruit_SSD1306 display;
     static bool blink;
-    static unsigned long previousMillis;
+    static unsigned long lastChange;
 
 };

@@ -11,12 +11,12 @@ void Menu::run() {
 }
 
 void Menu::begin() {
-    State* S0 = machine.addState(&welcome);
-    State* S1 = machine.addState(&setPin);
-    State* S2 = machine.addState(&newOrOld);
-    State* S3 = machine.addState(&generateSeed);
-    State* S4 = machine.addState(&enterSeed);
-    State* S5 = machine.addState(&confirm);
+    State* S0 = machine.addState(&s0);
+    State* S1 = machine.addState(&s1);
+    State* S2 = machine.addState(&s2);
+    State* S3 = machine.addState(&s3);
+    State* S4 = machine.addState(&s4);
+    State* S5 = machine.addState(&s5);
 
     S0->addTransition(&next,S1);
     S1->addTransition(&next,S2);
@@ -50,31 +50,28 @@ bool Menu::both(){
     return Interaptive::bothClicked();
 }
 
-void Menu::welcome() {
+void Menu::s0() {
+    Display::animateText("Hello!", "Hello! >");
     DisplayChoice::drawNo();
-    Display::setText("Hello!");
-    delay(500);
-    Display::clearText();
-    delay(500);
 }
 
-void Menu::setPin() {
-    Display::animateText("Set pin:");
+void Menu::s1() {
+    //Display::animateText("Set pin:");
 }
 
-void Menu::newOrOld() {
-    Display::animateText("Do you want to set as new device?");
+void Menu::s2() {
+    //Display::animateText("Do you want to set as new device?");
 }
 
-void Menu::generateSeed() {
-    Display::animateText("generateSeed");
+void Menu::s3() {
+    //Display::animateText("s3");
 }
 
-void Menu::enterSeed() {
-    Display::animateText("Enter your seed?");
+void Menu::s4() {
+    //Display::animateText("Enter your seed?");
 }
 
-void Menu::confirm() {
-    Display::animateText("confirmed");
+void Menu::s5() {
+    //Display::animateText("confirmed");
 }
 
