@@ -8,6 +8,9 @@ const int ledChannel = 0;    // LEDC channel (0-15)
 const int pwmResolution = 8; // PWM resolution (8-bit: 0-255)
 Button Interaptive::previous;
 Button Interaptive::next;
+unsigned long lastPreviousButtonTime;
+unsigned long lastNextButtonTime;
+
 
 Interaptive::Interaptive() = default;
 
@@ -29,22 +32,27 @@ void Interaptive::setupLed(uint8_t _led) {
 }
 
 void (*Interaptive::clickPrevious())() {
-    return [] { setPendingIfItIsNot(previous); };
+    return [] { setPendingIfItIsNot(previous, lastPreviousButtonTime); };
 }
 
 void (*Interaptive::clickNext())() {
-    return [] { setPendingIfItIsNot(next); };
+    return [] { setPendingIfItIsNot(next, lastNextButtonTime); };
 }
 
-void Interaptive::setPendingIfItIsNot(Button& button) {
-    if(!button.isPendingClick()) {
+void Interaptive::setPendingIfItIsNot(Button &button, unsigned long &lastButtonTime) {
+    unsigned long buttonTime = millis();
+    if (buttonTime - lastButtonTime < 200) {
+        return;
+    }
+    lastButtonTime = buttonTime;
+    if (!button.isPendingClick()) {
         button.setPending();
     }
 }
 
 bool Interaptive::previousClicked() {
     bool canBeClicked = previous.canBeClicked();
-    if(canBeClicked) {
+    if (canBeClicked) {
         Serial.println("PREVIOUS");
         previous.setClicked();
         flashLed();
@@ -54,7 +62,7 @@ bool Interaptive::previousClicked() {
 
 bool Interaptive::nextClicked() {
     bool canBeClicked = next.canBeClicked();
-    if(canBeClicked) {
+    if (canBeClicked) {
         Serial.println("NEXT");
         next.setClicked();
         flashLed();

@@ -22,5 +22,5 @@ private:
     static void flashLed();
     static void setupLed(uint8_t _led);
 
-    static void setPendingIfItIsNot(Button& button);
+    static void setPendingIfItIsNot(Button &button, unsigned long &lastButtonTime);
 };
