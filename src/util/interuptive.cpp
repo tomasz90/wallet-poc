@@ -35,7 +35,7 @@ void (*Interaptive::clickNext())() {
 
 void Interaptive::setPendingIfItIsNot(Button *&button, unsigned long &lastButtonTime) {
     unsigned long buttonTime = millis();
-    if (buttonTime - lastButtonTime < 200) {
+    if (buttonTime - lastButtonTime < 100) {
         return;
     }
     lastButtonTime = buttonTime;
