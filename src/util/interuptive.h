@@ -16,11 +16,12 @@ public:
     static bool bothClicked();
 
 private:
-    static Button previous;
-    static Button next;
+    static Button* previous;
+    static Button* next;
     Interaptive();
     static void flashLed();
     static void setupLed(uint8_t _led);
 
-    static void setPendingIfItIsNot(Button &button, unsigned long &lastButtonTime);
+    static void setPendingIfItIsNot(Button *&button, unsigned long &lastButtonTime);
+    static bool clicked(Button *&button);
 };

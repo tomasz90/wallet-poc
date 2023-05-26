@@ -9,14 +9,15 @@
 
 class Button {
 public:
-    Button();
+    Button(std::string name);
     bool isPendingClick() const;
     void setPending();
     void setClicked();
-
     bool canBeClicked() const;
+    std::string getName();
 
 private:
+    std::string name;
     bool pendingClick;
     unsigned long plannedMillisClick;
 };

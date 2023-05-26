@@ -6,20 +6,18 @@
 uint8_t led;
 const int ledChannel = 0;    // LEDC channel (0-15)
 const int pwmResolution = 8; // PWM resolution (8-bit: 0-255)
-Button Interaptive::previous;
-Button Interaptive::next;
 unsigned long lastPreviousButtonTime;
 unsigned long lastNextButtonTime;
-
-
+Button* Interaptive::previous;
+Button* Interaptive::next;
 Interaptive::Interaptive() = default;
 
 void Interaptive::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
     pinMode(previousButton, INPUT_PULLDOWN);
     pinMode(nextButton, INPUT_PULLDOWN);
     setupLed(_led);
-    previous = Button();
-    next = Button();
+    previous = new Button("PREVIOUS");
+    next = new Button("NEXT");
     attachInterrupt(previousButton, Interaptive::clickPrevious(), HIGH);
     attachInterrupt(nextButton, Interaptive::clickNext(), HIGH);
 }
@@ -39,46 +37,44 @@ void (*Interaptive::clickNext())() {
     return [] { setPendingIfItIsNot(next, lastNextButtonTime); };
 }
 
-void Interaptive::setPendingIfItIsNot(Button &button, unsigned long &lastButtonTime) {
+void Interaptive::setPendingIfItIsNot(Button *&button, unsigned long &lastButtonTime) {
     unsigned long buttonTime = millis();
     if (buttonTime - lastButtonTime < 200) {
         return;
     }
     lastButtonTime = buttonTime;
-    if (!button.isPendingClick()) {
-        button.setPending();
+    if (!button->isPendingClick()) {
+        button->setPending();
     }
 }
 
 bool Interaptive::previousClicked() {
-    bool canBeClicked = previous.canBeClicked();
-    if (canBeClicked) {
-        Serial.println("PREVIOUS");
-        previous.setClicked();
-        flashLed();
-    }
-    return canBeClicked;
+    return clicked(previous);
 }
 
 bool Interaptive::nextClicked() {
-    bool canBeClicked = next.canBeClicked();
+    return clicked(next);
+}
+
+bool Interaptive::clicked(Button *&button) {
+    bool canBeClicked = button->canBeClicked();
     if (canBeClicked) {
-        Serial.println("NEXT");
-        next.setClicked();
+        Serial.println(button->getName().c_str());
+        button->setClicked();
         flashLed();
     }
     return canBeClicked;
 }
 
 bool Interaptive::bothClicked() {
-    bool pendings = previous.isPendingClick() && next.isPendingClick();
-    if (pendings) {
+    bool canBeClicked = previous->isPendingClick() && next->isPendingClick();
+    if (canBeClicked) {
         Serial.println("BOTH");
-        previous.setClicked();
-        next.setClicked();
+        previous->setClicked();
+        next->setClicked();
         flashLed();
     }
-    return pendings;
+    return canBeClicked;
 }
 
 void Interaptive::flashLed() {

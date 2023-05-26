@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include "button.h"
 
-Button::Button() {
+Button::Button(std::string name) {
+    this->name = name;
     plannedMillisClick = 0;
     pendingClick = false;
 }
@@ -23,6 +24,10 @@ bool Button::canBeClicked() const {
 void Button::setClicked() {
     pendingClick = false;
     plannedMillisClick = millis();
+}
+
+std::string Button::getName() {
+    return name;
 }
 
 
