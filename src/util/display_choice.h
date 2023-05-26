@@ -12,6 +12,6 @@ public:
     static void drawNo();
     static void drawYes();
 private:
-
     static Adafruit_SSD1306 display;
+    static void clearBoxes();
 };

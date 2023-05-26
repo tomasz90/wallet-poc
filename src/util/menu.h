@@ -18,7 +18,7 @@ private:
 
     static void s0();
 
-    static void s2();
+    static void s2_0();
 
     static void s3();
 
@@ -31,4 +31,6 @@ private:
     static void s1();
 
     static void s4();
+
+    static void s2_1();
 };

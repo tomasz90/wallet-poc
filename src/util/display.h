@@ -13,6 +13,8 @@ public:
 
     static void clearText();
 
+    static void blinkTextWithSign(const std::string &text);
+
 private:
     static Adafruit_SSD1306 display;
     static bool blink;

@@ -9,6 +9,7 @@ void DisplayChoice::begin(Adafruit_SSD1306 &_display) {
 }
 
 void DisplayChoice::drawNo() {
+    clearBoxes();
     display.fillRect(5, 43, 50, 20, WHITE);
     display.drawRect(6, 44, 48, 18, BLACK);
 
@@ -25,7 +26,7 @@ void DisplayChoice::drawNo() {
 }
 
 void DisplayChoice::drawYes() {
-
+    clearBoxes();
     display.drawRect(5, 43, 50, 20, WHITE);
 
     display.fillRect(73, 43, 50, 20, WHITE);
@@ -39,4 +40,8 @@ void DisplayChoice::drawYes() {
     display.setTextColor(WHITE);
     display.println("NO");
     display.display();
+}
+
+void DisplayChoice::clearBoxes() {
+    display.fillRect(0, 43, 128, 23, BLACK);
 }

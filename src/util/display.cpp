@@ -30,11 +30,18 @@ void Display::clearText() {
 }
 
 void Display::animateText(const std::string &text1, const std::string &text2) {
-    delay(20);
     unsigned long currentMillis = millis();
     if (currentMillis - lastChange < 500) return;
     std::string text = blink ? text1 : text2;
     setText(text);
     lastChange = currentMillis;
     blink = !blink;
+}
+
+void Display::blinkTextWithSign(const std::string &text) {
+    std::string text2;
+    text2.assign(text);
+    text2.append(" >");
+    delay(20);
+    animateText(text, text2);
 }
