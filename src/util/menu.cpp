@@ -51,8 +51,11 @@ bool Menu::both(){
 }
 
 void Menu::welcome() {
-    Display::animateText("Hello!");
-    //DisplayChoice::drawNo();
+    DisplayChoice::drawNo();
+    Display::setText("Hello!");
+    delay(500);
+    Display::clearText();
+    delay(500);
 }
 
 void Menu::setPin() {

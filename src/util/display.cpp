@@ -17,11 +17,15 @@ void Display::begin(Adafruit_SSD1306 &_display) {
 }
 
 void Display::setText(const std::string &text) {
-    display.clearDisplay();
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(5, 5);
     display.println(text.c_str());
+    display.display();
+}
+
+void Display::clearText() {
+    display.fillRect(0,0, 128, 43, BLACK);
     display.display();
 }
 
