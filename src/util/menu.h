@@ -33,4 +33,8 @@ private:
     static void s4();
 
     static void s2_1();
+
+    static bool previousWithoutRefresh();
+
+    static bool nextWithoutRefresh();
 };

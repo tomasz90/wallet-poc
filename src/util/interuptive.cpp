@@ -58,7 +58,6 @@ bool Interaptive::clicked(Button *&button) {
         Serial.println(button->getName().c_str());
         button->setClicked();
         flashLed();
-        Display::clearDisplay();
     }
     return canBeClicked;
 }
@@ -70,7 +69,6 @@ bool Interaptive::isBothClicked() {
         previous->setClicked();
         next->setClicked();
         flashLed();
-        Display::clearDisplay();
     }
     return canBeClicked;
 }
