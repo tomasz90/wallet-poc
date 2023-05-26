@@ -12,13 +12,13 @@ Button Interaptive::next;
 Interaptive::Interaptive() = default;
 
 void Interaptive::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
-    pinMode(previousButton, INPUT);
-    pinMode(nextButton, INPUT);
+    pinMode(previousButton, INPUT_PULLDOWN);
+    pinMode(nextButton, INPUT_PULLDOWN);
     setupLed(_led);
     previous = Button();
     next = Button();
-    attachInterrupt(previousButton, Interaptive::clickPrevious(), RISING);
-    attachInterrupt(nextButton, Interaptive::clickNext(), RISING);
+    attachInterrupt(previousButton, Interaptive::clickPrevious(), HIGH);
+    attachInterrupt(nextButton, Interaptive::clickNext(), HIGH);
 }
 
 void Interaptive::setupLed(uint8_t _led) {
@@ -45,6 +45,7 @@ void Interaptive::setPendingIfItIsNot(Button& button) {
 bool Interaptive::previousClicked() {
     bool canBeClicked = previous.canBeClicked();
     if(canBeClicked) {
+        Serial.println("PREVIOUS");
         previous.setClicked();
         flashLed();
     }
@@ -54,6 +55,7 @@ bool Interaptive::previousClicked() {
 bool Interaptive::nextClicked() {
     bool canBeClicked = next.canBeClicked();
     if(canBeClicked) {
+        Serial.println("NEXT");
         next.setClicked();
         flashLed();
     }
@@ -63,6 +65,7 @@ bool Interaptive::nextClicked() {
 bool Interaptive::bothClicked() {
     bool pendings = previous.isPendingClick() && next.isPendingClick();
     if (pendings) {
+        Serial.println("BOTH");
         previous.setClicked();
         next.setClicked();
         flashLed();
