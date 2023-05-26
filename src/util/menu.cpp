@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "display.h"
 #include "interuptive.h"
+#include "display_choice.h"
 
 StateMachine machine = StateMachine();
 
@@ -51,6 +52,7 @@ bool Menu::both(){
 
 void Menu::welcome() {
     Display::animateText("Hello!");
+    //DisplayChoice::drawNo();
 }
 
 void Menu::setPin() {

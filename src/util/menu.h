@@ -10,6 +10,8 @@ public:
     static void begin();
     static void run();
 private:
+    static unsigned long lastUpdated;
+
     Menu();
 
     static bool next();
