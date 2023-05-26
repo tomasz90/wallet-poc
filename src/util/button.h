@@ -10,11 +10,11 @@
 class Button {
 public:
     explicit Button(std::string name);
+    std::string getName();
     bool isPendingClick() const;
     void setPending();
     void setClicked();
     bool canBeClicked() const;
-    std::string getName();
 
 private:
     std::string name;

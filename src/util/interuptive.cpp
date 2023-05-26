@@ -3,9 +3,7 @@
 #include "display.h"
 #include "seed.h"
 
-uint8_t led;
 const int ledChannel = 0;    // LEDC channel (0-15)
-const int pwmResolution = 8; // PWM resolution (8-bit: 0-255)
 unsigned long lastPreviousButtonTime;
 unsigned long lastNextButtonTime;
 Button* Interaptive::previous;
@@ -21,10 +19,9 @@ void Interaptive::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led
     attachInterrupt(nextButton, Interaptive::clickNext(), HIGH);
 }
 
-void Interaptive::setupLed(uint8_t _led) {
-    led = _led;
+void Interaptive::setupLed(uint8_t led) {
     pinMode(led, OUTPUT);
-    ledcSetup(ledChannel, 5000, pwmResolution);  // Set PWM frequency and resolution
+    ledcSetup(ledChannel, 5000, 8);  // Set PWM frequency and resolution
     ledcAttachPin(led, ledChannel);
 }
 
