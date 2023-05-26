@@ -44,11 +44,11 @@ void Interaptive::setPendingIfItIsNot(Button *&button, unsigned long &lastButton
     }
 }
 
-bool Interaptive::previousClicked() {
+bool Interaptive::isPreviousClicked() {
     return clicked(previous);
 }
 
-bool Interaptive::nextClicked() {
+bool Interaptive::isNextClicked() {
     return clicked(next);
 }
 
@@ -58,17 +58,19 @@ bool Interaptive::clicked(Button *&button) {
         Serial.println(button->getName().c_str());
         button->setClicked();
         flashLed();
+        Display::clearDisplay();
     }
     return canBeClicked;
 }
 
-bool Interaptive::bothClicked() {
+bool Interaptive::isBothClicked() {
     bool canBeClicked = previous->isPendingClick() && next->isPendingClick();
     if (canBeClicked) {
         Serial.println("BOTH");
         previous->setClicked();
         next->setClicked();
         flashLed();
+        Display::clearDisplay();
     }
     return canBeClicked;
 }

@@ -4,7 +4,6 @@
 #include "Adafruit_SSD1306.h"
 #include "uitl.h"
 #include "display.h"
-#include "display_choice.h"
 
 #define SCREEN_WIDTH 128  // OLED display width, in pixels
 #define SCREEN_HEIGHT 64  // OLED display height, in pixels
@@ -19,9 +18,6 @@ namespace Util {
             while (true);
         }
         delay(200);
-
-        display.clearDisplay();
         Display::begin(display);
-        DisplayChoice::begin(display);
     }
 }

@@ -9,15 +9,17 @@ class Display {
 public:
     static void begin(Adafruit_SSD1306 &_display);
     static void setText(const std::string& text);
-    static void animateText(const std::string &text1, const std::string &text2);
-
-    static void clearText();
-
     static void blinkTextWithSign(const std::string &text);
+    static void drawNo();
+    static void drawYes();
+    static void clearDisplay();
 
 private:
     static Adafruit_SSD1306 display;
     static bool blink;
-    static unsigned long lastChange;
-
+    static unsigned long lastTextBlinked;
+    static unsigned long lastMenuChanged;
+    static void animateText(const std::string &text1, const std::string &text2);
+    static void clearText();
+    static void clearBoxes();
 };

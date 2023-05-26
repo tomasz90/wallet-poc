@@ -6,14 +6,14 @@
 #include "Fonts/Org_01.h"
 #include "Fonts/Picopixel.h"
 #include "uitl.h"
-#include "display_choice.h"
 
 Adafruit_SSD1306 Display::display;
 bool Display::blink;
-unsigned long Display::lastChange;
+unsigned long Display::lastTextBlinked;
 
 void Display::begin(Adafruit_SSD1306 &_display) {
     display = _display;
+    display.clearDisplay();
 }
 
 void Display::setText(const std::string &text) {
@@ -25,23 +25,65 @@ void Display::setText(const std::string &text) {
     display.display();
 }
 
-void Display::clearText() {
-    display.fillRect(0, 0, 128, 43, BLACK);
-}
-
-void Display::animateText(const std::string &text1, const std::string &text2) {
-    unsigned long currentMillis = millis();
-    if (currentMillis - lastChange < 500) return;
-    std::string text = blink ? text1 : text2;
-    setText(text);
-    lastChange = currentMillis;
-    blink = !blink;
-}
-
 void Display::blinkTextWithSign(const std::string &text) {
     std::string text2;
     text2.assign(text);
     text2.append(" >");
     delay(20);
     animateText(text, text2);
+}
+
+void Display::drawNo() {
+    clearBoxes();
+    display.fillRect(5, 43, 50, 20, WHITE);
+    display.drawRect(6, 44, 48, 18, BLACK);
+
+    display.drawRect(73, 43, 50, 20, WHITE);
+
+    display.setCursor(25, 49);
+    display.setTextColor(BLACK);
+    display.println("NO");
+
+    display.setTextColor(WHITE);
+    display.setCursor(89, 49);
+    display.println("YES");
+    display.display();
+}
+
+void Display::drawYes() {
+    clearBoxes();
+    display.drawRect(5, 43, 50, 20, WHITE);
+
+    display.fillRect(73, 43, 50, 20, WHITE);
+    display.drawRect(74, 44, 48, 18, BLACK);
+
+    display.setTextColor(BLACK);
+    display.setCursor(89, 49);
+    display.println("YES");
+
+    display.setCursor(25, 49);
+    display.setTextColor(WHITE);
+    display.println("NO");
+    display.display();
+}
+
+void Display::animateText(const std::string &text1, const std::string &text2) {
+    unsigned long currentMillis = millis();
+    if (currentMillis - lastTextBlinked < 500) return;
+    std::string text = blink ? text1 : text2;
+    setText(text);
+    lastTextBlinked = currentMillis;
+    blink = !blink;
+}
+
+void Display::clearText() {
+    display.fillRect(0, 0, 128, 43, BLACK);
+}
+
+void Display::clearBoxes() {
+    display.fillRect(0, 43, 128, 23, BLACK);
+}
+
+void Display::clearDisplay() {
+    display.clearDisplay();
 }

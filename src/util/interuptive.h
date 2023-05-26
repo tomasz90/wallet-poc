@@ -11,9 +11,9 @@ public:
     static void begin(uint8_t previousButton, uint8_t nextButton, uint8_t led);
     static void (*clickPrevious())();
     static void (*clickNext())();
-    static bool previousClicked();
-    static bool nextClicked();
-    static bool bothClicked();
+    static bool isPreviousClicked();
+    static bool isNextClicked();
+    static bool isBothClicked();
 
 private:
     static Button* previous;

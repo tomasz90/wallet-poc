@@ -2,9 +2,9 @@
 #include "StateMachine.h"
 #include "display.h"
 #include "interuptive.h"
-#include "display_choice.h"
+#include "CustomMachine.h"
 
-StateMachine machine = StateMachine();
+CustomMachine machine = CustomMachine();
 
 void Menu::run() {
     machine.run();
@@ -38,16 +38,16 @@ void Menu::begin() {
     S5->addTransition(&both,S0);
 }
 
-bool Menu::next(){
-    return Interaptive::nextClicked();
+bool Menu::next() {
+    return Interaptive::isNextClicked();
 }
 
 bool Menu::previous(){
-    return Interaptive::previousClicked();
+    return Interaptive::isPreviousClicked();
 }
 
 bool Menu::both(){
-    return Interaptive::bothClicked();
+    return Interaptive::isBothClicked();
 }
 
 void Menu::s0() {
@@ -60,12 +60,12 @@ void Menu::s1() {
 
 void Menu::s2_0() {
     Display::blinkTextWithSign("Do you want to set as new device?");
-    DisplayChoice::drawNo();
+    Display::drawNo();
 }
 
 void Menu::s2_1() {
     Display::blinkTextWithSign("Do you want to set as new device?");
-    DisplayChoice::drawYes();
+    Display::drawYes();
 }
 
 void Menu::s3() {
