@@ -8,6 +8,7 @@
 Adafruit_SSD1306 Display::display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 bool Display::blink;
+unsigned long Display::previousMillis;
 
 Display::Display() = default;
 
@@ -29,10 +30,13 @@ void Display::setText(std::string text) {
 }
 
 void Display::animateText(std::string _text) {
-    std::string text;
-    text.assign(_text);
-    if (blink) text.append(" >");
-    setText(text);
-    delay(500);
-    blink = !blink;
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis > 500) {
+        previousMillis = currentMillis;
+        std::string text;
+        text.assign(_text);
+        if (blink) text.append(" >");
+        setText(text);
+        blink = !blink;
+    }
 }

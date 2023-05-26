@@ -17,6 +17,6 @@ public:
 private:
     static Adafruit_SSD1306 display;
     static bool blink;
-
+    static unsigned long previousMillis;
     Display();
 };

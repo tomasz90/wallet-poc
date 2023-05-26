@@ -1,6 +1,3 @@
-//
-// Created by Tomasz Kulig on 26/05/2023.
-//
 #include <Arduino.h>
 #include "button.h"
 
@@ -11,17 +8,15 @@ Button::Button() {
 
 void Button::setPending() {
     pendingClick = true;
-    plannedMillisClick = millis() + 300;
+    plannedMillisClick = millis() + 500;
 }
 
-// for both
 bool Button::isPendingClick() const {
     return pendingClick;
 }
 
-// for one
 bool Button::canBeClicked() const {
-    long till = millis() - plannedMillisClick;
+    long till = millis() - plannedMillisClick + 100;
     return pendingClick && till > 0;
 }
 

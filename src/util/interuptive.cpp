@@ -29,19 +29,17 @@ void Interaptive::setupLed(uint8_t _led) {
 }
 
 void (*Interaptive::clickPrevious())() {
-    return [] {
-        if(!previous.isPendingClick()) {
-            previous.setPending();
-        }
-    };
+    return [] { setPendingIfItIsNot(previous); };
 }
 
 void (*Interaptive::clickNext())() {
-    return [] {
-        if(!next.isPendingClick()) {
-            next.setPending();
-        }
-    };
+    return [] { setPendingIfItIsNot(next); };
+}
+
+void Interaptive::setPendingIfItIsNot(Button& button) {
+    if(!button.isPendingClick()) {
+        button.setPending();
+    }
 }
 
 bool Interaptive::previousClicked() {

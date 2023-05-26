@@ -8,17 +8,11 @@
 
 class Interaptive {
 public:
-    static int wordIndex;
-    static unsigned long previousButtonTime;
-    static unsigned long nextButtonTime;
-
+    static void begin(uint8_t previousButton, uint8_t nextButton, uint8_t led);
     static void (*clickPrevious())();
     static void (*clickNext())();
-
     static bool previousClicked();
     static bool nextClicked();
-    static void begin(uint8_t previousButton, uint8_t nextButton, uint8_t led);
-
     static bool bothClicked();
 
 private:
@@ -28,5 +22,5 @@ private:
     static void flashLed();
     static void setupLed(uint8_t _led);
 
-    static void setPendingIfItIsNot();
+    static void setPendingIfItIsNot(Button& button);
 };
