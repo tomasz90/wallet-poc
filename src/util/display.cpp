@@ -10,8 +10,6 @@ Adafruit_SSD1306 Display::display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 bool Display::blink;
 unsigned long Display::previousMillis;
 
-Display::Display() = default;
-
 void Display::begin() {
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {  // Address 0x3D for 128x64
         Serial.println(F("SSD1306 allocation failed"));
@@ -20,16 +18,16 @@ void Display::begin() {
     delay(200);
 }
 
-void Display::setText(std::string text) {
+void Display::setText(const std::string& text) {
     display.clearDisplay();
     display.setTextSize(1);
     display.setTextColor(WHITE);
-    display.setCursor(10, 30);
+    display.setCursor(5, 5);
     display.println(text.c_str());
     display.display();
 }
 
-void Display::animateText(std::string _text) {
+void Display::animateText(const std::string& _text) {
     delay(20);
     unsigned long currentMillis = millis();
     if (currentMillis - previousMillis > 500) {

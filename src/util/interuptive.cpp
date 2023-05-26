@@ -10,7 +10,6 @@ unsigned long lastPreviousButtonTime;
 unsigned long lastNextButtonTime;
 Button* Interaptive::previous;
 Button* Interaptive::next;
-Interaptive::Interaptive() = default;
 
 void Interaptive::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
     pinMode(previousButton, INPUT_PULLDOWN);

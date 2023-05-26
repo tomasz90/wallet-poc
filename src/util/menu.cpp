@@ -5,31 +5,36 @@
 
 StateMachine machine = StateMachine();
 
-Menu::Menu() = default;
-
 void Menu::run() {
     machine.run();
 }
 
 void Menu::begin() {
     State* S0 = machine.addState(&welcome);
-    State* S1 = machine.addState(&newOrOld);
-    State* S2 = machine.addState(&generateSeed);
-    State* S3 = machine.addState(&confirm);
+    State* S1 = machine.addState(&setPin);
+    State* S2 = machine.addState(&newOrOld);
+    State* S3 = machine.addState(&generateSeed);
+    State* S4 = machine.addState(&enterSeed);
+    State* S5 = machine.addState(&confirm);
 
-    S0->addTransition(&next,S1);  // S0 transition to S1
-    S1->addTransition(&next,S2);  // S1 transition to S2
-    S2->addTransition(&next,S0);  // S2 transition to S0
+    S0->addTransition(&next,S1);
+    S1->addTransition(&next,S2);
+    S2->addTransition(&next,S3);
+    S3->addTransition(&next,S4);
 
-    S2->addTransition(&previous,S1);  // S0 transition to S1
-    S1->addTransition(&previous,S0);  // S1 transition to S2
-    S0->addTransition(&previous,S2);  // S2 transition to S0
+    S4->addTransition(&previous,S3);
+    S3->addTransition(&previous,S2);
+    S2->addTransition(&previous,S1);
+    S1->addTransition(&previous,S0);
+    S0->addTransition(&previous,S4);
 
-    S0->addTransition(&both,S3);
-    S1->addTransition(&both,S3);
-    S2->addTransition(&both,S3);
+    S0->addTransition(&both,S5);
+    S1->addTransition(&both,S5);
+    S2->addTransition(&both,S5);
+    S3->addTransition(&both,S5);
+    S4->addTransition(&both,S5);
 
-    S3->addTransition(&both,S0);
+    S5->addTransition(&both,S0);
 }
 
 bool Menu::next(){
@@ -45,15 +50,23 @@ bool Menu::both(){
 }
 
 void Menu::welcome() {
-    Display::animateText("0");
+    Display::animateText("Hello!");
+}
+
+void Menu::setPin() {
+    Display::animateText("Set pin:");
 }
 
 void Menu::newOrOld() {
-    Display::animateText("1");
+    Display::animateText("Do you want to set as new device?");
 }
 
 void Menu::generateSeed() {
-    Display::animateText("2");
+    Display::animateText("generateSeed");
+}
+
+void Menu::enterSeed() {
+    Display::animateText("Enter your seed?");
 }
 
 void Menu::confirm() {

@@ -6,8 +6,6 @@ std::vector<uint8_t> Seed::entropy;
 
 BIP39::word_list Seed::passphrase;
 
-Seed::Seed() = default;
-
 void Seed::generateEntropy() {
     // Resize the vector to accommodate the desired number of bytes
     size_t numBytes = 256;

@@ -25,4 +25,8 @@ private:
     static void confirm();
 
     static bool both();
+
+    static void setPin();
+
+    static void enterSeed();
 };

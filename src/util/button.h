@@ -9,7 +9,7 @@
 
 class Button {
 public:
-    Button(std::string name);
+    explicit Button(std::string name);
     bool isPendingClick() const;
     void setPending();
     void setClicked();

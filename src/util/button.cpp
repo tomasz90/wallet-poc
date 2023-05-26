@@ -1,8 +1,10 @@
 #include <Arduino.h>
+
+#include <utility>
 #include "button.h"
 
 Button::Button(std::string name) {
-    this->name = name;
+    this->name = std::move(name);
     plannedMillisClick = 0;
     pendingClick = false;
 }
