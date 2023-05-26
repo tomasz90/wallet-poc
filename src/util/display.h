@@ -16,4 +16,8 @@ private:
     static unsigned long previousMillis;
 
     Display();
+
+    static void drawNo();
+
+    static void drawYes();
 };

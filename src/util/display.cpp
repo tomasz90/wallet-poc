@@ -1,5 +1,10 @@
 #include "display.h"
 #include "Adafruit_SSD1306.h"
+#include "Fonts/FreeMono9pt7b.h"
+#include "Fonts/FreeMonoBold9pt7b.h"
+#include "Fonts/FreeSerif9pt7b.h"
+#include "Fonts/Org_01.h"
+#include "Fonts/Picopixel.h"
 
 #define SCREEN_WIDTH 128  // OLED display width, in pixels
 #define SCREEN_HEIGHT 64  // OLED display height, in pixels
@@ -24,7 +29,40 @@ void Display::setText(const std::string& text) {
     display.setTextColor(WHITE);
     display.setCursor(5, 5);
     display.println(text.c_str());
+    drawYes();
     display.display();
+}
+
+void Display::drawNo() {
+    display.fillRect(5, 43, 50, 20, WHITE);
+    display.drawRect(6, 44, 48, 18, BLACK);
+
+    display.drawRect(73, 43, 50, 20, WHITE);
+
+    display.setCursor(25, 49);
+    display.setTextColor(BLACK);
+    display.println("NO");
+
+    display.setTextColor(WHITE);
+    display.setCursor(89, 49);
+    display.println("YES");
+}
+
+void Display::drawYes() {
+
+    display.drawRect(5, 43, 50, 20, WHITE);
+
+    display.fillRect(73, 43, 50, 20, WHITE);
+    display.drawRect(74, 44, 48, 18, BLACK);
+
+    display.setTextColor(BLACK);
+    display.setCursor(89, 49);
+    display.println("YES");
+
+    display.setCursor(25, 49);
+    display.setTextColor(WHITE);
+    display.println("NO");
+
 }
 
 void Display::animateText(const std::string& _text) {
