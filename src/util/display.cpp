@@ -34,7 +34,6 @@ void Display::blinkTextWithSign(const std::string &text) {
 }
 
 void Display::drawNo() {
-    if (!needsUpdate) return;
     clearBoxes();
     needsUpdate = false;
     display.fillRect(5, 43, 50, 20, WHITE);
@@ -52,8 +51,6 @@ void Display::drawNo() {
 }
 
 void Display::drawYes() {
-    if (!needsUpdate) return;
-    needsUpdate = false;
     clearBoxes();
     display.drawRect(5, 43, 50, 20, WHITE);
 
@@ -88,8 +85,4 @@ void Display::clearBoxes() {
 
 void Display::clearDisplay() {
     display.clearDisplay();
-}
-
-void Display::setChoiceMenuNeedUpdate() {
-    needsUpdate = true;
 }

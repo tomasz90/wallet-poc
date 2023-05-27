@@ -20,63 +20,44 @@ void Menu::begin() {
 
     // TRANSITIONS
     S0->addTransition(&next, &doOnTransition, S1);
-    S1->addTransition(&next, &doOnTransition,S2_0);
-    S2_0->addTransition(&nextSubChoice, &doOnTransition,S2_1);
-    S2_1->addTransition(&nextSubChoice, &doOnTransition,S2_0);
+    S1->addTransition(&next, &displayNoMenu,S2_0);
+    S2_0->addTransition(&next, &displayYesMenu, S2_1);
+    S2_1->addTransition(&next, &displayNoMenu, S2_0);
 
     S3->addTransition(&previous, &doOnTransition,S2_1);
-    S2_1->addTransition(&previousSubChoice, &doOnTransition,S2_0);
-    S2_0->addTransition(&previousSubChoice, &doOnTransition,S2_1);
+    S2_1->addTransition(&previous, &doOnTransition,S2_0);
+    S2_0->addTransition(&previous, &doOnTransition,S2_1);
     S1->addTransition(&previous, &doOnTransition,S0);
 
     S2_0->addTransition(&both, &doOnTransition,S1);
     S2_1->addTransition(&both, &doOnTransition,S3);
 }
 
+void Menu::displayNoMenu() {
+    Display::clearDisplay();
+    Display::drawNo();
+}
+
+void Menu::displayYesMenu() {
+    Display::clearDisplay();
+    Display::drawYes();
+}
+
 void Menu::doOnTransition() {
+    Display::clearDisplay();
     Serial.println("DO_ON_TRANSACTION");
 }
 
 bool Menu::next() {
-    bool transition = Interaptive::isNextClicked();
-    if (transition) {
-        Display::clearDisplay();
-        Display::setChoiceMenuNeedUpdate();
-    }
-    return transition;
+    return Interaptive::isNextClicked();
 }
 
 bool Menu::previous() {
-    bool transition = Interaptive::isPreviousClicked();
-    if (transition) {
-        Display::clearDisplay();
-        Display::setChoiceMenuNeedUpdate();
-    }
-    return transition;
-}
-
-bool Menu::nextSubChoice() {
-    bool transition = Interaptive::isNextClicked();
-    if (transition) {
-        Display::setChoiceMenuNeedUpdate();
-    }
-    return transition;
-}
-
-bool Menu::previousSubChoice() {
-    bool transition = Interaptive::isPreviousClicked();
-    if (transition) {
-        Display::setChoiceMenuNeedUpdate();
-    }
-    return transition;
+    return Interaptive::isPreviousClicked();
 }
 
 bool Menu::both() {
-    bool transition = Interaptive::isBothClicked();
-    if (transition) {
-        Display::clearDisplay();
-    }
-    return transition;
+    return Interaptive::isBothClicked();
 }
 
 void Menu::s0() {

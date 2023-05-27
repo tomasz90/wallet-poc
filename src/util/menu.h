@@ -10,9 +10,16 @@ public:
     static void begin();
     static void run();
 private:
-    static unsigned long lastUpdated;
 
     Menu();
+
+    static void doOnTransition();
+
+    static bool previous();
+
+    static bool next();
+
+    static bool both();
 
     static void s0();
 
@@ -24,15 +31,7 @@ private:
 
     static void s3();
 
-    static bool previous();
+    static void displayNoMenu();
 
-    static bool next();
-
-    static bool both();
-
-    static bool previousSubChoice();
-
-    static bool nextSubChoice();
-
-    static void doOnTransition();
+    static void displayYesMenu();
 };
