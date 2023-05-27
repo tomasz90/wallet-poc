@@ -4,8 +4,6 @@
 #include "util/seed.h"
 
 const int ledChannel = 0;    // LEDC channel (0-15)
-unsigned long lastPreviousButtonTime;
-unsigned long lastNextButtonTime;
 Button* Listener::previous;
 Button* Listener::next;
 
@@ -15,8 +13,8 @@ void Listener::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
     setupLed(_led);
     previous = new Button("PREVIOUS");
     next = new Button("NEXT");
-    attachInterrupt(previousButton, Listener::clickPrevious(), HIGH);
-    attachInterrupt(nextButton, Listener::clickNext(), HIGH);
+    attachInterrupt(previousButton, Listener::clickPrevious(), RISING);
+    attachInterrupt(nextButton, Listener::clickNext(), RISING);
 }
 
 void Listener::setupLed(uint8_t led) {
@@ -26,19 +24,14 @@ void Listener::setupLed(uint8_t led) {
 }
 
 void (*Listener::clickPrevious())() {
-    return [] { setPendingIfItIsNot(previous, lastPreviousButtonTime); };
+    return [] { setPendingIfItIsNot(previous); };
 }
 
 void (*Listener::clickNext())() {
-    return [] { setPendingIfItIsNot(next, lastNextButtonTime); };
+    return [] { setPendingIfItIsNot(next); };
 }
 
-void Listener::setPendingIfItIsNot(Button *&button, unsigned long &lastButtonTime) {
-    unsigned long buttonTime = millis();
-    if (buttonTime - lastButtonTime < 300) {
-        return;
-    }
-    lastButtonTime = buttonTime;
+void Listener::setPendingIfItIsNot(Button *&button) {
     if (!button->isPendingClick()) {
         button->setPending();
     }
@@ -75,6 +68,6 @@ bool Listener::isBothClicked() {
 
 void Listener::flashLed() {
     ledcWrite(ledChannel, 2);
-    delay(10);
+    delay(20);
     ledcWrite(ledChannel, 0);
 }

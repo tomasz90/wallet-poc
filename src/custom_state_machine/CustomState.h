@@ -19,7 +19,7 @@ class CustomState : public State {
 public:
     CustomState() = default;
     void addTransition(CustomState *s, bool (*isTrans)(), void (*doFirst)(), void (*doSecond)());
-    void addTransition(CustomState *s, bool (*isTrans)(), void (*doSecond)() = nullptr);
+    void addTransition(CustomState *s, bool (*isTrans)(), void (*doFirst)() = nullptr);
     int evalTransitions() override;
 };
 

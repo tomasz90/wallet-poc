@@ -9,6 +9,9 @@ class Menu {
 public:
     static void begin();
     static void run();
+
+    static void anyTransition();
+
 private:
 
     Menu();
@@ -38,4 +41,5 @@ private:
     static bool noHandle();
 
     static void enterPin(int position);
+
 };

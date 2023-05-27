@@ -10,6 +10,7 @@
 
 Adafruit_SSD1306 Disp::display;
 bool Disp::blink;
+bool Disp::firstTime;
 unsigned long Disp::lastTextBlinked;
 
 void Disp::begin(Adafruit_SSD1306 &_display) {
@@ -34,6 +35,7 @@ void Disp::blinkTextWithSign(const std::string &text) {
 }
 
 void Disp::drawNo() {
+    clearMenu();
     display.fillRect(5, 43, 50, 20, WHITE);
     display.drawRect(6, 44, 48, 18, BLACK);
 
@@ -41,39 +43,46 @@ void Disp::drawNo() {
 
     display.setCursor(25, 49);
     display.setTextColor(BLACK);
+    display.setTextSize(1);
     display.println("NO");
 
     display.setTextColor(WHITE);
     display.setCursor(89, 49);
     display.println("YES");
+    display.display();
 }
 
 void Disp::drawYes() {
+    clearMenu();
     display.drawRect(5, 43, 50, 20, WHITE);
 
     display.fillRect(73, 43, 50, 20, WHITE);
     display.drawRect(74, 44, 48, 18, BLACK);
 
     display.setTextColor(BLACK);
+    display.setTextSize(1);
     display.setCursor(89, 49);
     display.println("YES");
 
     display.setCursor(25, 49);
     display.setTextColor(WHITE);
     display.println("NO");
+    display.display();
 }
 
 void Disp::drawPin() {
-    display.fillRect(0, 40, 128, 24, BLACK);
+    clearMenu();
     display.setCursor(23, 40);
     display.setTextColor(WHITE);
     display.setTextSize(2);
     display.println(Pin::getPinString());
+    display.display();
 }
 
 void Disp::animateText(const std::string &text1, const std::string &text2) {
     unsigned long currentMillis = millis();
-    if (currentMillis - lastTextBlinked < 500) return;
+    if (currentMillis - lastTextBlinked < 500 && !firstTime) return;
+    firstTime = false;
     std::string text = blink ? text1 : text2;
     setText(text);
     lastTextBlinked = currentMillis;
@@ -82,6 +91,10 @@ void Disp::animateText(const std::string &text1, const std::string &text2) {
 
 void Disp::clearText() {
     display.fillRect(0, 0, 128, 40, BLACK);
+}
+
+void Disp::clearMenu() {
+    display.fillRect(0, 38, 128, 26, BLACK);
 }
 
 void Disp::clear() {

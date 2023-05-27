@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "CustomState.h"
 #include "util/display.h"
+#include "util/menu.h"
 
 // doFirst can display static content that don't need to be updated
 void CustomState::addTransition(
@@ -17,9 +18,9 @@ void CustomState::addTransition(
 void CustomState::addTransition(
         CustomState *s,
         bool (*isTrans)(),
-        void (*doSecond)()
+        void (*doFirst)()
 ) {
-    addTransition(s, isTrans, Disp::clear, doSecond);
+    addTransition(s, isTrans, Menu::anyTransition, doFirst);
 }
 
 int CustomState::evalTransitions() {

@@ -11,7 +11,7 @@ Button::Button(std::string name) {
 
 void Button::setPending() {
     pendingClick = true;
-    plannedMillisClick = millis() + 250;
+    plannedMillisClick = millis() + 200;
 }
 
 bool Button::isPendingClick() const {

@@ -31,12 +31,10 @@ void Menu::begin() {
     S1_2->addTransition(S1_3, &noHandle, &Disp::drawPin);
     S1_3->addTransition(S2_0, &noHandle, &Disp::drawPin);
 
-    S2_0->addTransition(S2_1, &next, &Disp::drawYes);
-    S2_1->addTransition(S2_0, &next, &Disp::drawNo);
+    S2_0->addTransition(S2_1, &next,  &Disp::drawYes);
 
     S3->addTransition(S2_1, &previous, &Disp::drawNo);
     S2_1->addTransition(S2_0, &previous, &Disp::drawNo);
-    S2_0->addTransition(S2_1, &previous, &Disp::drawYes);
 
     S1_3->addTransition(S1_2, &noHandle, &Disp::drawPin);
     S1_2->addTransition(S1_1, &noHandle, &Disp::drawPin);
@@ -46,7 +44,9 @@ void Menu::begin() {
     S2_1->addTransition(S3, &both);
 }
 
-bool Menu::next() { return Listener::isNextClicked(); }
+bool Menu::next() {
+    return Listener::isNextClicked();
+}
 
 bool Menu::previous() { return Listener::isPreviousClicked(); }
 
@@ -54,6 +54,9 @@ bool Menu::both() { return Listener::isBothClicked(); }
 
 bool Menu::noHandle() { return false; }
 
+void Menu::anyTransition() {
+    Disp::firstTime = true;
+}
 void Menu::s0() {
     Disp::blinkTextWithSign("Hello!");
 }
