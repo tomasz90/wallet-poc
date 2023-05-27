@@ -11,7 +11,7 @@ Adafruit_SSD1306 Disp::display;
 bool Disp::blink;
 unsigned long Disp::lastTextBlinked;
 int Disp::pinNumber = random(0, 9);
-
+int Disp::lastPinNumber = 0;
 std::string Disp::pin = "* * * *";
 
 void Disp::begin(Adafruit_SSD1306 &_display) {
@@ -66,7 +66,7 @@ void Disp::drawYes() {
 }
 
 void Disp::incrementPinNumber() {
-    if(pinNumber < 9) {
+    if (pinNumber < 9) {
         pinNumber++;
     } else {
         pinNumber = -1;
@@ -74,11 +74,15 @@ void Disp::incrementPinNumber() {
 }
 
 std::string Disp::getPinChar() {
-    if(pinNumber > -1) {
+    if (pinNumber > -1) {
         return std::to_string(pinNumber);
     } else {
         return "<";
     }
+}
+
+std::string Disp::getLastPinChar() {
+    return std::to_string(lastPinNumber);
 }
 
 void Disp::randomPinNumber() {
@@ -86,7 +90,7 @@ void Disp::randomPinNumber() {
 }
 
 void Disp::decrementPinNumber() {
-    if(pinNumber > -1) {
+    if (pinNumber > -1) {
         pinNumber--;
     } else {
         pinNumber = 9;
@@ -99,8 +103,6 @@ void Disp::drawPin() {
     display.setTextColor(WHITE);
     display.setTextSize(2);
     display.println(pin.c_str());
-    display.setTextSize(1);
-
 }
 
 void Disp::animateText(const std::string &text1, const std::string &text2) {

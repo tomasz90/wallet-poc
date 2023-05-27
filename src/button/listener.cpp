@@ -75,6 +75,6 @@ bool Listener::isBothClicked() {
 
 void Listener::flashLed() {
     ledcWrite(ledChannel, 2);
-    delay(20);
+    delay(10);
     ledcWrite(ledChannel, 0);
 }

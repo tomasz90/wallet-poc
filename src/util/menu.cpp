@@ -93,13 +93,17 @@ void Menu::enterPin(const int& position) {
     }
     if(both()) {
         if(Disp::pinNumber == -1) {
-            machine.transitionTo(machine.currentState - 1);
             Disp::pin.replace(position, 1, "*");
+            Disp::pin.replace(position - 2, 1, Disp::getLastPinChar());
+            Disp::pinNumber = Disp::lastPinNumber;
             Disp::drawPin();
+            machine.transitionTo(machine.currentState - 1);
             return;
         }
+        Disp::lastPinNumber = Disp::pinNumber;
         Disp::randomPinNumber();
         Disp::pin.replace(position, 1, "$");
+        Disp::pin.replace(position + 2, 1, Disp::getPinChar());
         Disp::drawPin();
         machine.transitionTo(machine.currentState + 1);
     }
