@@ -3,15 +3,17 @@
 
 #endif //WALLET_POC_CUSTOMMACHINE_H
 
-struct CustomTransition{
-    bool (*isTransitioned)();
+struct CustomTransition : Transition {
     void (*doOnTransition)();
-    int stateNumber;
+    CustomTransition(bool (*isTransitioned)(), void (*doOnTransition)(), int stateNumber) {
+        this->conditionFunction = isTransitioned;
+        this->stateNumber = stateNumber;
+        this->doOnTransition = doOnTransition;
+    }
 };
 
 class CustomState: public State {
 public:
-    //LinkedList<struct CustomTransition*> *transitions;
     CustomState() = default;
     void addTransition(bool (*isTransitioned)(), void (*doOnTransition)(), CustomState* s);
     int evalTransitions();

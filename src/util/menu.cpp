@@ -2,7 +2,7 @@
 #include "StateMachine.h"
 #include "display.h"
 #include "interuptive.h"
-#include "CustomMachine.h"
+#include "custom_state_machine/CustomMachine.h"
 
 CustomMachine machine = CustomMachine();
 
@@ -34,7 +34,7 @@ void Menu::begin() {
 }
 
 void Menu::doOnTransition() {
-
+    Serial.println("DO_ON_TRANSACTION");
 }
 
 bool Menu::next() {
