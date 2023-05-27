@@ -5,22 +5,18 @@
 
 #endif //WALLET_POC_DISPLAY_H
 
-class Display {
+class Disp {
 public:
     static void begin(Adafruit_SSD1306 &_display);
     static void setText(const std::string& text);
     static void blinkTextWithSign(const std::string &text);
     static void drawNo();
     static void drawYes();
-    static void clearDisplay();
-    static void setChoiceMenuNeedUpdate();
+    static void clear();
 private:
     static Adafruit_SSD1306 display;
     static bool blink;
     static unsigned long lastTextBlinked;
-    static unsigned long needsUpdate;
     static void animateText(const std::string &text1, const std::string &text2);
     static void clearText();
-
-    static void clearBoxes();
 };

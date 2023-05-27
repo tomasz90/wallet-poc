@@ -18,6 +18,6 @@ namespace Util {
             while (true);
         }
         delay(200);
-        Display::begin(display);
+        Disp::begin(display);
     }
 }

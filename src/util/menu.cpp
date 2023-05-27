@@ -1,7 +1,7 @@
 #include "menu.h"
 #include "StateMachine.h"
 #include "display.h"
-#include "interuptive.h"
+#include "button/listener.h"
 #include "custom_state_machine/CustomMachine.h"
 
 CustomMachine machine = CustomMachine();
@@ -19,64 +19,43 @@ void Menu::begin() {
     CustomState *S3 = machine.addState(&s3);
 
     // TRANSITIONS
-    S0->addTransition(S1, &next, &doOnTransition);
-    S1->addTransition(S2_0, &next, &displayNoMenu);
-    S2_0->addTransition(S2_1, &next, &displayYesMenu);
-    S2_1->addTransition(S2_0, &next, &displayNoMenu);
+    S0->addTransition(S1, &next);
+    S1->addTransition(S2_0, &next, &Disp::drawNo);
+    S2_0->addTransition(S2_1, &next, &Disp::drawYes);
+    S2_1->addTransition(S2_0, &next, &Disp::drawNo);
 
-    S3->addTransition(S2_1, &previous, &doOnTransition);
-    S2_1->addTransition(S2_0, &previous, &displayNoMenu);
-    S2_0->addTransition(S2_1, &previous, &displayYesMenu);
-    S1->addTransition(S0, &previous, &doOnTransition);
+    S3->addTransition(S2_1, &previous, &Disp::drawNo);
+    S2_1->addTransition(S2_0, &previous, &Disp::drawNo);
+    S2_0->addTransition(S2_1, &previous, &Disp::drawYes);
+    S1->addTransition(S0, &previous);
 
-    S2_0->addTransition(S1, &both, &doOnTransition);
-    S2_1->addTransition(S3, &both, &doOnTransition);
+    S2_0->addTransition(S1, &both);
+    S2_1->addTransition(S3, &both);
 }
 
-void Menu::displayNoMenu() {
-    Display::clearDisplay();
-    Display::drawNo();
-}
+bool Menu::next() { return Listener::isNextClicked(); }
 
-void Menu::displayYesMenu() {
-    Display::clearDisplay();
-    Display::drawYes();
-}
+bool Menu::previous() { return Listener::isPreviousClicked(); }
 
-void Menu::doOnTransition() {
-    Display::clearDisplay();
-    Serial.println("DO_ON_TRANSACTION");
-}
-
-bool Menu::next() {
-    return Interaptive::isNextClicked();
-}
-
-bool Menu::previous() {
-    return Interaptive::isPreviousClicked();
-}
-
-bool Menu::both() {
-    return Interaptive::isBothClicked();
-}
+bool Menu::both() { return Listener::isBothClicked(); }
 
 void Menu::s0() {
-    Display::blinkTextWithSign("Hello!");
+    Disp::blinkTextWithSign("Hello!");
 }
 
 void Menu::s1() {
-    Display::blinkTextWithSign("Set pin:");
+    Disp::blinkTextWithSign("Set pin:");
 }
 
 void Menu::s2_0() {
-    Display::blinkTextWithSign("Do you want to set as new device?");
+    Disp::blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s2_1() {
-    Display::blinkTextWithSign("Do you want to set as new device?");
+    Disp::blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s3() {
-    Display::blinkTextWithSign("Great!");
+    Disp::blinkTextWithSign("Great!");
 }
 

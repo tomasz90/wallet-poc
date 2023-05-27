@@ -7,17 +7,16 @@
 #include "Fonts/Picopixel.h"
 #include "uitl.h"
 
-Adafruit_SSD1306 Display::display;
-bool Display::blink;
-unsigned long Display::lastTextBlinked;
-unsigned long Display::needsUpdate;
+Adafruit_SSD1306 Disp::display;
+bool Disp::blink;
+unsigned long Disp::lastTextBlinked;
 
-void Display::begin(Adafruit_SSD1306 &_display) {
+void Disp::begin(Adafruit_SSD1306 &_display) {
     display = _display;
     display.clearDisplay();
 }
 
-void Display::setText(const std::string &text) {
+void Disp::setText(const std::string &text) {
     clearText();
     display.setTextSize(1);
     display.setTextColor(WHITE);
@@ -26,14 +25,14 @@ void Display::setText(const std::string &text) {
     display.display();
 }
 
-void Display::blinkTextWithSign(const std::string &text) {
+void Disp::blinkTextWithSign(const std::string &text) {
     std::string text2;
     text2.assign(text);
     text2.append(" >");
     animateText(text, text2);
 }
 
-void Display::drawNo() {
+void Disp::drawNo() {
     display.fillRect(5, 43, 50, 20, WHITE);
     display.drawRect(6, 44, 48, 18, BLACK);
 
@@ -48,7 +47,7 @@ void Display::drawNo() {
     display.println("YES");
 }
 
-void Display::drawYes() {
+void Disp::drawYes() {
     display.drawRect(5, 43, 50, 20, WHITE);
 
     display.fillRect(73, 43, 50, 20, WHITE);
@@ -63,7 +62,7 @@ void Display::drawYes() {
     display.println("NO");
 }
 
-void Display::animateText(const std::string &text1, const std::string &text2) {
+void Disp::animateText(const std::string &text1, const std::string &text2) {
     unsigned long currentMillis = millis();
     if (currentMillis - lastTextBlinked < 500) return;
     std::string text = blink ? text1 : text2;
@@ -72,14 +71,10 @@ void Display::animateText(const std::string &text1, const std::string &text2) {
     blink = !blink;
 }
 
-void Display::clearText() {
+void Disp::clearText() {
     display.fillRect(0, 0, 128, 43, BLACK);
 }
-//
-//void Display::clearBoxes() {
-//    display.fillRect(0, 43, 128, 23, BLACK);
-//}
 
-void Display::clearDisplay() {
+void Disp::clear() {
     display.clearDisplay();
 }

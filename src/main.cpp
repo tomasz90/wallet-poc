@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "util/seed.h"
 #include "util/display.h"
-#include "util/interuptive.h"
+#include "button/listener.h"
 #include "../lib/StateMachine/src/StateMachine.h"
 #include "util/menu.h"
 #include "util/uitl.h"
@@ -14,7 +14,7 @@ void setup() {
     Serial.begin(115200);
     Util::initDisplay();
     Seed::createMnemonic();
-    Interaptive::begin(PREVIOUS_BUTTON, NEXT_BUTTON, LED);
+    Listener::begin(PREVIOUS_BUTTON, NEXT_BUTTON, LED);
     Menu::begin();
 }
 

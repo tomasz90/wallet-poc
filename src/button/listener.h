@@ -6,7 +6,7 @@
 
 #endif //WALLET_POC_INTERUPTIVE_H
 
-class Interaptive {
+class Listener {
 public:
     static void begin(uint8_t previousButton, uint8_t nextButton, uint8_t led);
     static void (*clickPrevious())();
@@ -18,7 +18,7 @@ public:
 private:
     static Button* previous;
     static Button* next;
-    Interaptive();
+    Listener();
     static void flashLed();
     static void setupLed(uint8_t _led);
 

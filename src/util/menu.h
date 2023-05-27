@@ -13,8 +13,6 @@ private:
 
     Menu();
 
-    static void doOnTransition();
-
     static bool previous();
 
     static bool next();
@@ -30,8 +28,4 @@ private:
     static void s2_1();
 
     static void s3();
-
-    static void displayNoMenu();
-
-    static void displayYesMenu();
 };

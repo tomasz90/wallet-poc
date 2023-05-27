@@ -1,39 +1,39 @@
 #include <Arduino.h>
-#include "interuptive.h"
-#include "display.h"
-#include "seed.h"
+#include "listener.h"
+#include "util/display.h"
+#include "util/seed.h"
 
 const int ledChannel = 0;    // LEDC channel (0-15)
 unsigned long lastPreviousButtonTime;
 unsigned long lastNextButtonTime;
-Button* Interaptive::previous;
-Button* Interaptive::next;
+Button* Listener::previous;
+Button* Listener::next;
 
-void Interaptive::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
+void Listener::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
     pinMode(previousButton, INPUT_PULLDOWN);
     pinMode(nextButton, INPUT_PULLDOWN);
     setupLed(_led);
     previous = new Button("PREVIOUS");
     next = new Button("NEXT");
-    attachInterrupt(previousButton, Interaptive::clickPrevious(), HIGH);
-    attachInterrupt(nextButton, Interaptive::clickNext(), HIGH);
+    attachInterrupt(previousButton, Listener::clickPrevious(), HIGH);
+    attachInterrupt(nextButton, Listener::clickNext(), HIGH);
 }
 
-void Interaptive::setupLed(uint8_t led) {
+void Listener::setupLed(uint8_t led) {
     pinMode(led, OUTPUT);
     ledcSetup(ledChannel, 5000, 8);  // Set PWM frequency and resolution
     ledcAttachPin(led, ledChannel);
 }
 
-void (*Interaptive::clickPrevious())() {
+void (*Listener::clickPrevious())() {
     return [] { setPendingIfItIsNot(previous, lastPreviousButtonTime); };
 }
 
-void (*Interaptive::clickNext())() {
+void (*Listener::clickNext())() {
     return [] { setPendingIfItIsNot(next, lastNextButtonTime); };
 }
 
-void Interaptive::setPendingIfItIsNot(Button *&button, unsigned long &lastButtonTime) {
+void Listener::setPendingIfItIsNot(Button *&button, unsigned long &lastButtonTime) {
     unsigned long buttonTime = millis();
     if (buttonTime - lastButtonTime < 100) {
         return;
@@ -44,15 +44,15 @@ void Interaptive::setPendingIfItIsNot(Button *&button, unsigned long &lastButton
     }
 }
 
-bool Interaptive::isPreviousClicked() {
+bool Listener::isPreviousClicked() {
     return clicked(previous);
 }
 
-bool Interaptive::isNextClicked() {
+bool Listener::isNextClicked() {
     return clicked(next);
 }
 
-bool Interaptive::clicked(Button *&button) {
+bool Listener::clicked(Button *&button) {
     bool canBeClicked = button->canBeClicked();
     if (canBeClicked) {
         Serial.println(button->getName().c_str());
@@ -62,7 +62,7 @@ bool Interaptive::clicked(Button *&button) {
     return canBeClicked;
 }
 
-bool Interaptive::isBothClicked() {
+bool Listener::isBothClicked() {
     bool canBeClicked = previous->isPendingClick() && next->isPendingClick();
     if (canBeClicked) {
         Serial.println("BOTH");
@@ -73,7 +73,7 @@ bool Interaptive::isBothClicked() {
     return canBeClicked;
 }
 
-void Interaptive::flashLed() {
+void Listener::flashLed() {
     ledcWrite(ledChannel, 2);
     delay(20);
     ledcWrite(ledChannel, 0);
