@@ -27,20 +27,20 @@ void Pin::decrementCurrentNumber(int currentIndex) {
 
 void Pin::setPinAt(int currentIndex) {
     if (currentIndex < 4) {
-        int stingIndex = currentIndex * 2;
+        int stringIndex = currentIndex * 2;
         pinCombination[currentIndex] = currentNumber;
         currentNumber = random(-1, 9);
-        pinString[stingIndex + 2] = '0' + currentNumber;
-        pinString[stingIndex] = '$';
+        pinString[stringIndex + 2] = '0' + currentNumber;
+        pinString[stringIndex] = '$';
     }
 }
 
 void Pin::unsetPinAt(int currentIndex) {
     if (currentIndex > 0) {
-        int stingIndex = currentIndex * 2;
+        int stringIndex = currentIndex * 2;
         currentNumber = pinCombination[currentIndex - 1];
-        pinString[stingIndex - 2] = '0' + currentNumber;
-        pinString[stingIndex] = '*';
+        pinString[stringIndex - 2] = '0' + currentNumber;
+        pinString[stringIndex] = '*';
     }
 }
 
