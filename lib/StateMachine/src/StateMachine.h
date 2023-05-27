@@ -16,7 +16,7 @@ class StateMachine
 
     // When a stated is added we pass the function that represents 
     // that state logic
-    State* addState(void (*functionPointer)());
+    virtual State* addState(void (*functionPointer)());
     State* transitionTo(State* s);
     int transitionTo(int i);
 	
