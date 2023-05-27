@@ -2,8 +2,9 @@
 #include "StateMachine.h"
 #include "display.h"
 #include "interuptive.h"
+#include "CustomMachine.h"
 
-StateMachine machine = StateMachine();
+CustomMachine machine = CustomMachine();
 
 void Menu::run() {
     machine.run();
@@ -11,25 +12,29 @@ void Menu::run() {
 
 void Menu::begin() {
     // STATES
-    State *S0 = machine.addState(&s0);
-    State *S1 = machine.addState(&s1);
-    State *S2_0 = machine.addState(&s2_0);
-    State *S2_1 = machine.addState(&s2_1);
-    State *S3 = machine.addState(&s3);
+    CustomState *S0 = machine.addState(&s0);
+    CustomState *S1 = machine.addState(&s1);
+    CustomState *S2_0 = machine.addState(&s2_0);
+    CustomState *S2_1 = machine.addState(&s2_1);
+    CustomState *S3 = machine.addState(&s3);
 
     // TRANSITIONS
-    S0->addTransition(&next, S1);
-    S1->addTransition(&next, S2_0);
-    S2_0->addTransition(&nextSubChoice, S2_1);
-    S2_1->addTransition(&nextSubChoice, S2_0);
+    S0->addTransition(&next, &doOnTransition, S1);
+    S1->addTransition(&next, &doOnTransition,S2_0);
+    S2_0->addTransition(&nextSubChoice, &doOnTransition,S2_1);
+    S2_1->addTransition(&nextSubChoice, &doOnTransition,S2_0);
 
-    S3->addTransition(&previous, S2_1);
-    S2_1->addTransition(&previousSubChoice, S2_0);
-    S2_0->addTransition(&previousSubChoice, S2_1);
-    S1->addTransition(&previous, S0);
+    S3->addTransition(&previous, &doOnTransition,S2_1);
+    S2_1->addTransition(&previousSubChoice, &doOnTransition,S2_0);
+    S2_0->addTransition(&previousSubChoice, &doOnTransition,S2_1);
+    S1->addTransition(&previous, &doOnTransition,S0);
 
-    S2_0->addTransition(&both, S1);
-    S2_1->addTransition(&both, S3);
+    S2_0->addTransition(&both, &doOnTransition,S1);
+    S2_1->addTransition(&both, &doOnTransition,S3);
+}
+
+void Menu::doOnTransition() {
+
 }
 
 bool Menu::next() {

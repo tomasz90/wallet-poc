@@ -14,27 +14,25 @@ private:
 
     Menu();
 
-    static bool next();
-
     static void s0();
 
+    static void s1();
+
     static void s2_0();
+
+    static void s2_1();
 
     static void s3();
 
     static bool previous();
 
-    static void s5();
+    static bool next();
 
     static bool both();
-
-    static void s1();
-
-    static void s4();
-
-    static void s2_1();
 
     static bool previousSubChoice();
 
     static bool nextSubChoice();
+
+    static void doOnTransition();
 };

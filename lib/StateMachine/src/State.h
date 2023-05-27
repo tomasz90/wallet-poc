@@ -26,7 +26,7 @@ class State{
 
 	void addTransition(bool (*c)(), State* s);
     void addTransition(bool (*c)(), int stateNumber);
-    int evalTransitions();
+    virtual int evalTransitions();
     int execute();
     int setTransition(int index, int stateNumber);	//Can now dynamically set the transition
 	
