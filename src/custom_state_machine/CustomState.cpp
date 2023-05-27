@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "CustomState.h"
 
+// doOnTransition can display static content that don't need to be updated
 void CustomState::addTransition(bool (*isTransitioned)(), void (*doOnTransition)(), CustomState* s) {
     Serial.println("ADD TRANSITION");
     auto t = new CustomTransition{isTransitioned, doOnTransition, s->index};
