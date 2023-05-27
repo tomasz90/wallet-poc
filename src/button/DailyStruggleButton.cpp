@@ -13,12 +13,12 @@ bool DailyStruggleButton::debounce() {
         bool moreThanDebounceTime = (unsigned long) (millis() - lastChangeTime) >= debounceTime;
         if (moreThanDebounceTime) {
             flags.currentState = flags.currentRawState;
+            return true;
         }
-        return moreThanDebounceTime;
     } else {
         // However if it keeps changing, we keep resetting the debounce timer
         lastChangeTime = millis();
         flags.lastRawState = flags.currentRawState;
-        return false;
     }
+    return false;
 }
