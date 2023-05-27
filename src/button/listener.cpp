@@ -8,8 +8,8 @@ Button* Listener::previous;
 Button* Listener::next;
 
 void Listener::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
-    pinMode(previousButton, INPUT_PULLDOWN);
-    pinMode(nextButton, INPUT_PULLDOWN);
+    pinMode(previousButton, INPUT_PULLUP);
+    pinMode(nextButton, INPUT_PULLUP);
     setupLed(_led);
     previous = new Button("PREVIOUS");
     next = new Button("NEXT");

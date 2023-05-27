@@ -99,4 +99,5 @@ void Disp::clearMenu() {
 
 void Disp::clear() {
     display.clearDisplay();
+    display.display();
 }

@@ -29,11 +29,9 @@ void Menu::begin() {
     S1_0->addTransition(S1_1, &noHandle, &Disp::drawPin);
     S1_1->addTransition(S1_2, &noHandle, &Disp::drawPin);
     S1_2->addTransition(S1_3, &noHandle, &Disp::drawPin);
-    S1_3->addTransition(S2_0, &noHandle, &Disp::drawPin);
+    S1_3->addTransition(S2_0, &noHandle, &Disp::drawNo);
 
     S2_0->addTransition(S2_1, &next,  &Disp::drawYes);
-
-    S3->addTransition(S2_1, &previous, &Disp::drawNo);
     S2_1->addTransition(S2_0, &previous, &Disp::drawNo);
 
     S1_3->addTransition(S1_2, &noHandle, &Disp::drawPin);
@@ -42,6 +40,9 @@ void Menu::begin() {
 
     S2_0->addTransition(S1_0, &both);
     S2_1->addTransition(S3, &both);
+
+    S3->addTransition(S2_1, &both);
+
 }
 
 bool Menu::next() {
