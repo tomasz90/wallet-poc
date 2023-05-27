@@ -40,4 +40,6 @@ private:
     static bool pinNext();
 
     static bool pinPrevious();
+
+    static void enterPin(const int &position);
 };
