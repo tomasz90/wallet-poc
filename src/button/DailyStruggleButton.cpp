@@ -3,6 +3,7 @@
 // Empty Constructor, we will use setup() instead;
 DailyStruggleButton::DailyStruggleButton() {}
 
+// Only currentState used outside this function
 bool DailyStruggleButton::debounce() {
 
     flags.currentRawState = digitalRead(pin);
