@@ -9,6 +9,7 @@ void CustomState::addTransition(bool (*isTransitioned)(), void (*doOnTransition)
 }
 
 int CustomState::evalTransitions() {
+    // copied all from State, added doOnTransition invocation
     if(transitions->size() == 0) return index;
     bool result = false;
     for(int i=0;i<transitions->size();i++){
