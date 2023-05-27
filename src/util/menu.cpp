@@ -69,12 +69,10 @@ void Menu::s1() {
 }
 
 void Menu::s2_0() {
-    Display::drawNo();
     Display::blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s2_1() {
-    Display::drawYes();
     Display::blinkTextWithSign("Do you want to set as new device?");
 }
 
