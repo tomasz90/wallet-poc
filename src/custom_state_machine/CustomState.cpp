@@ -3,7 +3,7 @@
 #include "CustomState.h"
 
 // doOnTransition can display static content that don't need to be updated
-void CustomState::addTransition(bool (*isTransitioned)(), void (*doOnTransition)(), CustomState* s) {
+void CustomState::addTransition(CustomState *s, bool (*isTransitioned)(), void (*doOnTransition)()) {
     Serial.println("ADD TRANSITION");
     auto t = new CustomTransition{isTransitioned, doOnTransition, s->index};
     transitions->add(t);

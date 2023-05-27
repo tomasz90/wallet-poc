@@ -19,18 +19,18 @@ void Menu::begin() {
     CustomState *S3 = machine.addState(&s3);
 
     // TRANSITIONS
-    S0->addTransition(&next, &doOnTransition, S1);
-    S1->addTransition(&next, &displayNoMenu,S2_0);
-    S2_0->addTransition(&next, &displayYesMenu, S2_1);
-    S2_1->addTransition(&next, &displayNoMenu, S2_0);
+    S0->addTransition(S1, &next, &doOnTransition);
+    S1->addTransition(S2_0, &next, &displayNoMenu);
+    S2_0->addTransition(S2_1, &next, &displayYesMenu);
+    S2_1->addTransition(S2_0, &next, &displayNoMenu);
 
-    S3->addTransition(&previous, &doOnTransition,S2_1);
-    S2_1->addTransition(&previous, &doOnTransition,S2_0);
-    S2_0->addTransition(&previous, &doOnTransition,S2_1);
-    S1->addTransition(&previous, &doOnTransition,S0);
+    S3->addTransition(S2_1, &previous, &doOnTransition);
+    S2_1->addTransition(S2_0, &previous, &displayNoMenu);
+    S2_0->addTransition(S2_1, &previous, &displayYesMenu);
+    S1->addTransition(S0, &previous, &doOnTransition);
 
-    S2_0->addTransition(&both, &doOnTransition,S1);
-    S2_1->addTransition(&both, &doOnTransition,S3);
+    S2_0->addTransition(S1, &both, &doOnTransition);
+    S2_1->addTransition(S3, &both, &doOnTransition);
 }
 
 void Menu::displayNoMenu() {

@@ -15,7 +15,7 @@ struct CustomTransition : Transition {
 class CustomState: public State {
 public:
     CustomState() = default;
-    void addTransition(bool (*isTransitioned)(), void (*doOnTransition)(), CustomState* s);
+    void addTransition(CustomState *s, bool (*isTransitioned)(), void (*doOnTransition)());
     int evalTransitions() override;
 
 private:

@@ -34,8 +34,6 @@ void Display::blinkTextWithSign(const std::string &text) {
 }
 
 void Display::drawNo() {
-    clearBoxes();
-    needsUpdate = false;
     display.fillRect(5, 43, 50, 20, WHITE);
     display.drawRect(6, 44, 48, 18, BLACK);
 
@@ -51,7 +49,6 @@ void Display::drawNo() {
 }
 
 void Display::drawYes() {
-    clearBoxes();
     display.drawRect(5, 43, 50, 20, WHITE);
 
     display.fillRect(73, 43, 50, 20, WHITE);
@@ -78,10 +75,10 @@ void Display::animateText(const std::string &text1, const std::string &text2) {
 void Display::clearText() {
     display.fillRect(0, 0, 128, 43, BLACK);
 }
-
-void Display::clearBoxes() {
-    display.fillRect(0, 43, 128, 23, BLACK);
-}
+//
+//void Display::clearBoxes() {
+//    display.fillRect(0, 43, 128, 23, BLACK);
+//}
 
 void Display::clearDisplay() {
     display.clearDisplay();
