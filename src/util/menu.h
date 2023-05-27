@@ -35,7 +35,7 @@ private:
 
     static void s3();
 
-    static void enterPin(const int &position);
-
     static bool noHandle();
+
+    static void enterPin(int position);
 };

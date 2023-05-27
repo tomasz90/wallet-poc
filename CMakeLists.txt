@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/util/menu.h src/util/menu.cpp src/button/button.cpp src/button/button.h src/util/util.cpp src/util/uitl.h src/custom_state_machine/CustomMachine.h)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST} src/util/menu.h src/util/menu.cpp src/button/button.cpp src/button/button.h src/util/util.cpp src/util/uitl.h src/custom_state_machine/CustomMachine.h src/util/pin.cpp src/util/pin.h)

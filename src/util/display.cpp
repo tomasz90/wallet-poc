@@ -6,13 +6,11 @@
 #include "Fonts/Org_01.h"
 #include "Fonts/Picopixel.h"
 #include "uitl.h"
+#include "pin.h"
 
 Adafruit_SSD1306 Disp::display;
 bool Disp::blink;
 unsigned long Disp::lastTextBlinked;
-int Disp::pinNumber = random(0, 9);
-int Disp::lastPinNumber = 0;
-std::string Disp::pin = "* * * *";
 
 void Disp::begin(Adafruit_SSD1306 &_display) {
     display = _display;
@@ -65,44 +63,12 @@ void Disp::drawYes() {
     display.println("NO");
 }
 
-void Disp::incrementPinNumber() {
-    if (pinNumber < 9) {
-        pinNumber++;
-    } else {
-        pinNumber = -1;
-    }
-}
-
-std::string Disp::getPinChar() {
-    if (pinNumber > -1) {
-        return std::to_string(pinNumber);
-    } else {
-        return "<";
-    }
-}
-
-std::string Disp::getLastPinChar() {
-    return std::to_string(lastPinNumber);
-}
-
-void Disp::randomPinNumber() {
-    pinNumber = random(-1, 9);
-}
-
-void Disp::decrementPinNumber() {
-    if (pinNumber > -1) {
-        pinNumber--;
-    } else {
-        pinNumber = 9;
-    }
-}
-
 void Disp::drawPin() {
     display.fillRect(0, 40, 128, 24, BLACK);
     display.setCursor(23, 40);
     display.setTextColor(WHITE);
     display.setTextSize(2);
-    display.println(pin.c_str());
+    display.println(Pin::getPinString());
 }
 
 void Disp::animateText(const std::string &text1, const std::string &text2) {

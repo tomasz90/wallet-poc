@@ -3,6 +3,7 @@
 #include "display.h"
 #include "button/listener.h"
 #include "custom_state_machine/CustomMachine.h"
+#include "pin.h"
 
 CustomMachine machine = CustomMachine();
 
@@ -65,45 +66,38 @@ void Menu::s1_0() {
 
 void Menu::s1_1() {
     Disp::blinkTextWithSign("Set pin:");
-    enterPin(2);
+    enterPin(1);
 
 }
 
 void Menu::s1_2() {
     Disp::blinkTextWithSign("Set pin:");
-    enterPin(4);
+    enterPin(2);
 
 }
 
 void Menu::s1_3() {
     Disp::blinkTextWithSign("Set pin:");
-    enterPin(6);
+    enterPin(3);
 }
 
-void Menu::enterPin(const int& position) {
+void Menu::enterPin(int position) {
     if(next()) {
-        Disp::incrementPinNumber();
-        Disp::pin.replace(position, 1, Disp::getPinChar());
+        Pin::incrementCurrentNumber(position);
         Disp::drawPin();
     }
     if(previous()) {
-        Disp::decrementPinNumber();
-        Disp::pin.replace(position, 1, Disp::getPinChar());
+        Pin::decrementCurrentNumber(position);
         Disp::drawPin();
     }
     if(both()) {
-        if(Disp::pinNumber == -1) {
-            Disp::pin.replace(position, 1, "*");
-            Disp::pin.replace(position - 2, 1, Disp::getLastPinChar());
-            Disp::pinNumber = Disp::lastPinNumber;
+        if(Pin::getCurrentNumber() == -1) {
+            Pin::unsetPinAt(position);
             Disp::drawPin();
             machine.transitionTo(machine.currentState - 1);
             return;
         }
-        Disp::lastPinNumber = Disp::pinNumber;
-        Disp::randomPinNumber();
-        Disp::pin.replace(position, 1, "$");
-        Disp::pin.replace(position + 2, 1, Disp::getPinChar());
+        Pin::setPinAt(position);
         Disp::drawPin();
         machine.transitionTo(machine.currentState + 1);
     }
