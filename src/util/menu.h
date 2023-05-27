@@ -29,17 +29,13 @@ private:
 
     static void s1_3();
 
-    static void s1_4();
-
     static void s2_0();
 
     static void s2_1();
 
     static void s3();
 
-    static bool pinNext();
-
-    static bool pinPrevious();
-
     static void enterPin(const int &position);
+
+    static bool noHandle();
 };

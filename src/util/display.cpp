@@ -12,7 +12,7 @@ bool Disp::blink;
 unsigned long Disp::lastTextBlinked;
 int Disp::pinNumber = random(0, 9);
 
-std::string Disp::pin = "*  *  *  *  V";
+std::string Disp::pin = "* * * *";
 
 void Disp::begin(Adafruit_SSD1306 &_display) {
     display = _display;
@@ -95,9 +95,12 @@ void Disp::decrementPinNumber() {
 
 void Disp::drawPin() {
     display.fillRect(0, 40, 128, 24, BLACK);
-    display.setCursor(27, 40);
+    display.setCursor(23, 40);
     display.setTextColor(WHITE);
+    display.setTextSize(2);
     display.println(pin.c_str());
+    display.setTextSize(1);
+
 }
 
 void Disp::animateText(const std::string &text1, const std::string &text2) {

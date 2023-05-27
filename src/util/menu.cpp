@@ -17,7 +17,6 @@ void Menu::begin() {
     CustomState *S1_1 = machine.addState(&s1_1);
     CustomState *S1_2 = machine.addState(&s1_2);
     CustomState *S1_3 = machine.addState(&s1_3);
-    CustomState *S1_4 = machine.addState(&s1_4);
 
     CustomState *S2_0 = machine.addState(&s2_0);
     CustomState *S2_1 = machine.addState(&s2_1);
@@ -26,11 +25,10 @@ void Menu::begin() {
     // TRANSITIONS
     S0->addTransition(S1_0, &next, &Disp::drawPin);
 
-    S1_0->addTransition(S1_1, &pinNext, &Disp::drawPin);
-    S1_1->addTransition(S1_2, &pinNext, &Disp::drawPin);
-    S1_2->addTransition(S1_3, &pinNext, &Disp::drawPin);
-    S1_3->addTransition(S1_4, &pinNext, &Disp::drawPin);
-    S1_4->addTransition(S2_0, &pinNext, &Disp::drawPin);
+    S1_0->addTransition(S1_1, &noHandle, &Disp::drawPin);
+    S1_1->addTransition(S1_2, &noHandle, &Disp::drawPin);
+    S1_2->addTransition(S1_3, &noHandle, &Disp::drawPin);
+    S1_3->addTransition(S2_0, &noHandle, &Disp::drawPin);
 
     S2_0->addTransition(S2_1, &next, &Disp::drawYes);
     S2_1->addTransition(S2_0, &next, &Disp::drawNo);
@@ -39,10 +37,9 @@ void Menu::begin() {
     S2_1->addTransition(S2_0, &previous, &Disp::drawNo);
     S2_0->addTransition(S2_1, &previous, &Disp::drawYes);
 
-    S1_4->addTransition(S1_3, &pinPrevious, &Disp::drawPin);
-    S1_3->addTransition(S1_2, &pinPrevious, &Disp::drawPin);
-    S1_2->addTransition(S1_1, &pinPrevious, &Disp::drawPin);
-    S1_1->addTransition(S1_0, &pinPrevious, &Disp::drawPin);
+    S1_3->addTransition(S1_2, &noHandle, &Disp::drawPin);
+    S1_2->addTransition(S1_1, &noHandle, &Disp::drawPin);
+    S1_1->addTransition(S1_0, &noHandle, &Disp::drawPin);
     S1_0->addTransition(S0, &previous);
 
     S2_0->addTransition(S1_0, &both);
@@ -55,11 +52,7 @@ bool Menu::previous() { return Listener::isPreviousClicked(); }
 
 bool Menu::both() { return Listener::isBothClicked(); }
 
-bool Menu::pinNext() {
-    return false;
-}
-
-bool Menu::pinPrevious() { return false; }
+bool Menu::noHandle() { return false; }
 
 void Menu::s0() {
     Disp::blinkTextWithSign("Hello!");
@@ -72,26 +65,21 @@ void Menu::s1_0() {
 
 void Menu::s1_1() {
     Disp::blinkTextWithSign("Set pin:");
-    enterPin(3);
+    enterPin(2);
 
 }
 
 void Menu::s1_2() {
     Disp::blinkTextWithSign("Set pin:");
-    enterPin(6);
+    enterPin(4);
 
 }
 
 void Menu::s1_3() {
     Disp::blinkTextWithSign("Set pin:");
-    enterPin(9);
+    enterPin(6);
 }
 
-void Menu::s1_4() {
-    Disp::blinkTextWithSign("Set pin:");
-    enterPin(12);
-
-}
 void Menu::enterPin(const int& position) {
     if(next()) {
         Disp::incrementPinNumber();
