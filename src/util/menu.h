@@ -21,11 +21,23 @@ private:
 
     static void s0();
 
-    static void s1();
+    static void s1_0();
+
+    static void s1_1();
+
+    static void s1_2();
+
+    static void s1_3();
+
+    static void s1_4();
 
     static void s2_0();
 
     static void s2_1();
 
     static void s3();
+
+    static bool pinNext();
+
+    static bool pinPrevious();
 };

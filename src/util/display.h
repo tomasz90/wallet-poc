@@ -10,6 +10,7 @@ public:
     static void begin(Adafruit_SSD1306 &_display);
     static void setText(const std::string& text);
     static void blinkTextWithSign(const std::string &text);
+    static void drawPinAsterisks();
     static void drawNo();
     static void drawYes();
     static void clear();

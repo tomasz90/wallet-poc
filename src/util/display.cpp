@@ -62,6 +62,12 @@ void Disp::drawYes() {
     display.println("NO");
 }
 
+void Disp::drawPinAsterisks() {
+    display.setCursor(27, 40);
+    display.setTextColor(WHITE);
+    display.println("*  *  *  *  V");
+}
+
 void Disp::animateText(const std::string &text1, const std::string &text2) {
     unsigned long currentMillis = millis();
     if (currentMillis - lastTextBlinked < 500) return;
@@ -72,7 +78,7 @@ void Disp::animateText(const std::string &text1, const std::string &text2) {
 }
 
 void Disp::clearText() {
-    display.fillRect(0, 0, 128, 43, BLACK);
+    display.fillRect(0, 0, 128, 40, BLACK);
 }
 
 void Disp::clear() {
