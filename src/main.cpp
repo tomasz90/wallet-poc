@@ -7,7 +7,7 @@
 #include "util/uitl.h"
 
 #define NEXT_BUTTON 12
-#define PREVIOUS_BUTTON 0
+#define PREVIOUS_BUTTON 13
 #define LED 23
 
 void setup() {

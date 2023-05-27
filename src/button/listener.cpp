@@ -35,7 +35,7 @@ void (*Listener::clickNext())() {
 
 void Listener::setPendingIfItIsNot(Button *&button, unsigned long &lastButtonTime) {
     unsigned long buttonTime = millis();
-    if (buttonTime - lastButtonTime < 100) {
+    if (buttonTime - lastButtonTime < 300) {
         return;
     }
     lastButtonTime = buttonTime;

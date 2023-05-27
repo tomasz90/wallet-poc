@@ -41,7 +41,6 @@ void Menu::begin() {
     S1_3->addTransition(S1_2, &noHandle, &Disp::drawPin);
     S1_2->addTransition(S1_1, &noHandle, &Disp::drawPin);
     S1_1->addTransition(S1_0, &noHandle, &Disp::drawPin);
-    S1_0->addTransition(S0, &previous);
 
     S2_0->addTransition(S1_0, &both);
     S2_1->addTransition(S3, &both);
