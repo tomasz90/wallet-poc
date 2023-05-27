@@ -16,7 +16,7 @@ class CustomState: public State {
 public:
     CustomState() = default;
     void addTransition(bool (*isTransitioned)(), void (*doOnTransition)(), CustomState* s);
-    int evalTransitions();
+    int evalTransitions() override;
 
 private:
 };

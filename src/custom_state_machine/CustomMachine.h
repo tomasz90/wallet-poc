@@ -8,7 +8,7 @@
 class CustomMachine: public StateMachine {
 public:
     CustomMachine() = default;
-    CustomState* addState(void (*functionPointer)());
+    CustomState* addState(void (*functionPointer)()) override;
 
 private:
 };

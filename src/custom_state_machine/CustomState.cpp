@@ -9,22 +9,13 @@ void CustomState::addTransition(bool (*isTransitioned)(), void (*doOnTransition)
 }
 
 int CustomState::evalTransitions() {
-//    int i = State::evalTransitions();
-//    if(i != lastState) {
-//        CustomTransition* t = (CustomTransition*) transitions->get(i);
-//        t->doOnTransition();
-//    }
-//    lastState = i;
-//    return i;
     if(transitions->size() == 0) return index;
     bool result = false;
-
     for(int i=0;i<transitions->size();i++){
         result = transitions->get(i)->conditionFunction();
         if(result == true){
-            CustomTransition* t = (CustomTransition*) transitions->get(i);
-            t->doOnTransition();
-            return t->stateNumber;
+            ((CustomTransition*) transitions->get(i))->doOnTransition();
+            return transitions->get(i)->stateNumber;
         }
     }
     return index;
