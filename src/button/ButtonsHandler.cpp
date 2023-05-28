@@ -11,6 +11,7 @@ void ButtonsHandler::set(byte pin1, byte pin2, void (*myCallback)(byte buttonEve
 
 void ButtonsHandler::setIndividual(Button &button, byte pin) {
     pinMode(pin, INPUT_PULLUP);
+    button.pin = pin;
     auto &s = button.state;
     s.currentRawState = RELEASED;
     s.lastRawState = RELEASED;

@@ -14,7 +14,7 @@
 ButtonsHandler buttonsHandler;
 
 void callback(byte buttonEvent) {
-    Serial.println("callback");
+    Serial.println("changed");
 }
 
 void setup() {
@@ -23,5 +23,8 @@ void setup() {
 }
 
 void loop() {
-    //buttonsHandler.
+    bool x = buttonsHandler.stateChanged(buttonsHandler.button1);
+    if(x) {
+        Serial.println("changed");
+    }
 }

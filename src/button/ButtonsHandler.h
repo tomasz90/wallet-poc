@@ -65,9 +65,6 @@ private:
 
     void (*callback)(byte buttonEvent);
 
-
-
-
 };
 
 #endif
