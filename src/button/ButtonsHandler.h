@@ -38,16 +38,6 @@ using internal pullup on pinMode().*/
 class ButtonsHandler {
 
 public:
-    ButtonsHandler();
-
-    void set(byte pin1, byte pin2, void (*myCallback)(byte));
-
-private:
-    unsigned int debounceTime = 20;
-    unsigned long lastChangeTime = 0;
-
-    void (*callback)(byte buttonEvent);
-
     struct Button {
         byte pin;
 
@@ -64,9 +54,20 @@ private:
 
     Button button1;
     Button button2;
-
+    ButtonsHandler();
     bool stateChanged(Button &button);
     void setIndividual(Button &button, byte pin);
+    void set(byte pin1, byte pin2, void (*myCallback)(byte));
+
+private:
+    unsigned int debounceTime = 20;
+    unsigned long lastChangeTime = 0;
+
+    void (*callback)(byte buttonEvent);
+
+
+
+
 };
 
 #endif
