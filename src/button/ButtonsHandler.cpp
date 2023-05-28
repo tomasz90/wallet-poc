@@ -46,22 +46,22 @@ bool ButtonsHandler::buttonStable(Button &button) {
 bool ButtonsHandler::poll() {
     // Straight away end poll if debounce fails
     if (buttonStable(button1) == 0) { return 0; }
-
+    auto &s = button1.state;
     ;
     /*======================================*/
     /* FIRST Scenario,PRESSED after PRESSED */
     /*======================================*/
-    if (button1.state.currentState == PRESSED && button1.state.lastState == PRESSED) { //2I
+    if (s.currentState == PRESSED && s.lastState == PRESSED) { //2I
         // enableLongPress 1st Check: Is it enabled?
-        if (button1.state.enableLongPress) { //3I
+        if (s.enableLongPress) { //3I
 
             // enableLongPress 2nd Check: Was the button held down long enough?
-            if ((unsigned long) (millis() - button1.state.longPressSince) >= longPressTime) { //4I
+            if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) { //4I
                 //reset timing for the next onLongPress
-                button1.state.longPressSince = millis();
+                s.longPressSince = millis();
 
                 // You need this so the next onRelease will not trigger when user let go of the button
-                button1.state.wasLongPressed = true;
+                s.wasLongPressed = true;
 
             } //4I
 
@@ -72,10 +72,10 @@ bool ButtonsHandler::poll() {
         /*=========================================*/
         /* SECOND Scenario, PRESSED after RELEASED */
         /*=========================================*/
-    else if (button1.state.currentState == PRESSED && button1.state.lastState == RELEASED) { //2EI
+    else if (s.currentState == PRESSED && s.lastState == RELEASED) { //2EI
 
         //Trigger onPress event
-        button1.state.longPressSince = millis(); // Reset since it was previously released
+        s.longPressSince = millis(); // Reset since it was previously released
         buttonEvent = onPress;
         callback(buttonEvent);
 
@@ -84,10 +84,10 @@ bool ButtonsHandler::poll() {
         /*========================================*/
         /* THIRD Scenario, RELEASED after PRESSED */
         /*========================================*/
-    else if (button1.state.currentState == RELEASED && button1.state.lastState == PRESSED) { //2EI
+    else if (s.currentState == RELEASED && s.lastState == PRESSED) { //2EI
 
-        if (button1.state.wasLongPressed) { //3I
-            button1.state.wasLongPressed = false;
+        if (s.wasLongPressed) { //3I
+            s.wasLongPressed = false;
             // Do nothing here as we do not want to register
             // the onRelease right after a longPressFor
         } //3I
@@ -102,6 +102,6 @@ bool ButtonsHandler::poll() {
     } //2EI
 
     // Record the current button state
-    button1.state.lastState = button1.state.currentState;
+    s.lastState = s.currentState;
     return 1;
 }
