@@ -47,10 +47,26 @@ void ButtonsHandler::poll() {
 
     auto &s = button1.state;
 
-    /*================================*/
-    /* ON_LONG: PRESSED after PRESSED */
-    /*================================*/
-    if (s.currentState == PRESSED && s.lastState == PRESSED) {
+    // PRESSED
+    if (s.lastState == RELEASED && s.currentState == PRESSED) {
+        // Reset since it was previously released
+        s.longPressSince = millis();
+        callback(onPress);
+    }
+
+    // RELEASED
+    else if (s.lastState == PRESSED && s.currentState == RELEASED) {
+        if (s.wasLongPressed) {
+            s.wasLongPressed = false;
+            // Do nothing here as we do not want to register
+            // the onRelease right after a longPressFor
+        } else {
+            callback(onRelease);
+        }
+    }
+
+    // LONG_PRESS
+    else if (s.lastState == PRESSED && s.currentState == PRESSED) {
         // Was the button held down long enough?
         if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) {
             // Reset timing for the next onLongPress
@@ -58,26 +74,6 @@ void ButtonsHandler::poll() {
             // You need this so the next onRelease will not trigger when user let go of the button
             s.wasLongPressed = true;
             callback(onLongPress);
-        }
-    }
-    /*=========================================*/
-    /* PRESS: PRESSED after RELEASED */
-    /*=========================================*/
-    else if (s.currentState == PRESSED && s.lastState == RELEASED) {
-        // Reset since it was previously released
-        s.longPressSince = millis();
-        callback(onPress);
-    }
-    /*========================================*/
-    /* RELEASED: RELEASED after PRESSED */
-    /*========================================*/
-    else if (s.currentState == RELEASED && s.lastState == PRESSED) {
-        if (s.wasLongPressed) {
-            s.wasLongPressed = false;
-            // Do nothing here as we do not want to register
-            // the onRelease right after a longPressFor
-        } else {
-            callback(onRelease);
         }
     }
     // Record the current button state
