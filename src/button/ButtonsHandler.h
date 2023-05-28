@@ -1,7 +1,7 @@
 /*
 ButtonsHandler by cygig
 
-ButtonsHandler is yet another Arduino library to stateChanged button (push tactile switch) and manage its events.
+ButtonsHandler is yet another Arduino library to buttonStable button (push tactile switch) and manage its events.
 Events supported include pressing, releasing, holding down, long pressing (hold button for x time) and 
 multi-hitting (hit button x times in y  time). For simplicity, there is only one callback function for all events, 
 that passes an identifier as a parameter to indicate the event that just happened.
@@ -55,7 +55,7 @@ public:
     Button button1;
     Button button2;
     ButtonsHandler();
-    bool stateChanged(Button &button);
+    bool buttonStable(Button &button);
     void setIndividual(Button &button, byte pin);
     void set(byte pin1, byte pin2, void (*myCallback)(byte));
 

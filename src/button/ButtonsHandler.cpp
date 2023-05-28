@@ -10,8 +10,8 @@ void ButtonsHandler::set(byte pin1, byte pin2, void (*myCallback)(byte buttonEve
 }
 
 void ButtonsHandler::setIndividual(Button &button, byte pin) {
-    pinMode(pin, INPUT_PULLUP);
     button.pin = pin;
+    pinMode(button.pin, INPUT_PULLUP);
     auto &s = button.state;
     s.currentRawState = RELEASED;
     s.lastRawState = RELEASED;
@@ -24,7 +24,7 @@ void ButtonsHandler::setIndividual(Button &button, byte pin) {
 }
 
 // Only currentState used outside this function
-bool ButtonsHandler::stateChanged(Button &button) {
+bool ButtonsHandler::buttonStable(Button &button) {
 
     button.state.currentRawState = digitalRead(button.pin);
     // If the button state did not change within stateChanged time,

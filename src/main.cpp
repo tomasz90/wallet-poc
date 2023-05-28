@@ -23,8 +23,8 @@ void setup() {
 }
 
 void loop() {
-    bool x = buttonsHandler.stateChanged(buttonsHandler.button1);
-    if(x) {
+    bool x = buttonsHandler.buttonStable(buttonsHandler.button1);
+    if(!x) {
         Serial.println("changed");
     }
 }
