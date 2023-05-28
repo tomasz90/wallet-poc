@@ -44,47 +44,40 @@ bool ButtonsHandler::buttonStable(Button &button) {
 }
 
 void ButtonsHandler::poll() {
-    // Straight away end poll if debounce fails
     if (buttonStable(button1) == 0) { return; }
+
     auto &s = button1.state;
 
     /*================================*/
     /* ON_HOLD: PRESSED after PRESSED */
     /*================================*/
-    if (s.currentState == PRESSED && s.lastState == PRESSED){
-        buttonEvent=onHold;
+    if (s.currentState == PRESSED && s.lastState == PRESSED) {
+        buttonEvent = onHold;
         callback(buttonEvent);
+        // Was the button held down long enough?
+        if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) {
 
-        // enableLongPress 1st Check: Is it enabled?
-        if (s.enabledLongPress){ //3I
+            // Trigger enableLongPress event
+            buttonEvent = onLongPress;
+            callback(buttonEvent);
 
-            // Was the button held down long enough?
-            if ( (unsigned long)(millis()-s.longPressSince) >= longPressTime ){
+            // Reset timing for the next onLongPress
+            s.longPressSince = millis();
 
-                // Trigger enableLongPress event
-                buttonEvent=onLongPress;
-                callback(buttonEvent);
-
-                // Reset timing for the next onLongPress
-                s.longPressSince=millis();
-
-                // You need this so the next onRelease will not trigger when user let go of the button
-                s.wasLongPressed=true;
-            }
+            // You need this so the next onRelease will not trigger when user let go of the button
+            s.wasLongPressed = true;
         }
     }
     /*===================================*/
     /* LONG_PRESS: PRESSED after PRESSED */
     /*===================================*/
     else if (s.currentState == PRESSED && s.lastState == PRESSED) {
-        if (s.enabledLongPress) {
-            // Was the button held down long enough?
-            if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) {
-                // Reset timing for the next onLongPress
-                s.longPressSince = millis();
-                // You need this so the next onRelease will not trigger when user let go of the button
-                s.wasLongPressed = true;
-            }
+        // Was the button held down long enough?
+        if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) {
+            // Reset timing for the next onLongPress
+            s.longPressSince = millis();
+            // You need this so the next onRelease will not trigger when user let go of the button
+            s.wasLongPressed = true;
         }
     }
     /*=========================================*/
