@@ -5,19 +5,23 @@
 #include "../lib/StateMachine/src/StateMachine.h"
 #include "util/menu.h"
 #include "util/uitl.h"
+#include "button/ButtonsHandler.h"
 
 #define NEXT_BUTTON 12
 #define PREVIOUS_BUTTON 13
 #define LED 23
 
+ButtonsHandler buttonsHandler;
+
+void callback(byte buttonEvent) {
+    Serial.println("callback");
+}
+
 void setup() {
     Serial.begin(115200);
-    Util::initDisplay();
-    Seed::createMnemonic();
-    Listener::begin(PREVIOUS_BUTTON, NEXT_BUTTON, LED);
-    Menu::begin();
+    buttonsHandler.set(PREVIOUS_BUTTON, NEXT_BUTTON, callback);
 }
 
 void loop() {
-    Menu::run();
+    //buttonsHandler.
 }

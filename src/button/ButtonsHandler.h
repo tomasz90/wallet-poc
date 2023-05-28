@@ -1,7 +1,7 @@
 /*
-DailyStruggleButton by cygig
+ButtonsHandler by cygig
 
-DailyStruggleButton is yet another Arduino library to debounce button (push tactile switch) and manage its events. 
+ButtonsHandler is yet another Arduino library to stateChanged button (push tactile switch) and manage its events.
 Events supported include pressing, releasing, holding down, long pressing (hold button for x time) and 
 multi-hitting (hit button x times in y  time). For simplicity, there is only one callback function for all events, 
 that passes an identifier as a parameter to indicate the event that just happened.
@@ -35,31 +35,38 @@ using internal pullup on pinMode().*/
 #define onLongPress 4
 #define onMultiHit 5
 
-class DailyStruggleButton {
+class ButtonsHandler {
 
 public:
-    DailyStruggleButton();
+    ButtonsHandler();
+
+    void set(byte pin1, byte pin2, void (*myCallback)(byte));
 
 private:
-    byte pin;
-
     unsigned int debounceTime = 20;
     unsigned long lastChangeTime = 0;
 
     void (*callback)(byte buttonEvent);
 
-    struct {
-        bool inverted: 1;
-        bool currentRawState: 1;
-        bool lastRawState: 1;
-        bool currentState: 1;
-        bool lastState: 1;
-        bool enableLongPress: 1;
-        bool wasLongPressed: 1;
-        bool enableMultiHit: 1;
-    } flags;
+    struct Button {
+        byte pin;
 
-    bool debounce();
+        struct {
+            bool currentRawState: 1;
+            bool lastRawState: 1;
+            bool currentState: 1;
+            bool lastState: 1;
+            bool enableLongPress: 1;
+            bool wasLongPressed: 1;
+            bool enableMultiHit: 1;
+        } state;
+    };
+
+    Button button1;
+    Button button2;
+
+    bool stateChanged(Button &button);
+    void setIndividual(Button &button, byte pin);
 };
 
 #endif
