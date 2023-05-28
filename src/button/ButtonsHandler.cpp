@@ -42,3 +42,66 @@ bool ButtonsHandler::buttonStable(Button &button) {
     }
     return false;
 }
+
+bool ButtonsHandler::poll() {
+    // Straight away end poll if debounce fails
+    if (buttonStable(button1) == 0) { return 0; }
+
+    ;
+    /*======================================*/
+    /* FIRST Scenario,PRESSED after PRESSED */
+    /*======================================*/
+    if (button1.state.currentState == PRESSED && button1.state.lastState == PRESSED) { //2I
+        // enableLongPress 1st Check: Is it enabled?
+        if (button1.state.enableLongPress) { //3I
+
+            // enableLongPress 2nd Check: Was the button held down long enough?
+            if ((unsigned long) (millis() - button1.state.longPressSince) >= longPressTime) { //4I
+                //reset timing for the next onLongPress
+                button1.state.longPressSince = millis();
+
+                // You need this so the next onRelease will not trigger when user let go of the button
+                button1.state.wasLongPressed = true;
+
+            } //4I
+
+        } //3I
+
+    } //2I
+
+        /*=========================================*/
+        /* SECOND Scenario, PRESSED after RELEASED */
+        /*=========================================*/
+    else if (button1.state.currentState == PRESSED && button1.state.lastState == RELEASED) { //2EI
+
+        //Trigger onPress event
+        button1.state.longPressSince = millis(); // Reset since it was previously released
+        buttonEvent = onPress;
+        callback(buttonEvent);
+
+    } //2EI
+
+        /*========================================*/
+        /* THIRD Scenario, RELEASED after PRESSED */
+        /*========================================*/
+    else if (button1.state.currentState == RELEASED && button1.state.lastState == PRESSED) { //2EI
+
+        if (button1.state.wasLongPressed) { //3I
+            button1.state.wasLongPressed = false;
+            // Do nothing here as we do not want to register
+            // the onRelease right after a longPressFor
+        } //3I
+
+        else { //3E
+
+            // Trigger onRelease event
+            buttonEvent = onRelease;
+            callback(buttonEvent);
+        } //3E
+
+    } //2EI
+
+    // Record the current button state
+    button1.state.lastState = button1.state.currentState;
+    return 1;
+}

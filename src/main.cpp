@@ -13,18 +13,25 @@
 
 ButtonsHandler buttonsHandler;
 
-void callback(byte buttonEvent) {
-    Serial.println("changed");
+void event(byte btnStatus) {
+    switch (btnStatus) {
+        case onPress:
+            Serial.println("Button Pressed");
+            break;
+        case onRelease:
+            Serial.println("Button Released");
+            break;
+        default:
+            break;
+    }
 }
+
 
 void setup() {
     Serial.begin(115200);
-    buttonsHandler.set(PREVIOUS_BUTTON, NEXT_BUTTON, callback);
+    buttonsHandler.set(PREVIOUS_BUTTON, NEXT_BUTTON, event);
 }
 
 void loop() {
-    bool x = buttonsHandler.buttonStable(buttonsHandler.button1);
-    if(!x) {
-        Serial.println("changed");
-    }
+    buttonsHandler.poll();
 }

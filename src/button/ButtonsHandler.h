@@ -18,22 +18,12 @@ that passes an identifier as a parameter to indicate the event that just happene
 #include "WProgram.h"
 #endif
 
-#define INT_PULL_UP 0
-#define EXT_PULL_UP 1
-#define EXT_PULL_DOWN 2
-
-/* Pressed and released are purposely inverted
-as this is the most common use case,
-using internal pullup on pinMode().*/
 #define RELEASED 1
 #define PRESSED 0
 
 #define neverPressed 0
 #define onPress 1
 #define onRelease 2
-#define onHold 3
-#define onLongPress 4
-#define onMultiHit 5
 
 class ButtonsHandler {
 
@@ -49,6 +39,7 @@ public:
             bool enableLongPress: 1;
             bool wasLongPressed: 1;
             bool enableMultiHit: 1;
+            unsigned long longPressSince = 0;
         } state;
     };
 
@@ -58,13 +49,16 @@ public:
     bool buttonStable(Button &button);
     void setIndividual(Button &button, byte pin);
     void set(byte pin1, byte pin2, void (*myCallback)(byte));
-
+    bool poll();
 private:
+    byte buttonEvent=neverPressed;
     unsigned int debounceTime = 20;
+
     unsigned long lastChangeTime = 0;
 
     void (*callback)(byte buttonEvent);
 
+    unsigned long longPressTime = 1000;
 };
 
 #endif
