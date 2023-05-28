@@ -21,6 +21,8 @@ void event(byte btnStatus) {
         case onRelease:
             Serial.println("Button Released");
             break;
+        case onLongPress:
+            Serial.println("Button Long Pressed");
         default:
             break;
     }

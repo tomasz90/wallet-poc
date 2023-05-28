@@ -18,7 +18,7 @@ void ButtonsHandler::setIndividual(Button &button, byte pin) {
     s.currentState = RELEASED;
     s.lastState = RELEASED;
 
-    s.enableLongPress = false;
+    s.enabledLongPress = true;
     s.wasLongPressed = false;
     s.enableMultiHit = false;
 }
@@ -43,65 +43,73 @@ bool ButtonsHandler::buttonStable(Button &button) {
     return false;
 }
 
-bool ButtonsHandler::poll() {
+void ButtonsHandler::poll() {
     // Straight away end poll if debounce fails
-    if (buttonStable(button1) == 0) { return 0; }
+    if (buttonStable(button1) == 0) { return; }
     auto &s = button1.state;
-    ;
-    /*======================================*/
-    /* FIRST Scenario,PRESSED after PRESSED */
-    /*======================================*/
-    if (s.currentState == PRESSED && s.lastState == PRESSED) { //2I
-        // enableLongPress 1st Check: Is it enabled?
-        if (s.enableLongPress) { //3I
 
-            // enableLongPress 2nd Check: Was the button held down long enough?
-            if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) { //4I
-                //reset timing for the next onLongPress
-                s.longPressSince = millis();
-
-                // You need this so the next onRelease will not trigger when user let go of the button
-                s.wasLongPressed = true;
-
-            } //4I
-
-        } //3I
-
-    } //2I
-
-        /*=========================================*/
-        /* SECOND Scenario, PRESSED after RELEASED */
-        /*=========================================*/
-    else if (s.currentState == PRESSED && s.lastState == RELEASED) { //2EI
-
-        //Trigger onPress event
-        s.longPressSince = millis(); // Reset since it was previously released
-        buttonEvent = onPress;
+    /*================================*/
+    /* ON_HOLD: PRESSED after PRESSED */
+    /*================================*/
+    if (s.currentState == PRESSED && s.lastState == PRESSED){
+        buttonEvent=onHold;
         callback(buttonEvent);
 
-    } //2EI
+        // enableLongPress 1st Check: Is it enabled?
+        if (s.enabledLongPress){ //3I
 
-        /*========================================*/
-        /* THIRD Scenario, RELEASED after PRESSED */
-        /*========================================*/
-    else if (s.currentState == RELEASED && s.lastState == PRESSED) { //2EI
+            // Was the button held down long enough?
+            if ( (unsigned long)(millis()-s.longPressSince) >= longPressTime ){
 
-        if (s.wasLongPressed) { //3I
+                // Trigger enableLongPress event
+                buttonEvent=onLongPress;
+                callback(buttonEvent);
+
+                // Reset timing for the next onLongPress
+                s.longPressSince=millis();
+
+                // You need this so the next onRelease will not trigger when user let go of the button
+                s.wasLongPressed=true;
+            }
+        }
+    }
+    /*===================================*/
+    /* LONG_PRESS: PRESSED after PRESSED */
+    /*===================================*/
+    else if (s.currentState == PRESSED && s.lastState == PRESSED) {
+        if (s.enabledLongPress) {
+            // Was the button held down long enough?
+            if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) {
+                // Reset timing for the next onLongPress
+                s.longPressSince = millis();
+                // You need this so the next onRelease will not trigger when user let go of the button
+                s.wasLongPressed = true;
+            }
+        }
+    }
+    /*=========================================*/
+    /* PRESS: PRESSED after RELEASED */
+    /*=========================================*/
+    else if (s.currentState == PRESSED && s.lastState == RELEASED) {
+        // Reset since it was previously released
+        s.longPressSince = millis();
+        buttonEvent = onPress;
+        callback(buttonEvent);
+    }
+    /*========================================*/
+    /* RELEASED: RELEASED after PRESSED */
+    /*========================================*/
+    else if (s.currentState == RELEASED && s.lastState == PRESSED) {
+        if (s.wasLongPressed) {
             s.wasLongPressed = false;
             // Do nothing here as we do not want to register
             // the onRelease right after a longPressFor
-        } //3I
-
-        else { //3E
-
+        } else {
             // Trigger onRelease event
             buttonEvent = onRelease;
             callback(buttonEvent);
-        } //3E
-
-    } //2EI
-
+        }
+    }
     // Record the current button state
     s.lastState = s.currentState;
-    return 1;
 }

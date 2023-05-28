@@ -24,6 +24,8 @@ that passes an identifier as a parameter to indicate the event that just happene
 #define neverPressed 0
 #define onPress 1
 #define onRelease 2
+#define onHold 3
+#define onLongPress 4
 
 class ButtonsHandler {
 
@@ -36,7 +38,7 @@ public:
             bool lastRawState: 1;
             bool currentState: 1;
             bool lastState: 1;
-            bool enableLongPress: 1;
+            bool enabledLongPress: 1;
             bool wasLongPressed: 1;
             bool enableMultiHit: 1;
             unsigned long longPressSince = 0;
@@ -49,7 +51,7 @@ public:
     bool buttonStable(Button &button);
     void setIndividual(Button &button, byte pin);
     void set(byte pin1, byte pin2, void (*myCallback)(byte));
-    bool poll();
+    void poll();
 private:
     byte buttonEvent=neverPressed;
     unsigned int debounceTime = 20;
