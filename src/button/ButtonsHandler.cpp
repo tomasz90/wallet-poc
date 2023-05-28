@@ -18,9 +18,8 @@ void ButtonsHandler::setIndividual(Button &button, byte pin) {
     s.currentState = RELEASED;
     s.lastState = RELEASED;
 
-    s.enabledLongPress = true;
     s.wasLongPressed = false;
-    s.enableMultiHit = false;
+    s.longPressSince = 0;
 }
 
 // Only currentState used outside this function
@@ -49,33 +48,18 @@ void ButtonsHandler::poll() {
     auto &s = button1.state;
 
     /*================================*/
-    /* ON_HOLD: PRESSED after PRESSED */
+    /* ON_LONG: PRESSED after PRESSED */
     /*================================*/
     if (s.currentState == PRESSED && s.lastState == PRESSED) {
-        buttonEvent = onHold;
-        callback(buttonEvent);
         // Was the button held down long enough?
         if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) {
 
             // Trigger enableLongPress event
-            buttonEvent = onLongPress;
-            callback(buttonEvent);
+            callback(onLongPress);
 
             // Reset timing for the next onLongPress
             s.longPressSince = millis();
 
-            // You need this so the next onRelease will not trigger when user let go of the button
-            s.wasLongPressed = true;
-        }
-    }
-    /*===================================*/
-    /* LONG_PRESS: PRESSED after PRESSED */
-    /*===================================*/
-    else if (s.currentState == PRESSED && s.lastState == PRESSED) {
-        // Was the button held down long enough?
-        if ((unsigned long) (millis() - s.longPressSince) >= longPressTime) {
-            // Reset timing for the next onLongPress
-            s.longPressSince = millis();
             // You need this so the next onRelease will not trigger when user let go of the button
             s.wasLongPressed = true;
         }
@@ -86,8 +70,9 @@ void ButtonsHandler::poll() {
     else if (s.currentState == PRESSED && s.lastState == RELEASED) {
         // Reset since it was previously released
         s.longPressSince = millis();
-        buttonEvent = onPress;
-        callback(buttonEvent);
+
+        // Trigger onPress event
+        callback(onPress);
     }
     /*========================================*/
     /* RELEASED: RELEASED after PRESSED */
@@ -99,8 +84,7 @@ void ButtonsHandler::poll() {
             // the onRelease right after a longPressFor
         } else {
             // Trigger onRelease event
-            buttonEvent = onRelease;
-            callback(buttonEvent);
+            callback(onRelease);
         }
     }
     // Record the current button state

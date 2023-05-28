@@ -21,46 +21,40 @@ that passes an identifier as a parameter to indicate the event that just happene
 #define RELEASED 1
 #define PRESSED 0
 
-#define neverPressed 0
 #define onPress 1
 #define onRelease 2
-#define onHold 3
-#define onLongPress 4
+#define onLongPress 3
 
 class ButtonsHandler {
 
 public:
+    ButtonsHandler();
+    void set(byte pin1, byte pin2, void (*myCallback)(byte));
+    void poll();
+private:
     struct Button {
         byte pin;
 
         struct {
-            bool currentRawState: 1;
-            bool lastRawState: 1;
-            bool currentState: 1;
-            bool lastState: 1;
-            bool enabledLongPress: 1;
-            bool wasLongPressed: 1;
-            bool enableMultiHit: 1;
-            unsigned long longPressSince = 0;
+            bool currentRawState;
+            bool lastRawState;
+            bool currentState;
+            bool lastState;
+            bool wasLongPressed;
+            unsigned long longPressSince;
         } state;
     };
 
     Button button1;
     Button button2;
-    ButtonsHandler();
-    bool buttonStable(Button &button);
-    void setIndividual(Button &button, byte pin);
-    void set(byte pin1, byte pin2, void (*myCallback)(byte));
-    void poll();
-private:
-    byte buttonEvent=neverPressed;
-    unsigned int debounceTime = 20;
 
+    unsigned int debounceTime = 20;
+    unsigned long longPressTime = 1000;
     unsigned long lastChangeTime = 0;
 
+    bool buttonStable(Button &button);
+    static void setIndividual(Button &button, byte pin);
     void (*callback)(byte buttonEvent);
-
-    unsigned long longPressTime = 1000;
 };
 
 #endif
