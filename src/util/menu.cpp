@@ -9,7 +9,7 @@
 bool Menu::previousCalled = false;
 bool Menu::nextCalled = false;
 bool Menu::bothCalled = false;
-Led* Menu::led = nullptr;
+Led *Menu::led = nullptr;
 
 CustomMachine machine = CustomMachine();
 
@@ -45,19 +45,19 @@ void Menu::begin(Led *_led, ButtonsHandler &buttonHandler) {
     // TRANSITIONS
     S0->addTransition(S1_0, &isNextCalled, &Disp::drawPin);
 
-    S1_0->addTransition(S1_1, &noHandle, &Disp::drawPin);
-    S1_1->addTransition(S1_2, &noHandle, &Disp::drawPin);
-    S1_2->addTransition(S1_3, &noHandle, &Disp::drawPin);
-    S1_3->addTransition(S2_0, &noHandle, &Disp::drawNo);
+    S1_0->addTransition(S1_1, &isNextForPin, &Disp::drawPin);
+    S1_1->addTransition(S1_2, &isNextForPin, &Disp::drawPin);
+    S1_2->addTransition(S1_3, &isNextForPin, &Disp::drawPin);
+    S1_3->addTransition(S2_0, &isNextForPin, &Disp::drawNo);
 
     S2_0->addTransition(S2_1, &isNextCalled, &Disp::drawYes);
     S2_1->addTransition(S2_0, &isPreviousCalled, &Disp::drawNo);
 
-    S1_3->addTransition(S1_2, &noHandle, &Disp::drawPin);
-    S1_2->addTransition(S1_1, &noHandle, &Disp::drawPin);
-    S1_1->addTransition(S1_0, &noHandle, &Disp::drawPin);
+    S1_3->addTransition(S1_2, &isPreviousForPin, &Disp::drawPin);
+    S1_2->addTransition(S1_1, &isPreviousForPin, &Disp::drawPin);
+    S1_1->addTransition(S1_0, &isPreviousForPin, &Disp::drawPin);
 
-    S2_0->addTransition(S1_0, &isBothCalled);
+    S2_0->addTransition(S1_0, &isBothCalled, Disp::clearText, &Disp::drawPin);
     S2_1->addTransition(S3, &isBothCalled);
 
     S3->addTransition(S2_1, &isBothCalled);
@@ -85,11 +85,24 @@ bool Menu::isBothCalled() {
     return called;
 }
 
-bool Menu::noHandle() { return false; }
-
-void Menu::anyTransition() {
-    Disp::firstTime = true;
+bool Menu::isNextForPin() {
+    if (bothCalled && !Pin::isArrow()) {
+        Pin::setPinNumber();
+        bothCalled = false;
+        return true;
+    }
+    return false;
 }
+
+bool Menu::isPreviousForPin() {
+    if (bothCalled && Pin::isArrow()) {
+        Pin::unsetPinNumber();
+        bothCalled = false;
+        return true;
+    }
+    return false;
+}
+
 void Menu::s0() {
     Disp::blinkTextWithSign("Hello!");
 }
@@ -102,13 +115,11 @@ void Menu::s1_0() {
 void Menu::s1_1() {
     Disp::blinkTextWithSign("Set pin:");
     enterPin(1);
-
 }
 
 void Menu::s1_2() {
     Disp::blinkTextWithSign("Set pin:");
     enterPin(2);
-
 }
 
 void Menu::s1_3() {
@@ -117,26 +128,16 @@ void Menu::s1_3() {
 }
 
 void Menu::enterPin(int position) {
-    if(isNextCalled()) {
+    if (isNextCalled()) {
         Pin::incrementCurrentNumber(position);
         Disp::drawPin();
     }
-    if(isPreviousCalled()) {
+    if (isPreviousCalled()) {
         Pin::decrementCurrentNumber(position);
         Disp::drawPin();
     }
-    if(isBothCalled()) {
-        if(Pin::getCurrentNumber() == -1) {
-            Pin::unsetPinAt(position);
-            Disp::drawPin();
-            machine.transitionTo(machine.currentState - 1);
-            return;
-        }
-        Pin::setPinAt(position);
-        Disp::drawPin();
-        machine.transitionTo(machine.currentState + 1);
-    }
 }
+
 void Menu::s2_0() {
     Disp::blinkTextWithSign("Do you want to set as new device?");
 }

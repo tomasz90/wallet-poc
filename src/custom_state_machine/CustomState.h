@@ -21,5 +21,7 @@ public:
     void addTransition(CustomState *s, bool (*isTrans)(), void (*doFirst)(), void (*doSecond)());
     void addTransition(CustomState *s, bool (*isTrans)(), void (*doFirst)() = nullptr);
     int evalTransitions() override;
+
+    static void anyTransition();
 };
 

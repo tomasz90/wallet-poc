@@ -1,12 +1,8 @@
 #include <Arduino.h>
 #include "util/seed.h"
 #include "util/display.h"
-#include "../lib/StateMachine/src/StateMachine.h"
 #include "util/menu.h"
 #include "util/uitl.h"
-#include "util/Led.h"
-#include "button.h"
-#include "ButtonsHandler.h"
 
 #define PREVIOUS_BUTTON 13
 #define NEXT_BUTTON 12
