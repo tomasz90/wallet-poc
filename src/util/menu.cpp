@@ -3,17 +3,34 @@
 #include "display.h"
 #include "custom_state_machine/CustomMachine.h"
 #include "pin.h"
+#include "Led.h"
+#include "ButtonsHandler.h"
 
-CustomMachine machine = CustomMachine();
 bool Menu::previousCalled = false;
 bool Menu::nextCalled = false;
 bool Menu::bothCalled = false;
+Led* Menu::led = nullptr;
 
-void Menu::run() {
-    machine.run();
+CustomMachine machine = CustomMachine();
+
+void Menu::onPrevious() {
+    led->flash();
+    Menu::previousCalled = true;
+}
+void Menu::onNext() {
+    led->flash();
+    Menu::nextCalled = true;
+}
+void Menu::onBoth() {
+    led->flash();
+    Menu::bothCalled = true;
 }
 
-void Menu::begin() {
+void Menu::begin(Led *_led, ButtonsHandler &buttonHandler) {
+    led = _led;
+
+    buttonHandler.setCallbacks(onPrevious, onNext, onBoth);
+
     // STATES
     CustomState *S0 = machine.addState(&s0);
     CustomState *S1_0 = machine.addState(&s1_0);
@@ -44,7 +61,10 @@ void Menu::begin() {
     S2_1->addTransition(S3, &isBothCalled);
 
     S3->addTransition(S2_1, &isBothCalled);
+}
 
+void Menu::run() {
+    machine.run();
 }
 
 bool Menu::isNextCalled() {
