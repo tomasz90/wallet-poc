@@ -1,8 +1,8 @@
-#include "menu.h"
+#include "Menu.h"
 #include "StateMachine.h"
-#include "display.h"
+#include "Disp.h"
 #include "custom_state_machine/CustomMachine.h"
-#include "pin.h"
+#include "Pin.h"
 #include "Led.h"
 #include "ButtonsHandler.h"
 

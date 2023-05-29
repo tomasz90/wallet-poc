@@ -8,7 +8,7 @@
 class Disp {
 public:
     static bool firstTime;
-    static void begin(Adafruit_SSD1306 &_display);
+    static void begin();
     static void setText(const std::string& text);
     static void blinkTextWithSign(const std::string &text);
     static void drawPin();
@@ -18,7 +18,6 @@ public:
     static void clearText();
     static void clearMenu();
 private:
-    static Adafruit_SSD1306 display;
     static bool blink;
     static unsigned long lastTextBlinked;
 

@@ -1,20 +1,21 @@
-#include "display.h"
+#include "Disp.h"
 #include "Adafruit_SSD1306.h"
-#include "Fonts/FreeMono9pt7b.h"
-#include "Fonts/FreeMonoBold9pt7b.h"
-#include "Fonts/FreeSerif9pt7b.h"
-#include "Fonts/Org_01.h"
-#include "Fonts/Picopixel.h"
-#include "uitl.h"
-#include "pin.h"
+#include "Pin.h"
 
-Adafruit_SSD1306 Disp::display;
 bool Disp::blink;
 bool Disp::firstTime;
 unsigned long Disp::lastTextBlinked;
 
-void Disp::begin(Adafruit_SSD1306 &_display) {
-    display = _display;
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+void Disp::begin() {
+    if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+        Serial.println(F("SSD1306 allocation failed"));
+        while (true);
+    }
+    delay(200);
     display.clearDisplay();
 }
 

@@ -1,5 +1,5 @@
 #include <esp_random.h>
-#include "seed.h"
+#include "Seed.h"
 #include "bip39/bip39.h"
 
 std::vector<uint8_t> Seed::entropy;

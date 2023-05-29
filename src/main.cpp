@@ -1,8 +1,7 @@
 #include <Arduino.h>
-#include "util/seed.h"
-#include "util/display.h"
-#include "util/menu.h"
-#include "util/uitl.h"
+#include "util/Seed.h"
+#include "util/Disp.h"
+#include "util/Menu.h"
 
 #define PREVIOUS_BUTTON 13
 #define NEXT_BUTTON 12
@@ -17,7 +16,7 @@ ButtonsHandler buttonHandler(previous, next);
 
 void setup() {
     Serial.begin(115200);
-    Util::initDisplay();
+    Disp::begin();
     Menu::begin(led, buttonHandler);
     Seed::createMnemonic();
 }

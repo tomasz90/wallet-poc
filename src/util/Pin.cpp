@@ -1,4 +1,4 @@
-#include "pin.h"
+#include "Pin.h"
 #include "Wmath.cpp"
 
 int Pin::currentNumber = random(0, 9);
