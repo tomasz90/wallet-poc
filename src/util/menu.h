@@ -16,8 +16,6 @@ public:
     static void begin(Led *led, ButtonsHandler &buttonHandler);
     static void run();
 
-    static void anyTransition();
-
 private:
 
     static Led* led;
@@ -33,15 +31,12 @@ private:
     static void s2_0();
     static void s2_1();
     static void s3();
-    static bool noHandle();
     static void enterPin(int position);
-
     static void onPrevious();
-
     static void onNext();
-
     static void onBoth();
-
+    static bool isNextForPin();
+    static bool isPreviousForPin();
 };
 
 #endif //WALLET_POC_MENU_H

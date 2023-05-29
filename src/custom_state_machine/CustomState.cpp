@@ -20,7 +20,11 @@ void CustomState::addTransition(
         bool (*isTrans)(),
         void (*doFirst)()
 ) {
-    addTransition(s, isTrans, Menu::anyTransition, doFirst);
+    addTransition(s, isTrans, anyTransition, doFirst);
+}
+
+void CustomState::anyTransition() {
+    Disp::firstTime = true;
 }
 
 int CustomState::evalTransitions() {
