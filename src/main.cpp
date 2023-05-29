@@ -1,12 +1,12 @@
 #include <Arduino.h>
 #include "util/seed.h"
 #include "util/display.h"
-#include "button/listener.h"
 #include "../lib/StateMachine/src/StateMachine.h"
 #include "util/menu.h"
 #include "util/uitl.h"
 #include "buttons/Button.h"
 #include "buttons/ButtonsHandler.h"
+#include "util/Led.h"
 
 #define PREVIOUS_BUTTON 13
 #define NEXT_BUTTON 12
@@ -16,13 +16,18 @@ Button previous(PREVIOUS_BUTTON, IN_PULLDOWN);
 Button next(NEXT_BUTTON, IN_PULLDOWN);
 ButtonsHandler buttonHandler(previous, next);
 
+Led led(LED, 0, 20, 4);
+
 void onPrevious() {
+    led.flash();
     Menu::previousCalled = true;
 }
 void onNext() {
+    led.flash();
     Menu::nextCalled = true;
 }
 void onBoth() {
+    led.flash();
     Menu::bothCalled = true;
 }
 
