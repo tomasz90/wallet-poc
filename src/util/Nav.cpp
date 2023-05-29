@@ -28,36 +28,36 @@ void Nav::onBoth() {
     Nav::bothCalled = true;
 }
 
-bool Nav::isPreviousCalled() {
+bool Nav::isPrevious() {
     bool called = previousCalled;
     previousCalled = false;
     return called;
 }
 
-bool Nav::isNextCalled() {
+bool Nav::isNext() {
     bool called = nextCalled;
     nextCalled = false;
     return called;
 }
 
-bool Nav::isBothCalled() {
+bool Nav::isBoth() {
     bool called = bothCalled;
     bothCalled = false;
     return called;
 }
 
 void Nav::enterPin(int position) {
-    if (isNextCalled()) {
+    if (isNext()) {
         Pin::incrementCurrentNumber(position);
         Disp::drawPin();
     }
-    if (isPreviousCalled()) {
+    if (isPrevious()) {
         Pin::decrementCurrentNumber(position);
         Disp::drawPin();
     }
 }
 
-bool Nav::isNextForPin() {
+bool Nav::isNextPin() {
     if (bothCalled && !Pin::isArrow()) {
         Pin::setPinNumber();
         bothCalled = false;
@@ -66,7 +66,7 @@ bool Nav::isNextForPin() {
     return false;
 }
 
-bool Nav::isPreviousForPin() {
+bool Nav::isPreviousPin() {
     if (bothCalled && Pin::isArrow()) {
         Pin::unsetPinNumber();
         bothCalled = false;

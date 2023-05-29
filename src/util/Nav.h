@@ -12,13 +12,13 @@ public:
     static void onNext();
     static void onBoth();
 
-    static bool isPreviousCalled();
-    static bool isNextCalled();
-    static bool isBothCalled();
+    static bool isPrevious();
+    static bool isNext();
+    static bool isBoth();
 
     static void enterPin(int position);
-    static bool isNextForPin();
-    static bool isPreviousForPin();
+    static bool isNextPin();
+    static bool isPreviousPin();
 private:
     static Led* led;
     static bool previousCalled;

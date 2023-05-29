@@ -22,24 +22,24 @@ void Menu::begin() {
     CustomState *S3 = machine.addState(&s3);
 
     // TRANSITIONS
-    S0->addTransition(S1_0, &Nav::isNextCalled, &Disp::drawPin);
+    S0->addTransition(S1_0, &Nav::isNext, &Disp::drawPin);
 
-    S1_0->addTransition(S1_1, &Nav::isNextForPin, &Disp::drawPin);
-    S1_1->addTransition(S1_2, &Nav::isNextForPin, &Disp::drawPin);
-    S1_2->addTransition(S1_3, &Nav::isNextForPin, &Disp::drawPin);
-    S1_3->addTransition(S2_0, &Nav::isNextForPin, &Disp::drawNo);
+    S1_0->addTransition(S1_1, &Nav::isNextPin, &Disp::drawPin);
+    S1_1->addTransition(S1_2, &Nav::isNextPin, &Disp::drawPin);
+    S1_2->addTransition(S1_3, &Nav::isNextPin, &Disp::drawPin);
+    S1_3->addTransition(S2_0, &Nav::isNextPin, &Disp::drawNo);
 
-    S2_0->addTransition(S2_1, &Nav::isNextCalled, &Disp::drawYes);
-    S2_1->addTransition(S2_0, &Nav::isPreviousCalled, &Disp::drawNo);
+    S2_0->addTransition(S2_1, &Nav::isNext, &Disp::drawYes);
+    S2_1->addTransition(S2_0, &Nav::isPrevious, &Disp::drawNo);
 
-    S1_3->addTransition(S1_2, &Nav::isPreviousForPin, &Disp::drawPin);
-    S1_2->addTransition(S1_1, &Nav::isPreviousForPin, &Disp::drawPin);
-    S1_1->addTransition(S1_0, &Nav::isPreviousForPin, &Disp::drawPin);
+    S1_3->addTransition(S1_2, &Nav::isPreviousPin, &Disp::drawPin);
+    S1_2->addTransition(S1_1, &Nav::isPreviousPin, &Disp::drawPin);
+    S1_1->addTransition(S1_0, &Nav::isPreviousPin, &Disp::drawPin);
 
-    S2_0->addTransition(S1_0, &Nav::isBothCalled, Disp::clearText, &Disp::drawPin);
-    S2_1->addTransition(S3, &Nav::isBothCalled);
+    S2_0->addTransition(S1_0, &Nav::isBoth, Disp::clearText, &Disp::drawPin);
+    S2_1->addTransition(S3, &Nav::isBoth);
 
-    S3->addTransition(S2_1, &Nav::isBothCalled);
+    S3->addTransition(S2_1, &Nav::isBoth);
 }
 
 void Menu::run() {
