@@ -8,11 +8,14 @@
 class Menu {
 
 public:
+    static bool firstTime;
     Menu();
     static void begin();
     static void run();
 
+    static void doOnce(void (*_doOnce)());
 private:
+
     static void s0();
     static void s1_0();
     static void s1_1();

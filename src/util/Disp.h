@@ -7,7 +7,6 @@
 
 class Disp {
 public:
-    static bool firstTime;
     static void begin();
     static void setText(const std::string& text);
     static void blinkTextWithSign(const std::string &text);
