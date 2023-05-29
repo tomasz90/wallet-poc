@@ -2,6 +2,7 @@
 #include "util/Seed.h"
 #include "util/Disp.h"
 #include "util/Menu.h"
+#include "util/Nav.h"
 
 #define PREVIOUS_BUTTON 13
 #define NEXT_BUTTON 12
@@ -17,7 +18,8 @@ ButtonsHandler buttonHandler(previous, next);
 void setup() {
     Serial.begin(115200);
     Disp::begin();
-    Menu::begin(led, buttonHandler);
+    Nav::begin(led, buttonHandler);
+    Menu::begin();
     Seed::createMnemonic();
 }
 
