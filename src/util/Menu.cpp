@@ -37,9 +37,9 @@ void Menu::begin() {
     S1_1->addTransition(S1_0, &Nav::isPreviousPin, &Disp::drawPin);
 
     S2_0->addTransition(S1_0, &Nav::isBoth, Disp::clearText, &Disp::drawPin);
-    S2_1->addTransition(S3, &Nav::isBoth);
+    S2_1->addTransition(S3, &Nav::isBoth, Disp::clearMenu);
 
-    S3->addTransition(S2_1, &Nav::isBoth);
+    S3->addTransition(S2_0, &Nav::isBoth, &Disp::drawNo);
 }
 
 void Menu::run() {

@@ -30,20 +30,28 @@ void Nav::onBoth() {
 
 bool Nav::isPrevious() {
     bool called = previousCalled;
-    previousCalled = false;
+    resetAll(called);
     return called;
 }
 
 bool Nav::isNext() {
     bool called = nextCalled;
-    nextCalled = false;
+    resetAll(called);
     return called;
 }
 
 bool Nav::isBoth() {
     bool called = bothCalled;
-    bothCalled = false;
+    resetAll(called);
     return called;
+}
+
+void Nav::resetAll(bool doReset) {
+    if (doReset) {
+        Nav::previousCalled = false;
+        Nav::nextCalled = false;
+        Nav::bothCalled = false;
+    }
 }
 
 void Nav::enterPin(int position) {

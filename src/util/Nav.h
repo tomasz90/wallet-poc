@@ -24,6 +24,8 @@ private:
     static bool previousCalled;
     static bool nextCalled;
     static bool bothCalled;
+
+    static void resetAll(bool doReset);
 };
 
 
