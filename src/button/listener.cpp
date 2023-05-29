@@ -4,15 +4,15 @@
 #include "util/seed.h"
 
 const int ledChannel = 0;    // LEDC channel (0-15)
-Button* Listener::previous;
-Button* Listener::next;
+OldButton* Listener::previous;
+OldButton* Listener::next;
 
 void Listener::begin(uint8_t previousButton, uint8_t nextButton, uint8_t _led) {
     pinMode(previousButton, INPUT_PULLUP);
     pinMode(nextButton, INPUT_PULLUP);
     setupLed(_led);
-    previous = new Button("PREVIOUS");
-    next = new Button("NEXT");
+    previous = new OldButton("PREVIOUS");
+    next = new OldButton("NEXT");
     attachInterrupt(previousButton, Listener::clickPrevious(), RISING);
     attachInterrupt(nextButton, Listener::clickNext(), RISING);
 }
@@ -31,7 +31,7 @@ void (*Listener::clickNext())() {
     return [] { setPendingIfItIsNot(next); };
 }
 
-void Listener::setPendingIfItIsNot(Button *&button) {
+void Listener::setPendingIfItIsNot(OldButton *&button) {
     if (!button->isPendingClick()) {
         button->setPending();
     }
@@ -45,7 +45,7 @@ bool Listener::isNextClicked() {
     return clicked(next);
 }
 
-bool Listener::clicked(Button *&button) {
+bool Listener::clicked(OldButton *&button) {
     bool canBeClicked = button->canBeClicked();
     if (canBeClicked) {
         Serial.println(button->getName().c_str());

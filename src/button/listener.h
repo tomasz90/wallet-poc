@@ -16,11 +16,11 @@ public:
     static bool isBothClicked();
 
 private:
-    static Button* previous;
-    static Button* next;
+    static OldButton* previous;
+    static OldButton* next;
     Listener();
     static void flashLed();
     static void setupLed(uint8_t _led);
-    static void setPendingIfItIsNot(Button *&button);
-    static bool clicked(Button *&button);
+    static void setPendingIfItIsNot(OldButton *&button);
+    static bool clicked(OldButton *&button);
 };

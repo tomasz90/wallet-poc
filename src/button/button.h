@@ -3,9 +3,9 @@
 
 #endif //WALLET_POC_BUTTON_H
 
-class Button {
+class OldButton {
 public:
-    explicit Button(std::string name);
+    explicit OldButton(std::string name);
     std::string getName();
     bool isPendingClick() const;
     void setPending();

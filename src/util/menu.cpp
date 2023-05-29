@@ -6,6 +6,9 @@
 #include "pin.h"
 
 CustomMachine machine = CustomMachine();
+bool Menu::previousCalled = false;
+bool Menu::nextCalled = false;
+bool Menu::bothCalled = false;
 
 void Menu::run() {
     machine.run();
@@ -24,34 +27,44 @@ void Menu::begin() {
     CustomState *S3 = machine.addState(&s3);
 
     // TRANSITIONS
-    S0->addTransition(S1_0, &next, &Disp::drawPin);
+    S0->addTransition(S1_0, &isNextCalled, &Disp::drawPin);
 
     S1_0->addTransition(S1_1, &noHandle, &Disp::drawPin);
     S1_1->addTransition(S1_2, &noHandle, &Disp::drawPin);
     S1_2->addTransition(S1_3, &noHandle, &Disp::drawPin);
     S1_3->addTransition(S2_0, &noHandle, &Disp::drawNo);
 
-    S2_0->addTransition(S2_1, &next,  &Disp::drawYes);
-    S2_1->addTransition(S2_0, &previous, &Disp::drawNo);
+    S2_0->addTransition(S2_1, &isNextCalled, &Disp::drawYes);
+    S2_1->addTransition(S2_0, &isPreviousCalled, &Disp::drawNo);
 
     S1_3->addTransition(S1_2, &noHandle, &Disp::drawPin);
     S1_2->addTransition(S1_1, &noHandle, &Disp::drawPin);
     S1_1->addTransition(S1_0, &noHandle, &Disp::drawPin);
 
-    S2_0->addTransition(S1_0, &both);
-    S2_1->addTransition(S3, &both);
+    S2_0->addTransition(S1_0, &isBothCalled);
+    S2_1->addTransition(S3, &isBothCalled);
 
-    S3->addTransition(S2_1, &both);
+    S3->addTransition(S2_1, &isBothCalled);
 
 }
 
-bool Menu::next() {
-    return Listener::isNextClicked();
+bool Menu::isNextCalled() {
+    bool called = nextCalled;
+    nextCalled = false;
+    return called;
 }
 
-bool Menu::previous() { return Listener::isPreviousClicked(); }
+bool Menu::isPreviousCalled() {
+    bool called = previousCalled;
+    previousCalled = false;
+    return called;
+}
 
-bool Menu::both() { return Listener::isBothClicked(); }
+bool Menu::isBothCalled() {
+    bool called = bothCalled;
+    bothCalled = false;
+    return called;
+}
 
 bool Menu::noHandle() { return false; }
 
@@ -85,15 +98,15 @@ void Menu::s1_3() {
 }
 
 void Menu::enterPin(int position) {
-    if(next()) {
+    if(isNextCalled()) {
         Pin::incrementCurrentNumber(position);
         Disp::drawPin();
     }
-    if(previous()) {
+    if(isPreviousCalled()) {
         Pin::decrementCurrentNumber(position);
         Disp::drawPin();
     }
-    if(both()) {
+    if(isBothCalled()) {
         if(Pin::getCurrentNumber() == -1) {
             Pin::unsetPinAt(position);
             Disp::drawPin();

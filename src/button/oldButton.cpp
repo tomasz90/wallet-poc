@@ -3,32 +3,32 @@
 #include <utility>
 #include "button.h"
 
-Button::Button(std::string name) {
+OldButton::OldButton(std::string name) {
     this->name = std::move(name);
     plannedMillisClick = 0;
     pendingClick = false;
 }
 
-void Button::setPending() {
+void OldButton::setPending() {
     pendingClick = true;
     plannedMillisClick = millis() + 200;
 }
 
-bool Button::isPendingClick() const {
+bool OldButton::isPendingClick() const {
     return pendingClick;
 }
 
-bool Button::canBeClicked() const {
+bool OldButton::canBeClicked() const {
     long till = millis() - plannedMillisClick;
     return pendingClick && till > 0;
 }
 
-void Button::setClicked() {
+void OldButton::setClicked() {
     pendingClick = false;
     plannedMillisClick = millis();
 }
 
-std::string Button::getName() {
+std::string OldButton::getName() {
     return name;
 }
 
