@@ -63,9 +63,9 @@ void Nav::enterPin() {
         Disp::drawPin();
     } else if(isBoth()) {
         if(Pin::isArrow()) {
-            Pin::unsetPinNumber();
+            Pin::unsetOneDigit();
         } else {
-            Pin::setPinNumber();
+            Pin::setOneDigit();
         }
         Disp::drawPin();
     }
@@ -73,7 +73,6 @@ void Nav::enterPin() {
 
 bool Nav::isNextPin() {
     if (bothCalled && !Pin::isArrow() && Pin::currentIndex == 3) {
-        Pin::setPinNumber();
         bothCalled = false;
         return true;
     }
@@ -82,7 +81,6 @@ bool Nav::isNextPin() {
 
 bool Nav::isPreviousPin() {
     if (bothCalled && Pin::isArrow() && Pin::currentIndex == 0) {
-        Pin::unsetPinNumber();
         bothCalled = false;
         return true;
     }

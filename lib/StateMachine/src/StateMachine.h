@@ -22,7 +22,7 @@ class StateMachine
 	
     // Attributes
     LinkedList<State*> *stateList;
-	  bool executeOnce = true; 	//Indicates that a transition to a different state has occurred
+    bool executeOnce = true; 	//Indicates that a transition to a different state has occurred
     int currentState = -1;	//Indicates the current state number
 };
 

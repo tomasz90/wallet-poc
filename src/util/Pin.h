@@ -5,22 +5,24 @@
 
 #endif //WALLET_POC_PIN_H
 
+enum class DigitState {
+    UN_INIT,
+    INIT,
+    SET
+};
 
 class Pin {
 public:
-    static const char* getPinString();
+    static std::string getPinString();
     static void incrementCurrentNumber();
     static void decrementCurrentNumber();
-    static void setPinNumber();
-    static void unsetPinNumber();
+    static void setOneDigit();
+    static void unsetOneDigit();
     static int isArrow();
 
     static int currentIndex;
 private:
-    static int currentNumber;
-    static std::string pinString;
     static int pinCombination[4];
-
-    static char getCharOfCurrentNumber();
-
+    static char getCharAt(int index);
+    static int _random(int with);
 };

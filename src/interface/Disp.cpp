@@ -89,7 +89,7 @@ void Disp::drawPin() {
     display.setCursor(23, 40);
     display.setTextColor(WHITE);
     display.setTextSize(2);
-    display.println(Pin::getPinString());
+    display.println(Pin::getPinString().c_str());
     display.display();
 }
 
