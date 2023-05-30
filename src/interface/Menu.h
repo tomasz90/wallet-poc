@@ -12,18 +12,24 @@ public:
     Menu();
     static void begin();
     static void run();
-
     static void doOnce(void (*_doOnce)());
 private:
-
     static void s0();
+
     static void s1_0();
     static void s1_1();
-    static void s1_2();
-    static void s1_3();
+
     static void s2_0();
     static void s2_1();
-    static void s3();
+    static void s2_2();
+    static void s2_3();
+
+    static void s3_0();
+    static void s3_1();
+    static void s3_2();
+    static void s3_3();
+
+    static void s4();
 };
 
 #endif //WALLET_POC_MENU_H

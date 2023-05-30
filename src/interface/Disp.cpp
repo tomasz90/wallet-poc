@@ -70,13 +70,14 @@ void Disp::drawYes() {
     display.display();
 }
 
-void Disp::drawOneBox(const std::string &text, uint8_t width, uint8_t cursorPos) {
+void Disp::drawOneBox(const std::string &text, uint8_t width) {
     clearMenu();
     uint8_t begin = (128 - width) / 2;
     display.fillRect(begin, 43, width, 20, WHITE);
     display.drawRect(begin + 1, 44, width - 2, 18, BLACK);
 
-    display.setCursor(cursorPos, 49);
+    uint8_t position = 64 - ((text.size() * 5) / 2);
+    display.setCursor(position, 49);
     display.setTextColor(BLACK);
     display.setTextSize(1);
     display.println(text.c_str());
