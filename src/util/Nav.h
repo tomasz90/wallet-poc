@@ -19,15 +19,15 @@ public:
     static void enterPin();
     static bool isNextPin();
     static bool isPreviousPin();
-private:
-    static Led* led;
     static bool previousCalled;
     static bool nextCalled;
     static bool bothCalled;
     static bool nextPinBothCalled;
-    static void resetAll(bool doReset);
-
     static bool previousPinBothCalled;
+private:
+    static Led* led;
+
+    static void resetAll(bool doReset);
 };
 
 
