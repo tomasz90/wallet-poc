@@ -109,7 +109,8 @@ void Disp::clearMenu() {
     display.fillRect(0, 38, 128, 26, BLACK);
 }
 
-void Disp::clear() {
-    display.clearDisplay();
-    display.display();
-}
+// TODO: not used, but keep it for now
+//void Disp::clear() {
+//    display.clearDisplay();
+//    display.display();
+//}

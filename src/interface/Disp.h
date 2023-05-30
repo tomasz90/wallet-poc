@@ -15,9 +15,9 @@ public:
     static void drawNo();
     static void drawYes();
     static void drawOneBox(const std::string &text, uint8_t width, uint8_t cursorPos);
-    static void clear();
     static void clearText();
     static void clearMenu();
+    //static void clear();
 private:
     static bool blink;
 
