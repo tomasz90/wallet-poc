@@ -24,7 +24,8 @@ void CustomState::addTransition(
 }
 
 void CustomState::anyTransition() {
-    Disp::firstTime = true;
+    Menu::firstTime = true;
+    Disp::lastTextBlinked = 0;
 }
 
 int CustomState::evalTransitions() {

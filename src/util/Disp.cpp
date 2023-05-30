@@ -3,7 +3,6 @@
 #include "Pin.h"
 
 bool Disp::blink;
-bool Disp::firstTime;
 unsigned long Disp::lastTextBlinked;
 
 #define SCREEN_WIDTH 128
@@ -95,8 +94,7 @@ void Disp::drawPin() {
 
 void Disp::animateText(const std::string &text1, const std::string &text2) {
     unsigned long currentMillis = millis();
-    if (currentMillis - lastTextBlinked < 500 && !firstTime) return;
-    firstTime = false;
+    if (currentMillis - lastTextBlinked < 500) return;
     std::string text = blink ? text1 : text2;
     setText(text);
     lastTextBlinked = currentMillis;

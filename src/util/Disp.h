@@ -7,7 +7,7 @@
 
 class Disp {
 public:
-    static bool firstTime;
+    static unsigned long lastTextBlinked;
     static void begin();
     static void setText(const std::string& text);
     static void blinkTextWithSign(const std::string &text);
@@ -20,7 +20,6 @@ public:
     static void clearMenu();
 private:
     static bool blink;
-    static unsigned long lastTextBlinked;
 
     static void animateText(const std::string &text1, const std::string &text2);
 };

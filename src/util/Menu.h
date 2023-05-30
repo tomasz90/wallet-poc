@@ -8,6 +8,7 @@
 class Menu {
 
 public:
+    static bool firstTime;
     Menu();
     static void begin();
     static void run();
