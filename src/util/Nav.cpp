@@ -54,19 +54,25 @@ void Nav::resetAll(bool doReset) {
     }
 }
 
-void Nav::enterPin(int position) {
+void Nav::enterPin() {
     if (isNext()) {
-        Pin::incrementCurrentNumber(position);
+        Pin::incrementCurrentNumber();
         Disp::drawPin();
-    }
-    if (isPrevious()) {
-        Pin::decrementCurrentNumber(position);
+    } else if (isPrevious()) {
+        Pin::decrementCurrentNumber();
+        Disp::drawPin();
+    } else if(isBoth()) {
+        if(Pin::isArrow()) {
+            Pin::unsetPinNumber();
+        } else {
+            Pin::setPinNumber();
+        }
         Disp::drawPin();
     }
 }
 
 bool Nav::isNextPin() {
-    if (bothCalled && !Pin::isArrow()) {
+    if (bothCalled && !Pin::isArrow() && Pin::currentIndex == 3) {
         Pin::setPinNumber();
         bothCalled = false;
         return true;
@@ -75,7 +81,7 @@ bool Nav::isNextPin() {
 }
 
 bool Nav::isPreviousPin() {
-    if (bothCalled && Pin::isArrow()) {
+    if (bothCalled && Pin::isArrow() && Pin::currentIndex == 0) {
         Pin::unsetPinNumber();
         bothCalled = false;
         return true;

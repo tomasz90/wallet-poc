@@ -16,7 +16,7 @@ public:
     static bool isNext();
     static bool isBoth();
 
-    static void enterPin(int position);
+    static void enterPin();
     static bool isNextPin();
     static bool isPreviousPin();
 private:

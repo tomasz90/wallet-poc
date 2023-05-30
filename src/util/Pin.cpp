@@ -14,7 +14,7 @@ int Pin::isArrow() {
     return currentNumber == -1;
 }
 
-void Pin::incrementCurrentNumber(int _currentIndex) {
+void Pin::incrementCurrentNumber() {
     if (currentNumber >= 9) {
         if (currentIndex == 0) {
             currentNumber = 0;
@@ -24,10 +24,10 @@ void Pin::incrementCurrentNumber(int _currentIndex) {
     } else {
         currentNumber++;
     }
-    pinString[_currentIndex * 2] = getCharOfCurrentNumber();
+    pinString[currentIndex * 2] = getCharOfCurrentNumber();
 }
 
-void Pin::decrementCurrentNumber(int _currentIndex) {
+void Pin::decrementCurrentNumber() {
     if (currentNumber == 0) {
         if (currentIndex == 0) {
             currentNumber = 9;
@@ -39,7 +39,7 @@ void Pin::decrementCurrentNumber(int _currentIndex) {
     } else {
         currentNumber--;
     }
-    pinString[_currentIndex * 2] = getCharOfCurrentNumber();
+    pinString[currentIndex * 2] = getCharOfCurrentNumber();
 }
 
 char Pin::getCharOfCurrentNumber() {

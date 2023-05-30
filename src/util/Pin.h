@@ -9,14 +9,14 @@
 class Pin {
 public:
     static const char* getPinString();
-    static void incrementCurrentNumber(int _currentIndex);
-    static void decrementCurrentNumber(int _currentIndex);
+    static void incrementCurrentNumber();
+    static void decrementCurrentNumber();
     static void setPinNumber();
     static void unsetPinNumber();
     static int isArrow();
 
-private:
     static int currentIndex;
+private:
     static int currentNumber;
     static std::string pinString;
     static int pinCombination[4];
