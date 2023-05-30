@@ -67,12 +67,12 @@ void Nav::enterPin() {
         Pin::decrementCurrentDigit();
         Disp::drawPin();
     } else if (isBoth()) {
-        if(Pin::ifLastDigit()) {
+        if(Pin::ifFirstDigit()) {
+            previousPinBothCalled = true;
+        } else if(Pin::ifLastDigit()) {
             Pin::setOrUnsetDigit();
             Pin::savePin();
             nextPinBothCalled = true;
-        } else if(Pin::ifFirstDigit()) {
-            previousPinBothCalled = true;
         } else {
             Pin::setOrUnsetDigit();
             Disp::drawPin();
