@@ -85,13 +85,10 @@ void Pin::setDigit() {
 }
 
 void Pin::setOneDigit() {
-    if (currentIndex == 3) {
-        begin();
-    } else if (currentIndex < 3) {
-        pinState[currentIndex] = DigitState::SET;
-        pinState[currentIndex + 1] = DigitState::INIT;
-        currentIndex++;
-    }
+    if (currentIndex > 3) throwException("Setting at index more than 3");
+    pinState[currentIndex] = DigitState::SET;
+    pinState[currentIndex + 1] = DigitState::INIT;
+    currentIndex++;
 }
 
 void Pin::unsetOneDigit() {
@@ -108,11 +105,10 @@ int Pin::_random(int with) {
 }
 
 void Pin::savePin() {
-    Serial.println("Saving pin");
     for (int i = 0; i < 4; i++) {
         if(rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
         savedCombination[i] = rawCombination[i];
-        Serial.print(savedCombination[i]);
     }
+    begin();
 }
 

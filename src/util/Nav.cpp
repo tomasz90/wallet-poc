@@ -63,10 +63,6 @@ void Nav::enterPin() {
     if (isNext()) {
         Pin::incrementCurrentDigit();
         Disp::drawPin();
-        Serial.println("Raw combination: ");
-        for (int i : Pin::rawCombination) {
-            Serial.print(i);
-        }
     } else if (isPrevious()) {
         Pin::decrementCurrentDigit();
         Disp::drawPin();
