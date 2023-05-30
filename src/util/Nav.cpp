@@ -33,40 +33,24 @@ void Nav::onBoth() {
     bothCalled = true;
 }
 
-bool Nav::isPrevious() {
-    bool called = previousCalled;
-    resetAll(called);
-    return called;
-}
-
-bool Nav::isNext() {
-    bool called = nextCalled;
-    resetAll(called);
-    return called;
-}
-
-bool Nav::isBoth() {
-    bool called = bothCalled;
-    resetAll(called);
-    return called;
-}
-
-void Nav::resetAll(bool doReset) {
-    if (doReset) {
-        Nav::previousCalled = false;
-        Nav::nextCalled = false;
-        Nav::bothCalled = false;
-    }
+std::function<bool()> Nav::_(bool &called) {
+    return [&called]() -> bool {
+        if (called) {
+            called = false;
+            return true;
+        }
+        return false;
+    };
 }
 
 void Nav::enterPin() {
-    if (isNext()) {
+    if (_(nextCalled)) {
         Pin::incrementCurrentDigit();
         Disp::drawPin();
-    } else if (isPrevious()) {
+    } else if (_(previousCalled)) {
         Pin::decrementCurrentDigit();
         Disp::drawPin();
-    } else if (isBoth()) {
+    } else if (_(bothCalled)) {
         if(Pin::ifFirstDigit()) {
             previousPinBothCalled = true;
         } else if(Pin::ifLastDigit()) {
@@ -78,20 +62,4 @@ void Nav::enterPin() {
             Disp::drawPin();
         }
     }
-}
-
-bool Nav::isNextPin() {
-    if (nextPinBothCalled) {
-        nextPinBothCalled = false;
-        return true;
-    }
-    return false;
-}
-
-bool Nav::isPreviousPin() {
-    if (previousPinBothCalled) {
-        previousPinBothCalled = false;
-        return true;
-    }
-    return false;
 }

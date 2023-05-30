@@ -9,10 +9,6 @@
 CustomMachine machine = CustomMachine();
 bool Menu::firstTime = true;
 
-std::function<bool()> _(bool condition) {
-    return [condition]() -> bool { return condition; };
-}
-
 void Menu::begin() {
 
     // STATES
@@ -24,23 +20,21 @@ void Menu::begin() {
     CustomState *S4 =   machine.addState(&s4);
     CustomState *S5 =   machine.addState(&s5);
 
-
     // NEXT
-    S0->addTransition(S1_0,   &Nav::isBoth);
-    S1_0->addTransition(S1_1, &Nav::isNext);
-    S1_1->addTransition(S2,   &Nav::isBoth);
-    S2->addTransition(S3,     &Nav::isNextPin);
-    S3->addTransition(S4,     &Nav::isNextPin);
-    S4->addTransition(S5,     &Nav::isBoth);
-
+    S0->addTransition(S1_0,   Nav::_(Nav::bothCalled));
+    S1_0->addTransition(S1_1, Nav::_(Nav::nextCalled));
+    S1_1->addTransition(S2,   Nav::_(Nav::bothCalled));
+    S2->addTransition(S3,     Nav::_(Nav::nextPinBothCalled));
+    S3->addTransition(S4,     Nav::_(Nav::nextPinBothCalled));
+    S4->addTransition(S5,     Nav::_(Nav::bothCalled));
 
     // PREVIOUS
-    S1_1->addTransition(S1_0, &Nav::isPrevious);
-    S2->addTransition(S1_0,   &Nav::isPreviousPin);
-    S3->addTransition(S2,     &Nav::isPreviousPin);
+    S1_1->addTransition(S1_0, Nav::_(Nav::previousCalled));
+    S2->addTransition(S1_0,   Nav::_(Nav::previousPinBothCalled));
+    S3->addTransition(S2,     Nav::_(Nav::previousPinBothCalled));
 
     //todo: to implement later
-    S5->addTransition(S0,     &Nav::isBoth);
+    S5->addTransition(S0,     Nav::_(Nav::bothCalled));
 
 }
 

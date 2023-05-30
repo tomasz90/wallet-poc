@@ -80,16 +80,16 @@ void Pin::setOrUnsetDigit() {
 }
 
 void Pin::savePin() {
-    if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
+    //if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
     for (int i = 0; i < 4; i++) {
         if (rawCombination[i] < 0)
-            throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
+            //throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
         switch (mode) {
             case PinMode::SET:
                 savedCombination[i] = rawCombination[i];
                 break;
             case PinMode::CONFIRM:
-                if (savedCombination[i] != rawCombination[i]) Serial.println("Pin mismatch!");
+                //if (savedCombination[i] != rawCombination[i]) Serial.println("Pin mismatch!");
                 break;
         }
     }
@@ -126,7 +126,7 @@ bool Pin::isArrow() {
 }
 
 void Pin::setOneDigit() {
-    if (currentIndex > 3) throwException("Setting at index more than 3");
+    //if (currentIndex > 3) throwException("Setting at index more than 3");
     Serial.println("Setting at index: " + String(currentIndex) + " value: " + String(rawCombination[currentIndex]));
     pinState[currentIndex] = DigitState::SET;
     if (currentIndex < 3) {

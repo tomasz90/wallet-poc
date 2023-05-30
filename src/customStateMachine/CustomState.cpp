@@ -3,6 +3,7 @@
 #include "CustomState.h"
 #include "interface/Disp.h"
 #include "interface/Menu.h"
+#include "util/Nav.h"
 
 void CustomState::addTransition(
         CustomState *s,
@@ -15,6 +16,11 @@ void CustomState::addTransition(
 void CustomState::doOnAnyTransition() {
     Menu::firstTime = true;
     Disp::lastTextBlinked = 0;
+    Nav::nextCalled = false;
+    Nav::previousCalled = false;
+    Nav::bothCalled = false;
+    Nav::nextPinBothCalled = false;
+    Nav::previousPinBothCalled = false;
 }
 
 int CustomState::evalTransitions() {
