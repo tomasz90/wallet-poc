@@ -7,7 +7,6 @@
 #include "Nav.h"
 
 CustomMachine machine = CustomMachine();
-bool Menu::firstTime;
 
 void Menu::begin() {
 
@@ -48,7 +47,7 @@ void Menu::run() {
 }
 
 void Menu::doOnce(void (*_doOnce)()) {
-    if(firstTime) _doOnce();
+    if(Disp::firstTime) _doOnce();
 }
 
 void Menu::s0() {
