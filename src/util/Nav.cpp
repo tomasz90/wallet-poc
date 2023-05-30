@@ -4,12 +4,24 @@
 #include "interface/Disp.h"
 #include "ButtonsHandler.h"
 
-bool Nav::previousCalled = false;
-bool Nav::nextCalled = false;
-bool Nav::bothCalled = false;
+bool Flag::check() {
+    bool temp = flag;
+    if (flag) {
+        flag = false;
+    }
+    return temp;
+}
 
-bool Nav::nextPinBothCalled = false;
-bool Nav::previousPinBothCalled = false;
+void Flag::set() { flag = true; }
+
+void Flag::unset() { flag = false; }
+
+Flag Nav::previousCalled;
+Flag Nav::nextCalled;
+
+Flag Nav::bothCalled;
+Flag Nav::nextPinBothCalled;
+Flag Nav::previousPinBothCalled;
 
 Led *Nav::led = nullptr;
 
@@ -20,43 +32,33 @@ void Nav::begin(Led *_led, ButtonsHandler &buttonHandler) {
 
 void Nav::onPrevious() {
     led->flash();
-    previousCalled = true;
+    previousCalled.set();
 }
 
 void Nav::onNext() {
     led->flash();
-    nextCalled = true;
+    nextCalled.set();
 }
 
 void Nav::onBoth() {
     led->flash();
-    bothCalled = true;
-}
-
-std::function<bool()> Nav::_(bool &called) {
-    return [&called]() -> bool {
-        if (called) {
-            called = false;
-            return true;
-        }
-        return false;
-    };
+    bothCalled.set();
 }
 
 void Nav::enterPin() {
-    if (_(nextCalled)) {
+    if (nextCalled.check()) {
         Pin::incrementCurrentDigit();
         Disp::drawPin();
-    } else if (_(previousCalled)) {
+    } else if (previousCalled.check()) {
         Pin::decrementCurrentDigit();
         Disp::drawPin();
-    } else if (_(bothCalled)) {
-        if(Pin::ifFirstDigit()) {
-            previousPinBothCalled = true;
-        } else if(Pin::ifLastDigit()) {
+    } else if (bothCalled.check()) {
+        if (Pin::ifFirstDigit()) {
+            previousPinBothCalled.set();
+        } else if (Pin::ifLastDigit()) {
             Pin::setOrUnsetDigit();
             Pin::savePin();
-            nextPinBothCalled = true;
+            nextPinBothCalled.set();
         } else {
             Pin::setOrUnsetDigit();
             Disp::drawPin();

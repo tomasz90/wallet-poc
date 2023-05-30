@@ -3,23 +3,23 @@
 #endif //WALLET_POC_CUSTOMMACHINE_H
 
 #include <functional>
+#include "util/Nav.h"
 
 struct CustomTransition : Transition {
     void (*doOnTransition)();
-    std::function<bool()> isTrans;
+    Flag &isTrans;
 
-    CustomTransition(int s, std::function<bool()> &isTrans, void (*doOnTransition)()) : Transition() {
+    CustomTransition(int s, Flag &isTrans, void (*doOnTransition)()) : Transition(), isTrans(isTrans) {
         this->stateNumber = s;
         this->conditionFunction = [] { return false; };
         this->doOnTransition = doOnTransition;
-        this->isTrans = isTrans;
     }
 };
 
 class CustomState : public State {
 public:
     CustomState() = default;
-    void addTransition(CustomState *s, std::function<bool()> isTrans);
+    void addTransition(CustomState *s, Flag &isTrans);
     int evalTransitions() override;
 
     static void doOnAnyTransition();

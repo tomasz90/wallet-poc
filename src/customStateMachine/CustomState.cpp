@@ -7,7 +7,7 @@
 
 void CustomState::addTransition(
         CustomState *s,
-        std::function<bool()> isTrans
+        Flag &isTrans
 ) {
     auto t = new CustomTransition{s->index, isTrans, doOnAnyTransition};
     transitions->add(t);
@@ -16,18 +16,18 @@ void CustomState::addTransition(
 void CustomState::doOnAnyTransition() {
     Menu::firstTime = true;
     Disp::lastTextBlinked = 0;
-    Nav::nextCalled = false;
-    Nav::previousCalled = false;
-    Nav::bothCalled = false;
-    Nav::nextPinBothCalled = false;
-    Nav::previousPinBothCalled = false;
+    Nav::nextCalled.unset();
+    Nav::previousCalled.unset();
+    Nav::bothCalled.unset();
+    Nav::nextPinBothCalled.unset();
+    Nav::previousPinBothCalled.unset();
 }
 
 int CustomState::evalTransitions() {
     if (transitions->size() == 0) return index;
     for (int i = 0; i < transitions->size(); i++) {
         CustomTransition t = *((CustomTransition *) transitions->get(i));
-        if (t.isTrans()) {
+        if (t.isTrans.check()) {
             t.doOnTransition();
             return transitions->get(i)->stateNumber;
         }

@@ -4,21 +4,26 @@
 #include "Led.h"
 #include "ButtonsHandler.h"
 
+struct Flag {
+    bool flag = false;
+    bool check();
+    void set();
+    void unset();
+};
+
 class Nav {
 public:
-    static bool previousCalled;
-    static bool nextCalled;
-    static bool bothCalled;
-    static bool nextPinBothCalled;
-    static bool previousPinBothCalled;
+    static Flag previousCalled;
+    static Flag nextCalled;
+    static Flag bothCalled;
+    static Flag nextPinBothCalled;
+    static Flag previousPinBothCalled;
 
     static void begin(Led *_led, ButtonsHandler &buttonHandler);
     static void onPrevious();
     static void onNext();
     static void onBoth();
     static void enterPin();
-
-    static std::function<bool()> _(bool &called);
 
 private:
     static Led* led;
