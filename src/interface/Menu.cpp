@@ -9,6 +9,10 @@
 CustomMachine machine = CustomMachine();
 bool Menu::firstTime = true;
 
+std::function<bool()> _(bool condition) {
+    return [condition]() -> bool { return condition; };
+}
+
 void Menu::begin() {
 
     // STATES

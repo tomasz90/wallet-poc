@@ -6,7 +6,7 @@
 
 void CustomState::addTransition(
         CustomState *s,
-        bool (*isTrans)()
+        std::function<bool()> isTrans
 ) {
     auto t = new CustomTransition{s->index, isTrans, doOnAnyTransition};
     transitions->add(t);
@@ -21,7 +21,7 @@ int CustomState::evalTransitions() {
     if (transitions->size() == 0) return index;
     for (int i = 0; i < transitions->size(); i++) {
         CustomTransition t = *((CustomTransition *) transitions->get(i));
-        if (t.conditionFunction()) {
+        if (t.isTrans()) {
             t.doOnTransition();
             return transitions->get(i)->stateNumber;
         }
