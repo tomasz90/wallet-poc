@@ -5,8 +5,8 @@
 #include "util/Nav.h"
 #include "util/Pin.h"
 
-#define PREVIOUS_BUTTON 13
-#define NEXT_BUTTON 12
+#define PREVIOUS_BUTTON 12
+#define NEXT_BUTTON 25
 #define LED 23
 
 Led* led = new Led(LED, 0, 20, 4);
