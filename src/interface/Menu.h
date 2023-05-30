@@ -30,6 +30,8 @@ private:
     static void s3_3();
 
     static void s4();
+
+    static void s5();
 };
 
 #endif //WALLET_POC_MENU_H

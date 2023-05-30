@@ -29,6 +29,9 @@ void Menu::begin() {
 
     CustomState *S4 =   machine.addState(&s4);
 
+    CustomState *S5 =   machine.addState(&s5);
+
+
     // NEXT
     S0->addTransition(S1_0,   &Nav::isBoth);
 
@@ -45,6 +48,9 @@ void Menu::begin() {
     S3_2->addTransition(S3_3, &Nav::isNextPin);
     S3_3->addTransition(S4,   &Nav::isNextPin);
 
+    S4->addTransition(S5,     &Nav::isBoth);
+
+
     // PREVIOUS
     S1_1->addTransition(S1_0, &Nav::isPrevious);
 
@@ -59,7 +65,7 @@ void Menu::begin() {
     S3_3->addTransition(S3_2, &Nav::isPreviousPin);
 
     //todo: to implement later
-    S4->addTransition(S0, &Nav::isBoth);
+    S5->addTransition(S0,     &Nav::isBoth);
 
 }
 
@@ -140,5 +146,9 @@ void Menu::s3_3() {
 void Menu::s4() {
     doOnce([]() { Disp::drawOneBox("OK", 80); });
     Disp::blinkTextWithSign("Pin confirmed!");
+}
+
+void Menu::s5() {
+    Disp::blinkTextWithSign("Now please save your seed phrase!");
 }
 
