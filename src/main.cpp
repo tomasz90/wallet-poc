@@ -3,6 +3,7 @@
 #include "interface/Disp.h"
 #include "interface/Menu.h"
 #include "util/Nav.h"
+#include "util/Pin.h"
 
 #define PREVIOUS_BUTTON 13
 #define NEXT_BUTTON 12
@@ -20,6 +21,7 @@ void setup() {
     Disp::begin();
     Nav::begin(led, buttonHandler);
     Menu::begin();
+    Pin::begin();
     Seed::createMnemonic();
 }
 

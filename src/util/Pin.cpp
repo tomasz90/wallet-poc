@@ -2,8 +2,20 @@
 #include "Wmath.cpp"
 
 int Pin::currentIndex = 0;
-int Pin::pinCombination[4] = {_random(0), _random(-1), _random(-1), _random(-1)};
-DigitState pinState[4] = {DigitState::INIT, DigitState::UN_INIT, DigitState::UN_INIT, DigitState::UN_INIT};
+int Pin::pinCombination[4];
+DigitState pinState[4];
+
+void Pin::begin() {
+    currentIndex = 0;
+    pinCombination[0] = _random(0);
+    pinCombination[1] = _random(-1);
+    pinCombination[2] = _random(-1);
+    pinCombination[3] = _random(-1);
+    pinState[0] = DigitState::INIT;
+    pinState[1] = DigitState::UN_INIT;
+    pinState[2] = DigitState::UN_INIT;
+    pinState[3] = DigitState::UN_INIT;
+}
 
 std::string Pin::getPinString() {
     std::string pinText = "       ";
@@ -61,9 +73,18 @@ void Pin::decrementCurrentNumber() {
     pinCombination[currentIndex] = currentNumber;
 }
 
+void Pin::setDigit() {
+    if(!Pin::isArrow()) {
+        Pin::setOneDigit();
+    } else {
+        Pin::unsetOneDigit();
+    }
+}
+
 void Pin::setOneDigit() {
     if (currentIndex == 3) {
         //currentIndex = 0;
+        begin();
         // todo: remember pin combination
     } else if (currentIndex < 3) {
         pinCombination[currentIndex] = _random(-1);

@@ -24,8 +24,10 @@ private:
     static bool previousCalled;
     static bool nextCalled;
     static bool bothCalled;
-
+    static bool nextPinBothCalled;
     static void resetAll(bool doReset);
+
+    static bool previousPinBothCalled;
 };
 
 

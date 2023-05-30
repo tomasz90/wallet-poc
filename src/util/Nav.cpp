@@ -8,6 +8,9 @@ bool Nav::previousCalled = false;
 bool Nav::nextCalled = false;
 bool Nav::bothCalled = false;
 
+bool Nav::nextPinBothCalled = false;
+bool Nav::previousPinBothCalled = false;
+
 Led *Nav::led = nullptr;
 
 void Nav::begin(Led *_led, ButtonsHandler &buttonHandler) {
@@ -17,15 +20,17 @@ void Nav::begin(Led *_led, ButtonsHandler &buttonHandler) {
 
 void Nav::onPrevious() {
     led->flash();
-    Nav::previousCalled = true;
+    previousCalled = true;
 }
+
 void Nav::onNext() {
     led->flash();
-    Nav::nextCalled = true;
+    nextCalled = true;
 }
+
 void Nav::onBoth() {
     led->flash();
-    Nav::bothCalled = true;
+    bothCalled = true;
 }
 
 bool Nav::isPrevious() {
@@ -61,27 +66,29 @@ void Nav::enterPin() {
     } else if (isPrevious()) {
         Pin::decrementCurrentNumber();
         Disp::drawPin();
-    } else if(isBoth()) {
-        if(Pin::isArrow()) {
-            Pin::unsetOneDigit();
+    } else if (isBoth()) {
+        Pin::setDigit();
+        if(!Pin::isArrow() && Pin::currentIndex == 3) {
+            nextPinBothCalled = true;
+        } else if(Pin::isArrow() && Pin::currentIndex == 0) {
+            previousPinBothCalled = true;
         } else {
-            Pin::setOneDigit();
+            Disp::drawPin();
         }
-        Disp::drawPin();
     }
 }
 
 bool Nav::isNextPin() {
-    if (bothCalled && !Pin::isArrow() && Pin::currentIndex == 3) {
-        bothCalled = false;
+    if (nextPinBothCalled) {
+        nextPinBothCalled = false;
         return true;
     }
     return false;
 }
 
 bool Nav::isPreviousPin() {
-    if (bothCalled && Pin::isArrow() && Pin::currentIndex == 0) {
-        bothCalled = false;
+    if (previousPinBothCalled) {
+        previousPinBothCalled = false;
         return true;
     }
     return false;
