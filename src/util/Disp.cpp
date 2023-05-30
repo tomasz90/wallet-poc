@@ -71,6 +71,19 @@ void Disp::drawYes() {
     display.display();
 }
 
+void Disp::drawOneBox(const std::string &text, uint8_t width, uint8_t cursorPos) {
+    clearMenu();
+    uint8_t begin = (128 - width) / 2;
+    display.fillRect(begin, 43, width, 20, WHITE);
+    display.drawRect(begin + 1, 44, width - 2, 18, BLACK);
+
+    display.setCursor(cursorPos, 49);
+    display.setTextColor(BLACK);
+    display.setTextSize(1);
+    display.println(text.c_str());
+    display.display();
+}
+
 void Disp::drawPin() {
     clearMenu();
     display.setCursor(23, 40);

@@ -22,7 +22,7 @@ void Menu::begin() {
     CustomState *S3 = machine.addState(&s3);
 
     // TRANSITIONS
-    S0->addTransition(S1_0, &Nav::isNext);
+    S0->addTransition(S1_0, &Nav::isBoth);
 
     S1_0->addTransition(S1_1, &Nav::isNextPin);
     S1_1->addTransition(S1_2, &Nav::isNextPin);
@@ -47,11 +47,14 @@ void Menu::run() {
 }
 
 void Menu::doOnce(void (*_doOnce)()) {
-    if(Disp::firstTime) _doOnce();
+    if(Disp::firstTime) {
+        Disp::firstTime = false;
+        _doOnce();
+    }
 }
 
 void Menu::s0() {
-    doOnce(&Disp::drawPin);
+    doOnce([]() { Disp::drawOneBox("Proceed?", 80, 40); });
     Disp::blinkTextWithSign("Hello!");
 }
 
