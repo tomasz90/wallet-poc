@@ -29,23 +29,6 @@ std::string Pin::getPinString() {
     return pinText;
 }
 
-char Pin::getCharAt(int index) {
-    int digit = rawCombination[index];
-    switch (pinState[index]) {
-        case DigitState::INIT:
-            if (digit == -1) return '<';
-            return '0' + digit;
-        case DigitState::UN_INIT:
-            return '*';
-        case DigitState::SET:
-            return '$';
-    }
-}
-
-bool Pin::isArrow() {
-    return rawCombination[currentIndex] == -1;
-}
-
 void Pin::incrementCurrentDigit() {
     int &currentNumber = rawCombination[currentIndex];
     if (currentNumber >= 9) {
@@ -76,7 +59,7 @@ void Pin::decrementCurrentDigit() {
     rawCombination[currentIndex] = currentNumber;
 }
 
-void Pin::setDigit() {
+void Pin::setOrUnsetDigit() {
     if (!Pin::isArrow()) {
         Pin::setOneDigit();
     } else {
@@ -84,11 +67,50 @@ void Pin::setDigit() {
     }
 }
 
+void Pin::savePin() {
+    if(currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
+    for (int i = 0; i < 4; i++) {
+        if(rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
+        savedCombination[i] = rawCombination[i];
+    }
+    begin();
+}
+
+bool Pin::ifLastDigit() {
+    return !Pin::isArrow() && Pin::currentIndex == 3;
+}
+
+bool Pin::ifFirstDigit() {
+    return Pin::isArrow() && Pin::currentIndex == 0;
+}
+
+int Pin::_random(int with) {
+    return random(with, 9);
+}
+
+char Pin::getCharAt(int index) {
+    int digit = rawCombination[index];
+    switch (pinState[index]) {
+        case DigitState::INIT:
+            if (digit == -1) return '<';
+            return '0' + digit;
+        case DigitState::UN_INIT:
+            return '*';
+        case DigitState::SET:
+            return '$';
+    }
+}
+
+bool Pin::isArrow() {
+    return rawCombination[currentIndex] == -1;
+}
+
 void Pin::setOneDigit() {
-    if (currentIndex > 3) throwException("Setting at index more than 3");
+    Serial.println("Setting at index: " + String(currentIndex) + " value: " + String(rawCombination[currentIndex]));
     pinState[currentIndex] = DigitState::SET;
     pinState[currentIndex + 1] = DigitState::INIT;
-    currentIndex++;
+    if (currentIndex > 3) throwException("Setting at index more than 3");
+    else if (currentIndex < 3) currentIndex++;
 }
 
 void Pin::unsetOneDigit() {
@@ -98,17 +120,5 @@ void Pin::unsetOneDigit() {
         pinState[currentIndex - 1] = DigitState::INIT;
         currentIndex--;
     }
-}
-
-int Pin::_random(int with) {
-    return random(with, 9);
-}
-
-void Pin::savePin() {
-    for (int i = 0; i < 4; i++) {
-        if(rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
-        savedCombination[i] = rawCombination[i];
-    }
-    begin();
 }
 

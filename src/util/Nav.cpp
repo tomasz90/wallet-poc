@@ -67,14 +67,14 @@ void Nav::enterPin() {
         Pin::decrementCurrentDigit();
         Disp::drawPin();
     } else if (isBoth()) {
-        if(!Pin::isArrow() && Pin::currentIndex == 3) {
-            Pin::setDigit();
+        if(Pin::ifLastDigit()) {
+            Pin::setOrUnsetDigit();
             Pin::savePin();
             nextPinBothCalled = true;
-        } else if(Pin::isArrow() && Pin::currentIndex == 0) {
+        } else if(Pin::ifFirstDigit()) {
             previousPinBothCalled = true;
         } else {
-            Pin::setDigit();
+            Pin::setOrUnsetDigit();
             Disp::drawPin();
         }
     }
