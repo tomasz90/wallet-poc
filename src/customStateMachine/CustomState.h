@@ -4,24 +4,21 @@
 #endif //WALLET_POC_CUSTOMMACHINE_H
 
 struct CustomTransition : Transition {
-    void (*doFirst)();
-    void (*doSecond)();
+    void (*doOnTransition)();
 
-    CustomTransition(int s, bool (*isTrans)(), void (*doFirst)(), void (*doSecond)() = nullptr) : Transition() {
+    CustomTransition(int s, bool (*isTrans)(), void (*doOnTransition)()) : Transition() {
         this->stateNumber = s;
         this->conditionFunction = isTrans;
-        this->doFirst = doFirst;
-        this->doSecond = doSecond;
+        this->doOnTransition = doOnTransition;
     }
 };
 
 class CustomState : public State {
 public:
     CustomState() = default;
-    void addTransition(CustomState *s, bool (*isTrans)(), void (*doFirst)(), void (*doSecond)());
-    void addTransition(CustomState *s, bool (*isTrans)(), void (*doFirst)() = nullptr);
+    void addTransition(CustomState *s, bool (*isTrans)());
     int evalTransitions() override;
 
-    static void anyTransition();
+    static void doOnAnyTransition();
 };
 
