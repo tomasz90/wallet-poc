@@ -1,10 +1,10 @@
 #include "Menu.h"
 #include "StateMachine.h"
 #include "Disp.h"
-#include "CustomStateMachine/CustomMachine.h"
-#include "Pin.h"
+#include "customStateMachine/CustomMachine.h"
+#include "util/Pin.h"
 #include "ButtonsHandler.h"
-#include "Nav.h"
+#include "util/Nav.h"
 
 CustomMachine machine = CustomMachine();
 bool Menu::firstTime = true;

@@ -1,6 +1,6 @@
 #include "Disp.h"
 #include "Adafruit_SSD1306.h"
-#include "Pin.h"
+#include "util/Pin.h"
 
 bool Disp::blink;
 unsigned long Disp::lastTextBlinked;

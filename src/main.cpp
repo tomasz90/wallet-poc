@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "util/Seed.h"
-#include "util/Disp.h"
-#include "util/Menu.h"
+#include "interface/Disp.h"
+#include "interface/Menu.h"
 #include "util/Nav.h"
 
 #define PREVIOUS_BUTTON 13

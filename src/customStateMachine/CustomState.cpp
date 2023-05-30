@@ -1,8 +1,8 @@
 #include <HardwareSerial.h>
 #include "StateMachine.h"
 #include "CustomState.h"
-#include "util/Disp.h"
-#include "util/Menu.h"
+#include "interface/Disp.h"
+#include "interface/Menu.h"
 
 // doFirst can display static content that don't need to be updated
 void CustomState::addTransition(

@@ -1,7 +1,7 @@
 #include "Nav.h"
 #include "Pin.h"
 #include "Led.h"
-#include "Disp.h"
+#include "interface/Disp.h"
 #include "ButtonsHandler.h"
 
 bool Nav::previousCalled = false;
