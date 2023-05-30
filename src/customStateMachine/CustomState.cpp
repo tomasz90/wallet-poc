@@ -16,11 +16,6 @@ void CustomState::addTransition(
 void CustomState::doOnAnyTransition() {
     Menu::firstTime = true;
     Disp::lastTextBlinked = 0;
-    Nav::nextCalled.unset();
-    Nav::previousCalled.unset();
-    Nav::bothCalled.unset();
-    Nav::nextPinBothCalled.unset();
-    Nav::previousPinBothCalled.unset();
 }
 
 int CustomState::evalTransitions() {

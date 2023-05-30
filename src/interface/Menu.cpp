@@ -12,29 +12,29 @@ bool Menu::firstTime = true;
 void Menu::begin() {
 
     // STATES
-//    CustomState *S0 =   machine.addState(&s0);
-//    CustomState *S1_0 = machine.addState(&s1_0);
-//    CustomState *S1_1 = machine.addState(&s1_1);
+    CustomState *S0 =   machine.addState(&s0);
+    CustomState *S1_0 = machine.addState(&s1_0);
+    CustomState *S1_1 = machine.addState(&s1_1);
     CustomState *S2 =   machine.addState(&s2);
     CustomState *S3 =   machine.addState(&s3);
     CustomState *S4 =   machine.addState(&s4);
     CustomState *S5 =   machine.addState(&s5);
 
     // NEXT
-//    S0->addTransition(S1_0,   Nav::bothCalled);
-//    S1_0->addTransition(S1_1, Nav::nextCalled);
-//    S1_1->addTransition(S2,   Nav::bothCalled);
+    S0->addTransition(S1_0,   Nav::bothCalled);
+    S1_0->addTransition(S1_1, Nav::nextCalled);
+    S1_1->addTransition(S2,   Nav::bothCalled);
     S2->addTransition(S3,     Nav::nextPinBothCalled);
     S3->addTransition(S4,     Nav::nextPinBothCalled);
     S4->addTransition(S5,     Nav::bothCalled);
 
     // PREVIOUS
-//    S1_1->addTransition(S1_0, Nav::previousCalled);
-//    S2->addTransition(S1_0,   Nav::previousPinBothCalled);
-//    S3->addTransition(S2,     Nav::previousPinBothCalled);
-//
-//    //todo: to implement later
-//    S5->addTransition(S0,     Nav::bothCalled);
+    S1_1->addTransition(S1_0, Nav::previousCalled);
+    S2->addTransition(S1_0,   Nav::previousPinBothCalled);
+    S3->addTransition(S2,     Nav::previousPinBothCalled);
+
+    //todo: to implement later
+    S5->addTransition(S0,     Nav::bothCalled);
 
 }
 

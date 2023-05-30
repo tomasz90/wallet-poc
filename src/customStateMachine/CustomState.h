@@ -11,6 +11,7 @@ struct CustomTransition : Transition {
 
     CustomTransition(int s, Flag &isTrans, void (*doOnTransition)()) : Transition(), isTrans(isTrans) {
         this->stateNumber = s;
+        // todo: transition to your own solution entirely
         this->conditionFunction = [] { return false; };
         this->doOnTransition = doOnTransition;
     }
