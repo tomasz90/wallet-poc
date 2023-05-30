@@ -61,18 +61,24 @@ void Nav::resetAll(bool doReset) {
 
 void Nav::enterPin() {
     if (isNext()) {
-        Pin::incrementCurrentNumber();
+        Pin::incrementCurrentDigit();
         Disp::drawPin();
+        Serial.println("Raw combination: ");
+        for (int i : Pin::rawCombination) {
+            Serial.print(i);
+        }
     } else if (isPrevious()) {
-        Pin::decrementCurrentNumber();
+        Pin::decrementCurrentDigit();
         Disp::drawPin();
     } else if (isBoth()) {
-        Pin::setDigit();
         if(!Pin::isArrow() && Pin::currentIndex == 3) {
+            Pin::setDigit();
+            Pin::savePin();
             nextPinBothCalled = true;
         } else if(Pin::isArrow() && Pin::currentIndex == 0) {
             previousPinBothCalled = true;
         } else {
+            Pin::setDigit();
             Disp::drawPin();
         }
     }

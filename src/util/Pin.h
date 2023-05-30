@@ -13,21 +13,23 @@ enum class DigitState {
 
 class Pin {
 public:
+    static int currentIndex;
     static void begin();
     static std::string getPinString();
-    static void incrementCurrentNumber();
-    static void decrementCurrentNumber();
-    static void setOneDigit();
-    static void unsetOneDigit();
 
-    static int isArrow();
-
-    static int currentIndex;
+    static void incrementCurrentDigit();
+    static void decrementCurrentDigit();
 
     static void setDigit();
+    static bool isArrow();
+
+    static void savePin();
+    static int rawCombination[4];
 private:
-    static int pinCombination[4];
-    static char getCharAt(int index);
+    static int savedCombination[4];
 
     static int _random(int with);
+    static void setOneDigit();
+    static void unsetOneDigit();
+    static char getCharAt(int index);
 };
