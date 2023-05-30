@@ -19,6 +19,7 @@ ButtonsHandler buttonHandler(previous, next);
 void setup() {
     Serial.begin(115200);
     Disp::begin();
+    buttonHandler.setDebounceTime(10);
     Nav::begin(led, buttonHandler);
     Menu::begin();
     Pin::begin();
