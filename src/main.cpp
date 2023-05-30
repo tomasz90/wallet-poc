@@ -5,14 +5,14 @@
 #include "util/Nav.h"
 #include "util/Pin.h"
 
-#define PREVIOUS_BUTTON 12
+#define PREVIOUS_BUTTON 2
 #define NEXT_BUTTON 25
 #define LED 23
 
 Led* led = new Led(LED, 0, 20, 4);
 
-Button previous(PREVIOUS_BUTTON, IN_PULLDOWN);
-Button next(NEXT_BUTTON, IN_PULLDOWN);
+Button previous(PREVIOUS_BUTTON, IN_PULLUP);
+Button next(NEXT_BUTTON, IN_PULLUP);
 
 ButtonsHandler buttonHandler(previous, next);
 

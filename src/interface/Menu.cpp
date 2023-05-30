@@ -67,13 +67,20 @@ void Menu::s1_1() {
 }
 
 void Menu::s2() {
-    doOnce(&Disp::drawPin);
+    doOnce([]() {
+        Pin::setMode(PinMode::SET);
+        Disp::drawPin();
+    });
+
     Disp::blinkTextWithSign("Set pin:");
     Nav::enterPin();
 }
 
 void Menu::s3() {
-    doOnce(&Disp::drawPin);
+    doOnce([]() {
+        Pin::setMode(PinMode::CONFIRM);
+        Disp::drawPin();
+    });
     Disp::blinkTextWithSign("Confirm pin:");
     Nav::enterPin();
 }

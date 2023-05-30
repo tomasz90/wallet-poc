@@ -3,6 +3,7 @@
 #include "Wmath.cpp"
 #include "Util.h"
 
+PinMode Pin::mode;
 int Pin::currentIndex = 0;
 int Pin::rawCombination[4];
 int Pin::savedCombination[4];
@@ -10,7 +11,6 @@ DigitState pinState[4];
 
 void Pin::begin() {
     currentIndex = 0;
-    rawCombination[0] = _random(0);
     rawCombination[1] = _random(-1);
     rawCombination[2] = _random(-1);
     rawCombination[3] = _random(-1);
@@ -18,6 +18,18 @@ void Pin::begin() {
     pinState[1] = DigitState::UN_INIT;
     pinState[2] = DigitState::UN_INIT;
     pinState[3] = DigitState::UN_INIT;
+}
+
+void Pin::setMode(PinMode _mode) {
+    mode = _mode;
+    switch (mode) {
+        case PinMode::SET:
+            rawCombination[0] = _random(-1);
+            break;
+        case PinMode::CONFIRM:
+            rawCombination[0] = _random(0);
+            break;
+    }
 }
 
 std::string Pin::getPinString() {
@@ -68,10 +80,18 @@ void Pin::setOrUnsetDigit() {
 }
 
 void Pin::savePin() {
-    if(currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
+    if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
     for (int i = 0; i < 4; i++) {
-        if(rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
-        savedCombination[i] = rawCombination[i];
+        if (rawCombination[i] < 0)
+            throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
+        switch (mode) {
+            case PinMode::SET:
+                savedCombination[i] = rawCombination[i];
+                break;
+            case PinMode::CONFIRM:
+                if (savedCombination[i] != rawCombination[i]) Serial.println("Pin mismatch!");
+                break;
+        }
     }
     begin();
 }
@@ -106,11 +126,13 @@ bool Pin::isArrow() {
 }
 
 void Pin::setOneDigit() {
+    if (currentIndex > 3) throwException("Setting at index more than 3");
     Serial.println("Setting at index: " + String(currentIndex) + " value: " + String(rawCombination[currentIndex]));
     pinState[currentIndex] = DigitState::SET;
-    pinState[currentIndex + 1] = DigitState::INIT;
-    if (currentIndex > 3) throwException("Setting at index more than 3");
-    else if (currentIndex < 3) currentIndex++;
+    if (currentIndex < 3) {
+        currentIndex++;
+        pinState[currentIndex] = DigitState::INIT;
+    }
 }
 
 void Pin::unsetOneDigit() {
