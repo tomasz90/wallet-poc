@@ -17,7 +17,9 @@ void Menu::begin() {
     CustomState *S1_1 = machine.addState(&s1_1);
     CustomState *S2 =   machine.addState(&s2);
     CustomState *S3 =   machine.addState(&s3);
-    CustomState *S4 =   machine.addState(&s4);
+    CustomState *S4_0 =   machine.addState(&s4_0);
+    CustomState *S4_1 =   machine.addState(&s4_1);
+
     CustomState *S5 =   machine.addState(&s5);
 
     // NEXT
@@ -25,8 +27,9 @@ void Menu::begin() {
     S1_0->addTransition(S1_1, Nav::nextCalled);
     S1_1->addTransition(S2,   Nav::bothCalled);
     S2->addTransition(S3,     Nav::nextPinBothCalled);
-    S3->addTransition(S4,     Nav::nextPinBothCalled);
-    S4->addTransition(S5,     Nav::bothCalled);
+    S3->addTransition(S4_0,     Nav::nextPinBothCalled);
+    S3->addTransition(S4_1,     Nav::pinMismatch);
+    S4_1->addTransition(S2,     Nav::bothCalled);
 
     // PREVIOUS
     S1_1->addTransition(S1_0, Nav::previousCalled);
@@ -50,7 +53,7 @@ void Menu::doOnce(void (*_doOnce)()) {
 }
 
 void Menu::s0() {
-    doOnce([]() { Disp::drawOneBox("Proceed?", 80); });
+    doOnce([]() { Disp::drawOneBox("PROCEED?", 80); });
     Disp::blinkTextWithSign("Hello!");
 }
 
@@ -83,9 +86,14 @@ void Menu::s3() {
     Nav::enterPin();
 }
 
-void Menu::s4() {
+void Menu::s4_0() {
     doOnce([]() { Disp::drawOneBox("OK", 80); });
     Disp::blinkTextWithSign("Pin confirmed!");
+}
+
+void Menu::s4_1() {
+    doOnce([]() { Disp::drawOneBox("GO BACK", 80); });
+    Disp::blinkTextWithSign("Pin not matching ;(, try again...");
 }
 
 void Menu::s5() {

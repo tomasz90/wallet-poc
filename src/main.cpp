@@ -22,7 +22,6 @@ void setup() {
     buttonHandler.setDebounceTime(10);
     Nav::begin(led, buttonHandler);
     Menu::begin();
-    Pin::begin();
     Seed::createMnemonic();
 }
 

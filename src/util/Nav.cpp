@@ -22,6 +22,7 @@ Flag Nav::nextCalled;
 Flag Nav::bothCalled;
 Flag Nav::nextPinBothCalled;
 Flag Nav::previousPinBothCalled;
+Flag Nav::pinMismatch;
 
 Led *Nav::led = nullptr;
 
@@ -57,8 +58,12 @@ void Nav::enterPin() {
             previousPinBothCalled.set();
         } else if (Pin::ifLastDigit()) {
             Pin::setOrUnsetDigit();
-            Pin::savePin();
-            nextPinBothCalled.set();
+            bool saved = Pin::savePin(); // todo: check if this is called only once
+            if(saved) {
+                nextPinBothCalled.set();
+            } else {
+                pinMismatch.set();
+            }
         } else {
             Pin::setOrUnsetDigit();
             Disp::drawPin();

@@ -19,7 +19,8 @@ private:
     static void s1_1();
     static void s2();
     static void s3();
-    static void s4();
+    static void s4_0();
+    static void s4_1();
     static void s5();
 };
 

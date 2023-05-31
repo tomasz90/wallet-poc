@@ -11,13 +11,13 @@ enum class PinMode { SET, CONFIRM };
 
 class Pin {
 public:
-    static void begin();
+    static void clearValues();
     static void setMode(PinMode mode);
     static std::string getPinString();
     static void incrementCurrentDigit();
     static void decrementCurrentDigit();
     static void setOrUnsetDigit();
-    static void savePin();
+    static bool savePin();
     static bool ifLastDigit();
     static bool ifFirstDigit();
 

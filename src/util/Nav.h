@@ -18,6 +18,7 @@ public:
     static Flag bothCalled;
     static Flag nextPinBothCalled;
     static Flag previousPinBothCalled;
+    static Flag pinMismatch;
 
     static void begin(Led *_led, ButtonsHandler &buttonHandler);
     static void onPrevious();

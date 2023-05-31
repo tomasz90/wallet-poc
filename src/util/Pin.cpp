@@ -2,6 +2,7 @@
 #include "Pin.h"
 #include "Wmath.cpp"
 #include "Util.h"
+#include "Nav.h"
 
 PinMode Pin::mode;
 int Pin::currentIndex = 0;
@@ -9,8 +10,9 @@ int Pin::rawCombination[4];
 int Pin::savedCombination[4];
 DigitState pinState[4];
 
-void Pin::begin() {
+void Pin::clearValues() {
     currentIndex = 0;
+    rawCombination[0] = _random(-1);
     rawCombination[1] = _random(-1);
     rawCombination[2] = _random(-1);
     rawCombination[3] = _random(-1);
@@ -21,6 +23,7 @@ void Pin::begin() {
 }
 
 void Pin::setMode(PinMode _mode) {
+    clearValues();
     mode = _mode;
     switch (mode) {
         case PinMode::SET:
@@ -79,21 +82,22 @@ void Pin::setOrUnsetDigit() {
     }
 }
 
-void Pin::savePin() {
+bool Pin::savePin() {
+    //todo: uncomment exceptions
     //if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
     for (int i = 0; i < 4; i++) {
-        if (rawCombination[i] < 0)
-            //throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
+        //if (rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
         switch (mode) {
             case PinMode::SET:
                 savedCombination[i] = rawCombination[i];
                 break;
             case PinMode::CONFIRM:
-                //if (savedCombination[i] != rawCombination[i]) Serial.println("Pin mismatch!");
+                if (savedCombination[i] != rawCombination[i]) { return false; }
                 break;
         }
     }
-    begin();
+    clearValues();
+    return true;
 }
 
 bool Pin::ifLastDigit() {
