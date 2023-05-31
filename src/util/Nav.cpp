@@ -47,26 +47,40 @@ void Nav::onBoth() {
 }
 
 void Nav::enterPin() {
+    // bothCalled.check() needs to be called only once here
+    bool _bothCalled = bothCalled.check();
+
+    // INCREMENT DIGIT
     if (nextCalled.check()) {
         Pin::incrementCurrentDigit();
         Disp::drawPin();
-    } else if (previousCalled.check()) {
+    }
+    // DECREMENT DIGIT
+    else if (previousCalled.check()) {
         Pin::decrementCurrentDigit();
         Disp::drawPin();
-    } else if (bothCalled.check()) {
-        if (Pin::ifFirstDigitIsArrow()) {
-            dropPinCalled.set();
-        } else if (Pin::ifLastDigitIsDigit()) {
-            Pin::setOrUnsetDigit();
-            bool saved = Pin::savePin();
-            if(saved) {
-                confirmPinCalled.set();
-            } else {
-                pinMismatchCalled.set();
-            }
-        } else {
-            Pin::setOrUnsetDigit();
-            Disp::drawPin();
-        }
+    }
+    // TRY SET PIN
+    else if (_bothCalled && !Pin::isArrow() && Pin::ifLastDigit()) {
+        Pin::setOneDigit();
+        bool saved = Pin::savePin();
+        if (saved) { confirmPinCalled.set(); } else { pinMismatchCalled.set(); }
+        Pin::clearValues();
+    }
+    // DROP PIN
+    else if (_bothCalled && Pin::isArrow() && Pin::ifFirstDigit()) {
+        dropPinCalled.set();
+        Pin::clearValues();
+    }
+    // SET DIGIT
+    else if (_bothCalled && !Pin::isArrow()) {
+        Pin::setOneDigit();
+        Disp::drawPin();
+    }
+
+    // UNSET DIGIT
+    else if (_bothCalled && Pin::isArrow()) {
+        Pin::unsetOneDigit();
+        Disp::drawPin();
     }
 }

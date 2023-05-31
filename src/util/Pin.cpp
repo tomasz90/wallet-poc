@@ -74,14 +74,6 @@ void Pin::decrementCurrentDigit() {
     rawCombination[currentIndex] = currentNumber;
 }
 
-void Pin::setOrUnsetDigit() {
-    if (!Pin::isArrow()) {
-        Pin::setOneDigit();
-    } else {
-        Pin::unsetOneDigit();
-    }
-}
-
 bool Pin::savePin() {
     //todo: uncomment exceptions
     //if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
@@ -96,16 +88,15 @@ bool Pin::savePin() {
                 break;
         }
     }
-    clearValues();
     return true;
 }
 
-bool Pin::ifLastDigitIsDigit() {
-    return !Pin::isArrow() && Pin::currentIndex == 3;
+bool Pin::ifLastDigit() {
+    return Pin::currentIndex == 3;
 }
 
-bool Pin::ifFirstDigitIsArrow() {
-    return Pin::isArrow() && Pin::currentIndex == 0;
+bool Pin::ifFirstDigit() {
+    return Pin::currentIndex == 0;
 }
 
 int Pin::_random(int with) {
