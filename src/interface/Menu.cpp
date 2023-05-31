@@ -26,15 +26,15 @@ void Menu::begin() {
     S0->addTransition(S1_0,   Nav::bothCalled);
     S1_0->addTransition(S1_1, Nav::nextCalled);
     S1_1->addTransition(S2,   Nav::bothCalled);
-    S2->addTransition(S3,     Nav::nextPinBothCalled);
-    S3->addTransition(S4_0,     Nav::nextPinBothCalled);
-    S3->addTransition(S4_1,     Nav::pinMismatch);
+    S2->addTransition(S3,     Nav::confirmPinCalled);
+    S3->addTransition(S4_0,     Nav::confirmPinCalled);
+    S3->addTransition(S4_1,     Nav::pinMismatchCalled);
     S4_1->addTransition(S2,     Nav::bothCalled);
 
     // PREVIOUS
     S1_1->addTransition(S1_0, Nav::previousCalled);
-    S2->addTransition(S1_0,   Nav::previousPinBothCalled);
-    S3->addTransition(S2,     Nav::previousPinBothCalled);
+    S2->addTransition(S1_0,   Nav::dropPinCalled);
+    S3->addTransition(S2,     Nav::dropPinCalled);
 
     //todo: to implement later
     S5->addTransition(S0,     Nav::bothCalled);

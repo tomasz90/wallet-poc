@@ -18,8 +18,8 @@ public:
     static void decrementCurrentDigit();
     static void setOrUnsetDigit();
     static bool savePin();
-    static bool ifLastDigit();
-    static bool ifFirstDigit();
+    static bool ifLastDigitIsDigit();
+    static bool ifFirstDigitIsArrow();
 
 private:
     static PinMode mode;

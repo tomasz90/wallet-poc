@@ -18,11 +18,11 @@ void Flag::unset() { flag = false; }
 
 Flag Nav::previousCalled;
 Flag Nav::nextCalled;
-
 Flag Nav::bothCalled;
-Flag Nav::nextPinBothCalled;
-Flag Nav::previousPinBothCalled;
-Flag Nav::pinMismatch;
+
+Flag Nav::confirmPinCalled;
+Flag Nav::dropPinCalled;
+Flag Nav::pinMismatchCalled;
 
 Led *Nav::led = nullptr;
 
@@ -54,15 +54,15 @@ void Nav::enterPin() {
         Pin::decrementCurrentDigit();
         Disp::drawPin();
     } else if (bothCalled.check()) {
-        if (Pin::ifFirstDigit()) {
-            previousPinBothCalled.set();
-        } else if (Pin::ifLastDigit()) {
+        if (Pin::ifFirstDigitIsArrow()) {
+            dropPinCalled.set();
+        } else if (Pin::ifLastDigitIsDigit()) {
             Pin::setOrUnsetDigit();
-            bool saved = Pin::savePin(); // todo: check if this is called only once
+            bool saved = Pin::savePin();
             if(saved) {
-                nextPinBothCalled.set();
+                confirmPinCalled.set();
             } else {
-                pinMismatch.set();
+                pinMismatchCalled.set();
             }
         } else {
             Pin::setOrUnsetDigit();

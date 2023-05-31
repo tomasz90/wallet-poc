@@ -20,9 +20,9 @@ void CustomState::doOnAnyTransition() {
     Nav::nextCalled.unset();
     Nav::previousCalled.unset();
     Nav::bothCalled.unset();
-    Nav::nextPinBothCalled.unset();
-    Nav::previousPinBothCalled.unset();
-    Nav::pinMismatch.unset();
+    Nav::confirmPinCalled.unset();
+    Nav::dropPinCalled.unset();
+    Nav::pinMismatchCalled.unset();
 }
 
 int CustomState::evalTransitions() {

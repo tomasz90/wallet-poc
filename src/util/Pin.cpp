@@ -100,11 +100,11 @@ bool Pin::savePin() {
     return true;
 }
 
-bool Pin::ifLastDigit() {
+bool Pin::ifLastDigitIsDigit() {
     return !Pin::isArrow() && Pin::currentIndex == 3;
 }
 
-bool Pin::ifFirstDigit() {
+bool Pin::ifFirstDigitIsArrow() {
     return Pin::isArrow() && Pin::currentIndex == 0;
 }
 
