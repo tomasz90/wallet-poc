@@ -14,16 +14,17 @@ public:
     static void clearValues();
     static void setMode(PinMode mode);
     static std::string getPinString();
+
     static void incrementCurrentDigit();
     static void decrementCurrentDigit();
 
     static bool isArrow();
+    static bool ifFirstDigit();
+    static bool ifLastDigit();
+
     static void unsetOneDigit();
     static void setOneDigit();
-
     static bool savePin();
-    static bool ifLastDigit();
-    static bool ifFirstDigit();
 
 private:
     static PinMode mode;
@@ -33,5 +34,4 @@ private:
 
     static int _random(int with);
     static char getCharAt(int index);
-
 };

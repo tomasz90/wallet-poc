@@ -74,50 +74,16 @@ void Pin::decrementCurrentDigit() {
     rawCombination[currentIndex] = currentNumber;
 }
 
-bool Pin::savePin() {
-    //todo: uncomment exceptions
-    //if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
-    for (int i = 0; i < 4; i++) {
-        //if (rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
-        switch (mode) {
-            case PinMode::SET:
-                savedCombination[i] = rawCombination[i];
-                break;
-            case PinMode::CONFIRM:
-                if (savedCombination[i] != rawCombination[i]) { return false; }
-                break;
-        }
-    }
-    return true;
-}
-
-bool Pin::ifLastDigit() {
-    return Pin::currentIndex == 3;
+bool Pin::isArrow() {
+    return rawCombination[currentIndex] == -1;
 }
 
 bool Pin::ifFirstDigit() {
     return Pin::currentIndex == 0;
 }
 
-int Pin::_random(int with) {
-    return random(with, 9);
-}
-
-char Pin::getCharAt(int index) {
-    int digit = rawCombination[index];
-    switch (pinState[index]) {
-        case DigitState::INIT:
-            if (digit == -1) return '<';
-            return '0' + digit;
-        case DigitState::UN_INIT:
-            return '*';
-        case DigitState::SET:
-            return '$';
-    }
-}
-
-bool Pin::isArrow() {
-    return rawCombination[currentIndex] == -1;
+bool Pin::ifLastDigit() {
+    return Pin::currentIndex == 3;
 }
 
 void Pin::setOneDigit() {
@@ -136,6 +102,39 @@ void Pin::unsetOneDigit() {
         pinState[currentIndex] = DigitState::UN_INIT;
         pinState[currentIndex - 1] = DigitState::INIT;
         currentIndex--;
+    }
+}
+
+bool Pin::savePin() {
+    if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
+    for (int i = 0; i < 4; i++) {
+        if (rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
+        switch (mode) {
+            case PinMode::SET:
+                savedCombination[i] = rawCombination[i];
+                break;
+            case PinMode::CONFIRM:
+                if (savedCombination[i] != rawCombination[i]) { return false; }
+                break;
+        }
+    }
+    return true;
+}
+
+int Pin::_random(int with) {
+    return random(with, 9);
+}
+
+char Pin::getCharAt(int index) {
+    int digit = rawCombination[index];
+    switch (pinState[index]) {
+        case DigitState::INIT:
+            if (digit == -1) return '<';
+            return '0' + digit;
+        case DigitState::UN_INIT:
+            return '*';
+        case DigitState::SET:
+            return '$';
     }
 }
 

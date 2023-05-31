@@ -17,27 +17,28 @@ void Menu::begin() {
     CustomState *S1_1 = machine.addState(&s1_1);
     CustomState *S2 =   machine.addState(&s2);
     CustomState *S3 =   machine.addState(&s3);
-    CustomState *S4_0 =   machine.addState(&s4_0);
-    CustomState *S4_1 =   machine.addState(&s4_1);
+    CustomState *S4_0 = machine.addState(&s4_0);
+    CustomState *S4_1 = machine.addState(&s4_1);
 
     CustomState *S5 =   machine.addState(&s5);
 
     // NEXT
-    S0->addTransition(S1_0,   Nav::bothCalled);
-    S1_0->addTransition(S1_1, Nav::nextCalled);
-    S1_1->addTransition(S2,   Nav::bothCalled);
-    S2->addTransition(S3,     Nav::confirmPinCalled);
-    S3->addTransition(S4_0,     Nav::confirmPinCalled);
-    S3->addTransition(S4_1,     Nav::pinMismatchCalled);
-    S4_1->addTransition(S2,     Nav::bothCalled);
+    S0->addTransition(S1_0,  Nav::bothCalled);
+    S1_0->addTransition(S1_1,Nav::nextCalled);
+    S1_1->addTransition(S2,  Nav::bothCalled);
+    S2->addTransition(S3,    Nav::confirmPinCalled);
+    S3->addTransition(S4_0,  Nav::confirmPinCalled);
+    S3->addTransition(S4_1,  Nav::pinMismatchCalled);
+    S4_0->addTransition(S5,  Nav::bothCalled);
+    S4_1->addTransition(S2,  Nav::bothCalled);
 
     // PREVIOUS
-    S1_1->addTransition(S1_0, Nav::previousCalled);
-    S2->addTransition(S1_0,   Nav::dropPinCalled);
-    S3->addTransition(S2,     Nav::dropPinCalled);
+    S1_1->addTransition(S1_0,Nav::previousCalled);
+    S2->addTransition(S1_0,  Nav::dropPinCalled);
+    S3->addTransition(S2,    Nav::dropPinCalled);
 
     //todo: to implement later
-    S5->addTransition(S0,     Nav::bothCalled);
+    S5->addTransition(S0,    Nav::bothCalled);
 
 }
 
@@ -97,6 +98,7 @@ void Menu::s4_1() {
 }
 
 void Menu::s5() {
+    doOnce([]() { Disp::drawOneBox("PROCEED?", 80); });
     Disp::blinkTextWithSign("Now please save your seed phrase!");
 }
 
