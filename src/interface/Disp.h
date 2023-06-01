@@ -20,7 +20,7 @@ public:
 private:
     static bool blink;
 
-    static uint8_t calculateCursorPosition(const std::string &text, uint8_t textCenter);
+    static void setCursorRelativeToCenter(const std::string &text, uint8_t textCenter);
     static void animateText(const std::string &text1, const std::string &text2);
 
 };
