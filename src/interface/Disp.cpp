@@ -34,39 +34,34 @@ void Disp::blinkTextWithSign(const std::string &text) {
     animateText(text, text2);
 }
 
-void Disp::drawNo() {
+void Disp::drawTwoBoxes(const char text1[], const char text2[], bool firstHighlighted) {
     clearMenu();
-    display.fillRect(5, 43, 50, 20, WHITE);
-    display.drawRect(6, 44, 48, 18, BLACK);
+    bool textColor1 = 0;
+    bool textColor2 = 1;
 
-    display.drawRect(73, 43, 50, 20, WHITE);
+    if(firstHighlighted) {
+        display.drawRect(73, 43, 50, 20, WHITE);
+
+        display.fillRect(5, 43, 50, 20, WHITE);
+        display.drawRect(6, 44, 48, 18, BLACK);
+    } else {
+        textColor1 = 1;
+        textColor2 = 0;
+
+        display.drawRect(5, 43, 50, 20, WHITE);
+
+        display.fillRect(73, 43, 50, 20, WHITE);
+        display.drawRect(74, 44, 48, 18, BLACK);
+    }
 
     display.setCursor(25, 49);
-    display.setTextColor(BLACK);
+    display.setTextColor(textColor1);
     display.setTextSize(1);
-    display.println("NO");
+    display.println(text1);
 
-    display.setTextColor(WHITE);
+    display.setTextColor(textColor2);
     display.setCursor(89, 49);
-    display.println("YES");
-    display.display();
-}
-
-void Disp::drawYes() {
-    clearMenu();
-    display.drawRect(5, 43, 50, 20, WHITE);
-
-    display.fillRect(73, 43, 50, 20, WHITE);
-    display.drawRect(74, 44, 48, 18, BLACK);
-
-    display.setTextColor(BLACK);
-    display.setTextSize(1);
-    display.setCursor(89, 49);
-    display.println("YES");
-
-    display.setCursor(25, 49);
-    display.setTextColor(WHITE);
-    display.println("NO");
+    display.println(text2);
     display.display();
 }
 

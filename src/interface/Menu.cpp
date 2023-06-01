@@ -19,8 +19,8 @@ void Menu::begin() {
     CustomState *S3 =   machine.addState(&s3);
     CustomState *S4_0 = machine.addState(&s4_0);
     CustomState *S4_1 = machine.addState(&s4_1);
-
     CustomState *S5 =   machine.addState(&s5);
+    CustomState *S6 = machine.addState(&s6);
 
     // NEXT
     S0->addTransition(S1_0,  Nav::bothCalled);
@@ -59,12 +59,12 @@ void Menu::s0() {
 }
 
 void Menu::s1_0() {
-    doOnce(&Disp::drawNo);
+    doOnce([]() { Disp::drawTwoBoxes("NO", "YES", true); });
     Disp::blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s1_1() {
-    doOnce(&Disp::drawYes);
+    doOnce([]() { Disp::drawTwoBoxes("NO", "YES", false); });
     Disp::blinkTextWithSign("Do you want to set as new device?");
 }
 
@@ -98,6 +98,11 @@ void Menu::s4_1() {
 }
 
 void Menu::s5() {
+    doOnce([]() { Disp::drawOneBox("PROCEED?", 80); });
+    Disp::blinkTextWithSign("Now please save your seed phrase!");
+}
+
+void Menu::s6() {
     doOnce([]() { Disp::drawOneBox("PROCEED?", 80); });
     Disp::blinkTextWithSign("Now please save your seed phrase!");
 }

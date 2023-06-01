@@ -22,6 +22,7 @@ private:
     static void s4_0();
     static void s4_1();
     static void s5();
+    static void s6();
 };
 
 #endif //WALLET_POC_MENU_H
