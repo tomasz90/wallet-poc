@@ -93,8 +93,8 @@ void Menu::s4_0() {
 }
 
 void Menu::s4_1() {
-    doOnce([]() { Disp::drawOneBox("GO BACK", 80); });
-    Disp::blinkTextWithSign("Pin not matching ;(, try again...");
+    doOnce([]() { Disp::drawOneBox("BACK", 80); });
+    Disp::blinkTextWithSign("Pin not matching ;(  try again...");
 }
 
 void Menu::s5() {

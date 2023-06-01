@@ -10,8 +10,10 @@ unsigned long Disp::lastTextBlinked;
 
 #define BOX_WIDTH 50
 #define BOX_HEIGHT 20
+
 #define BOX_Y_START 43
-#define CURSOR_Y 49
+#define SCREEN_TEXT_MENU_BORDER_POSITION 40
+#define BOX_Y_CURSOR 49
 #define TEXT_SIZE 1
 #define PIN_SIZE 2
 
@@ -70,14 +72,14 @@ void Disp::drawTwoBoxes(const std::string &text1, const std::string &text2, bool
     }
 
     uint8_t text1Position = calculateCursorPosition(text1, SCREEN_FIRST_HALF_CENTER);
-    display.setCursor(text1Position, CURSOR_Y);
+    display.setCursor(text1Position, BOX_Y_CURSOR);
     display.setTextColor(textColor1);
     display.setTextSize(TEXT_SIZE);
     display.println(text1.c_str());
 
     uint8_t text2Position = calculateCursorPosition(text2, SCREEN_SECOND_HALF_CENTER);
     display.setTextColor(textColor2);
-    display.setCursor(text2Position, CURSOR_Y);
+    display.setCursor(text2Position, BOX_Y_CURSOR);
     display.println(text2.c_str());
     display.display();
 }
@@ -89,7 +91,7 @@ void Disp::drawOneBox(const std::string &text, uint8_t width) {
     display.drawRect(begin + 1, BOX_Y_START + 1, width - 2, BOX_HEIGHT - 2, BLACK);
 
     uint8_t position = calculateCursorPosition(text, SCREEN_CENTER);
-    display.setCursor(position, CURSOR_Y);
+    display.setCursor(position, BOX_Y_CURSOR);
     display.setTextColor(BLACK);
     display.setTextSize(TEXT_SIZE);
     display.println(text.c_str());
@@ -123,11 +125,17 @@ void Disp::animateText(const std::string &text1, const std::string &text2) {
 }
 
 void Disp::clearText() {
-    display.fillRect(0, 0, 128, 40, BLACK);
+    display.fillRect(0, 0, SCREEN_WIDTH, SCREEN_TEXT_MENU_BORDER_POSITION, BLACK);
 }
 
 void Disp::clearMenu() {
-    display.fillRect(0, 38, 128, 26, BLACK);
+    display.fillRect(
+            0,
+            SCREEN_TEXT_MENU_BORDER_POSITION,
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT - SCREEN_TEXT_MENU_BORDER_POSITION,
+            BLACK
+    );
 }
 
 // TODO: not used, but keep it for now
