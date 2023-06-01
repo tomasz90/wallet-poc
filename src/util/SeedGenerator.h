@@ -1,9 +1,7 @@
 #include "bip39/word_list.h"
 
-#ifndef WALLET_POC_SEED_H
-#define WALLET_POC_SEED_H
-
-#endif //WALLET_POC_SEED_H
+#ifndef SEED_GENERATOR_H
+#define SEED_GENERATOR_H
 
 class SeedGenerator {
 public:
@@ -18,3 +16,5 @@ private:
 
     static void generateEntropy();
 };
+
+#endif //SEED_GENERATOR_H
