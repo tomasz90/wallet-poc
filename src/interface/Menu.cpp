@@ -38,7 +38,7 @@ void Menu::begin() {
     S3->addTransition(S2,    Nav::dropPinCalled);
 
     //todo: to implement later
-    S5->addTransition(S0,    Nav::bothCalled);
+    S5->addTransition(S6,    Nav::bothCalled);
 
 }
 
@@ -106,4 +106,9 @@ void Menu::s6() {
     doOnce([]() { Disp::drawOneBox("PROCEED?", 80); });
     Disp::blinkTextWithSign("Now please save your seed phrase!");
 }
+
+//void Menu::s7() {
+//    doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", false); });
+//    Disp::blinkTextWithSign("Word: 1");
+//}
 

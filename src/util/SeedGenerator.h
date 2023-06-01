@@ -5,7 +5,7 @@
 
 #endif //WALLET_POC_SEED_H
 
-class Seed {
+class SeedGenerator {
 public:
     static BIP39::word_list passphrase;
 
@@ -14,7 +14,7 @@ public:
 private:
     static std::vector<uint8_t> entropy;
 
-    Seed();
+    SeedGenerator();
 
     static void generateEntropy();
 };

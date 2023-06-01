@@ -1,12 +1,12 @@
 #include <esp_random.h>
-#include "Seed.h"
+#include "SeedGenerator.h"
 #include "bip39/bip39.h"
 
-std::vector<uint8_t> Seed::entropy;
+std::vector<uint8_t> SeedGenerator::entropy;
 
-BIP39::word_list Seed::passphrase;
+BIP39::word_list SeedGenerator::passphrase;
 
-void Seed::generateEntropy() {
+void SeedGenerator::generateEntropy() {
     // Resize the vector to accommodate the desired number of bytes
     size_t numBytes = 256;
     entropy.resize(numBytes);
@@ -17,7 +17,7 @@ void Seed::generateEntropy() {
     }
 }
 
-void Seed::createMnemonic() {
-    Seed::generateEntropy();
+void SeedGenerator::createMnemonic() {
+    generateEntropy();
     passphrase = BIP39::create_mnemonic(entropy, BIP39::language::en);
 }

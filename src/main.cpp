@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "util/Seed.h"
+#include "util/SeedGenerator.h"
 #include "interface/Disp.h"
 #include "interface/Menu.h"
 #include "util/Nav.h"
@@ -22,7 +22,7 @@ void setup() {
     buttonHandler.setDebounceTime(10);
     Nav::begin(led, buttonHandler);
     Menu::begin();
-    Seed::createMnemonic();
+    SeedGenerator::createMnemonic();
 }
 
 void loop() {

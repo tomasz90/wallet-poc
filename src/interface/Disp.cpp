@@ -1,3 +1,4 @@
+#include <cstring>
 #include "Disp.h"
 #include "Adafruit_SSD1306.h"
 #include "util/Pin.h"
@@ -7,6 +8,25 @@ unsigned long Disp::lastTextBlinked;
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
+
+#define BOX_WIDTH 50
+#define BOX_HEIGHT 20
+#define BOX_Y_START 43
+#define CURSOR_Y 49
+#define TEXT_SIZE 1
+#define TEXT_WIDTH 6 // with space
+#define SPACE_WIDTH 1
+#define PIN_SIZE 1
+
+
+const int SCREEN_CENTER = SCREEN_WIDTH / 2 - 1;
+
+const int SCREEN_FIRST_HALF_CENTER = SCREEN_CENTER - (SCREEN_WIDTH / 4);
+const int SCREEN_SECOND_HALF_CENTER = SCREEN_CENTER + (SCREEN_WIDTH / 4);
+
+const int BOX_X_1_START = SCREEN_FIRST_HALF_CENTER - (BOX_WIDTH / 2);
+const int BOX_X_2_START = SCREEN_SECOND_HALF_CENTER - (BOX_WIDTH / 2);
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 void Disp::begin() {
@@ -20,7 +40,7 @@ void Disp::begin() {
 
 void Disp::setText(const std::string &text) {
     clearText();
-    display.setTextSize(1);
+    display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
     display.setCursor(5, 5);
     display.println(text.c_str());
@@ -34,56 +54,64 @@ void Disp::blinkTextWithSign(const std::string &text) {
     animateText(text, text2);
 }
 
-void Disp::drawTwoBoxes(const char text1[], const char text2[], bool firstHighlighted) {
+void Disp::drawTwoBoxes(const std::string &text1, const std::string &text2, bool firstHighlighted) {
     clearMenu();
     bool textColor1 = 0;
     bool textColor2 = 1;
 
-    if(firstHighlighted) {
-        display.drawRect(73, 43, 50, 20, WHITE);
-
-        display.fillRect(5, 43, 50, 20, WHITE);
-        display.drawRect(6, 44, 48, 18, BLACK);
+    if (firstHighlighted) {
+        display.drawRect(BOX_X_2_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
+        display.fillRect(BOX_X_1_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
+        display.drawRect(BOX_X_1_START + 1, BOX_Y_START + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2, BLACK);
     } else {
         textColor1 = 1;
         textColor2 = 0;
 
-        display.drawRect(5, 43, 50, 20, WHITE);
-
-        display.fillRect(73, 43, 50, 20, WHITE);
-        display.drawRect(74, 44, 48, 18, BLACK);
+        display.drawRect(BOX_X_1_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
+        display.fillRect(BOX_X_2_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
+        display.drawRect(BOX_X_2_START + 1, BOX_Y_START + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2, BLACK);
     }
 
-    display.setCursor(25, 49);
+    uint8_t text1Position = calculateCursorPosition(text1, SCREEN_FIRST_HALF_CENTER);
+    display.setCursor(text1Position, CURSOR_Y);
     display.setTextColor(textColor1);
-    display.setTextSize(1);
-    display.println(text1);
+    display.setTextSize(TEXT_SIZE);
+    display.println(text1.c_str());
 
+    uint8_t text2Position = calculateCursorPosition(text2, SCREEN_SECOND_HALF_CENTER);
     display.setTextColor(textColor2);
-    display.setCursor(89, 49);
-    display.println(text2);
+    display.setCursor(text2Position, CURSOR_Y);
+    display.println(text2.c_str());
     display.display();
 }
 
 void Disp::drawOneBox(const std::string &text, uint8_t width) {
     clearMenu();
-    uint8_t begin = (128 - width) / 2;
-    display.fillRect(begin, 43, width, 20, WHITE);
-    display.drawRect(begin + 1, 44, width - 2, 18, BLACK);
+    uint8_t begin = SCREEN_CENTER - (width / 2);
+    display.fillRect(begin, BOX_Y_START, width, BOX_HEIGHT, WHITE);
+    display.drawRect(begin + 1, BOX_Y_START + 1, width - 2, BOX_HEIGHT - 2, BLACK);
 
-    uint8_t position = 64 - ((text.size() * 5) / 2);
-    display.setCursor(position, 49);
+    uint8_t position = calculateCursorPosition(text, SCREEN_CENTER);
+    display.setCursor(position, CURSOR_Y);
     display.setTextColor(BLACK);
-    display.setTextSize(1);
+    display.setTextSize(TEXT_SIZE);
     display.println(text.c_str());
     display.display();
+}
+
+uint8_t Disp::calculateCursorPosition(
+        const std::string &text,
+        uint8_t textCenter
+) {
+    uint8_t halfTextWidth = ((text.length() * 6)) / 2;
+    return textCenter - halfTextWidth;
 }
 
 void Disp::drawPin() {
     clearMenu();
     display.setCursor(23, 40);
     display.setTextColor(WHITE);
-    display.setTextSize(2);
+    display.setTextSize(PIN_SIZE);
     display.println(Pin::getPinString().c_str());
     display.display();
 }
