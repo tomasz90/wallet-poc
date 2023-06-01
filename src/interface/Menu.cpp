@@ -20,7 +20,7 @@ void Menu::begin() {
     CustomState *S4_0 = machine.addState(&s4_0);
     CustomState *S4_1 = machine.addState(&s4_1);
     CustomState *S5 =   machine.addState(&s5);
-    CustomState *S6 = machine.addState(&s6);
+    CustomState *S6 =   machine.addState(&s6);
 
     // NEXT
     S0->addTransition(S1_0,  Nav::bothCalled);

@@ -1,4 +1,3 @@
-#include <cstring>
 #include "Disp.h"
 #include "Adafruit_SSD1306.h"
 #include "util/Pin.h"
@@ -14,9 +13,7 @@ unsigned long Disp::lastTextBlinked;
 #define BOX_Y_START 43
 #define CURSOR_Y 49
 #define TEXT_SIZE 1
-#define TEXT_WIDTH 6 // with space
-#define SPACE_WIDTH 1
-#define PIN_SIZE 1
+#define PIN_SIZE 2
 
 
 const int SCREEN_CENTER = SCREEN_WIDTH / 2 - 1;
