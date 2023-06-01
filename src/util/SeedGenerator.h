@@ -5,16 +5,12 @@
 
 class SeedGenerator {
 public:
-    static BIP39::word_list passphrase;
-
-    static void createMnemonic();
+    static BIP39::word_list createMnemonic();
 
 private:
-    static std::vector<uint8_t> entropy;
+    SeedGenerator() = default;
 
-    SeedGenerator();
-
-    static void generateEntropy();
+    static std::vector<uint8_t> generateEntropy();
 };
 
 #endif //SEED_GENERATOR_H
