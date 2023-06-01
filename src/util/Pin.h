@@ -12,24 +12,26 @@ enum class PinMode { SET, CONFIRM };
 class Pin {
 public:
     static void clearValues();
-    static void setMode(PinMode mode);
     static std::string getPinString();
-
     static void incrementCurrentDigit();
     static void decrementCurrentDigit();
-
     static bool isArrow();
-    static bool ifFirstDigit();
-    static bool ifLastDigit();
-
+    static bool isFirstDigit();
+    static bool isLastDigit();
     static void unsetOneDigit();
     static void setOneDigit();
     static bool savePin();
+    static void setMode(PinMode mode);
+
+    // ONLY FOR TESTING
+    static int* testRawCombination();
+    static int* testStateCombination();
 
 private:
     static PinMode mode;
     static int rawCombination[4];
     static int savedCombination[4];
+    static DigitState stateCombination[4];
     static int currentIndex;
 
     static int _random(int with);

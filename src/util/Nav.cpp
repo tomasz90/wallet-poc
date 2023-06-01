@@ -61,14 +61,14 @@ void Nav::enterPin() {
         Disp::drawPin();
     }
     // TRY SET PIN
-    else if (_bothCalled && !Pin::isArrow() && Pin::ifLastDigit()) {
+    else if (_bothCalled && !Pin::isArrow() && Pin::isLastDigit()) {
         Pin::setOneDigit();
         bool saved = Pin::savePin();
         if (saved) { confirmPinCalled.set(); } else { pinMismatchCalled.set(); }
         Pin::clearValues();
     }
     // DROP PIN
-    else if (_bothCalled && Pin::isArrow() && Pin::ifFirstDigit()) {
+    else if (_bothCalled && Pin::isArrow() && Pin::isFirstDigit()) {
         dropPinCalled.set();
         Pin::clearValues();
     }

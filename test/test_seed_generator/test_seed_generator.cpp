@@ -9,7 +9,7 @@ void should_return_different_seeds() {
 
     bool areDifferent = std::strcmp(wordList1.c_str(), wordList2.c_str()); // wired behavior, strcmp returns 0 if equal
 
-    TEST_ASSERT_EQUAL(areDifferent, true);
+    TEST_ASSERT_EQUAL(true, areDifferent);
 }
 
 void setup() {

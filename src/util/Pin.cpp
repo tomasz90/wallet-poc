@@ -8,7 +8,7 @@ PinMode Pin::mode;
 int Pin::currentIndex = 0;
 int Pin::rawCombination[4];
 int Pin::savedCombination[4];
-DigitState pinState[4];
+DigitState Pin::stateCombination[4];
 
 void Pin::clearValues() {
     currentIndex = 0;
@@ -16,10 +16,10 @@ void Pin::clearValues() {
     rawCombination[1] = _random(-1);
     rawCombination[2] = _random(-1);
     rawCombination[3] = _random(-1);
-    pinState[0] = DigitState::INIT;
-    pinState[1] = DigitState::UN_INIT;
-    pinState[2] = DigitState::UN_INIT;
-    pinState[3] = DigitState::UN_INIT;
+    stateCombination[0] = DigitState::INIT;
+    stateCombination[1] = DigitState::UN_INIT;
+    stateCombination[2] = DigitState::UN_INIT;
+    stateCombination[3] = DigitState::UN_INIT;
 }
 
 void Pin::setMode(PinMode _mode) {
@@ -78,29 +78,29 @@ bool Pin::isArrow() {
     return rawCombination[currentIndex] == -1;
 }
 
-bool Pin::ifFirstDigit() {
+bool Pin::isFirstDigit() {
     return Pin::currentIndex == 0;
 }
 
-bool Pin::ifLastDigit() {
+bool Pin::isLastDigit() {
     return Pin::currentIndex == 3;
 }
 
 void Pin::setOneDigit() {
     //if (currentIndex > 3) throwException("Setting at index more than 3");
     Serial.println("Setting at index: " + String(currentIndex) + " value: " + String(rawCombination[currentIndex]));
-    pinState[currentIndex] = DigitState::SET;
+    stateCombination[currentIndex] = DigitState::SET;
     if (currentIndex < 3) {
         currentIndex++;
-        pinState[currentIndex] = DigitState::INIT;
+        stateCombination[currentIndex] = DigitState::INIT;
     }
 }
 
 void Pin::unsetOneDigit() {
     if (currentIndex > 0) {
         rawCombination[currentIndex] = _random(-1);
-        pinState[currentIndex] = DigitState::UN_INIT;
-        pinState[currentIndex - 1] = DigitState::INIT;
+        stateCombination[currentIndex] = DigitState::UN_INIT;
+        stateCombination[currentIndex - 1] = DigitState::INIT;
         currentIndex--;
     }
 }
@@ -127,7 +127,7 @@ int Pin::_random(int with) {
 
 char Pin::getCharAt(int index) {
     int digit = rawCombination[index];
-    switch (pinState[index]) {
+    switch (stateCombination[index]) {
         case DigitState::INIT:
             if (digit == -1) return '<';
             return '0' + digit;
@@ -136,5 +136,12 @@ char Pin::getCharAt(int index) {
         case DigitState::SET:
             return '$';
     }
+}
+ int* Pin::testRawCombination() {
+    return rawCombination;
+}
+
+int *Pin::testStateCombination() {
+    return (int *) stateCombination;
 }
 
