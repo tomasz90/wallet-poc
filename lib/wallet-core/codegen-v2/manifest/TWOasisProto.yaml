@@ -1,5 +1,0 @@
-name: TWOasisProto
-protos:
-- TW_Oasis_Proto_TransferMessage
-- TW_Oasis_Proto_SigningInput
-- TW_Oasis_Proto_SigningOutput

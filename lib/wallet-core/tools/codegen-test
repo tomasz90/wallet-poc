@@ -1,9 +1,0 @@
-#!/bin/bash
-#
-# This script runs the codegen tests.
-
-set -e
-
-pushd codegen
-rake
-popd

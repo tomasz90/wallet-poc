@@ -1,4 +1,0 @@
-name: TWNimiqProto
-protos:
-- TW_Nimiq_Proto_SigningInput
-- TW_Nimiq_Proto_SigningOutput

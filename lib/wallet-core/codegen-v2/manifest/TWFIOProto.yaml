@@ -1,8 +1,0 @@
-name: TWFIOProto
-protos:
-- TW_FIO_Proto_PublicAddress
-- TW_FIO_Proto_NewFundsContent
-- TW_FIO_Proto_Action
-- TW_FIO_Proto_ChainParams
-- TW_FIO_Proto_SigningInput
-- TW_FIO_Proto_SigningOutput
