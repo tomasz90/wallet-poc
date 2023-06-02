@@ -10,9 +10,8 @@ std::array<int, 24> SeedGenerator::randomSequence;
 
 std::vector<uint8_t> SeedGenerator::generateEntropy() {
     // Resize the vector to accommodate the desired number of bytes
-    size_t numBytes = 32;
-    std::vector<uint8_t> entropy;
-    entropy.resize(numBytes);
+    size_t numBytes = 16;
+    std::vector<uint8_t> entropy(numBytes);
 
     // Generate random numbers using esp_random() and store them in the vector
     for (size_t i = 0; i < numBytes; i++) {
@@ -23,8 +22,6 @@ std::vector<uint8_t> SeedGenerator::generateEntropy() {
 
 void SeedGenerator::createMnemonic() {
     std::vector<uint8_t> entropy = generateEntropy();
-    // todo need to find out what is better
-    // BIP39::generate_mnemonic(BIP39::entropy_bits_t::_256, BIP39::language::en);
     mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
     randomSequence = generateRandomSequence();
 }

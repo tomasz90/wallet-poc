@@ -3,6 +3,13 @@
 #include <cstring>
 #include "util/SeedGenerator.h"
 
+
+void should_have_12_words() {
+
+    SeedGenerator::createMnemonic();
+    TEST_ASSERT_EQUAL(12, SeedGenerator::mnemonic.size());
+}
+
 void should_return_different_seeds() {
 
     SeedGenerator::createMnemonic();
