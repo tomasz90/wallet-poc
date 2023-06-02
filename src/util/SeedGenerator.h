@@ -5,7 +5,14 @@
 
 class SeedGenerator {
 public:
-    static BIP39::word_list createMnemonic();
+    static uint8_t currentWordIndex;
+    static BIP39::word_list mnemonic;
+
+    static void createMnemonic();
+    static void increment();
+    static std::string getCurrentWord();
+
+    static void decrement();
 
 private:
     SeedGenerator() = default;

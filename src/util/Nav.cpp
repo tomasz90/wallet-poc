@@ -3,6 +3,7 @@
 #include "Led.h"
 #include "interface/Disp.h"
 #include "ButtonsHandler.h"
+#include "SeedGenerator.h"
 
 bool Flag::check() {
     bool temp = flag;
@@ -23,6 +24,10 @@ Flag Nav::bothCalled;
 Flag Nav::confirmPinCalled;
 Flag Nav::dropPinCalled;
 Flag Nav::pinMismatchCalled;
+
+Flag Nav::firstSeedScreenCalled;
+Flag Nav::previousSeedScreenCalled;
+Flag Nav::nextSeedScreenCalled;
 
 Led *Nav::led = nullptr;
 
@@ -82,5 +87,28 @@ void Nav::enterPin() {
     else if (_bothCalled && Pin::isArrow()) {
         Pin::unsetOneDigit();
         Disp::drawPin();
+    }
+}
+
+void Nav::navigateSeed(bool nextHighlighted) {
+    // bothCalled.check() needs to be called only once here
+    bool _bothCalled = bothCalled.check();
+
+    // INCREMENT WORD GO NEXT SCREEN
+    if (_bothCalled && nextHighlighted) {
+        nextSeedScreenCalled.set();
+        SeedGenerator::increment();
+    }
+
+    // DECREMENT WORD GO FIRST SCREEN
+    else if (_bothCalled && SeedGenerator::currentWordIndex == 1) {
+        firstSeedScreenCalled.set();
+        SeedGenerator::decrement();
+    }
+
+    // DECREMENT WORD GO PREVIOUS SCREEN
+    else if (_bothCalled) {
+        previousSeedScreenCalled.set();
+        SeedGenerator::decrement();
     }
 }

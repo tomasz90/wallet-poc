@@ -20,14 +20,20 @@ public:
     static Flag dropPinCalled;
     static Flag pinMismatchCalled;
 
+    static Flag firstSeedScreenCalled;
+    static Flag previousSeedScreenCalled;
+    static Flag nextSeedScreenCalled;
+
     static void begin(Led *_led, ButtonsHandler &buttonHandler);
     static void onPrevious();
     static void onNext();
     static void onBoth();
     static void enterPin();
-
+    static void navigateSeed(bool nextHighlighted);
 private:
+
     static Led* led;
+
 };
 
 #endif //WALLET_POC_NAV_H

@@ -2,6 +2,9 @@
 #include "SeedGenerator.h"
 #include "bip39/bip39.h"
 
+BIP39::word_list SeedGenerator::mnemonic;
+uint8_t SeedGenerator::currentWordIndex = 0;
+
 std::vector<uint8_t> SeedGenerator::generateEntropy() {
     // Resize the vector to accommodate the desired number of bytes
     size_t numBytes = 32;
@@ -15,9 +18,25 @@ std::vector<uint8_t> SeedGenerator::generateEntropy() {
     return entropy;
 }
 
-BIP39::word_list SeedGenerator::createMnemonic() {
+void SeedGenerator::createMnemonic() {
     std::vector<uint8_t> entropy = generateEntropy();
     // todo need to find out what is better
     // BIP39::generate_mnemonic(BIP39::entropy_bits_t::_256, BIP39::language::en);
-    return BIP39::create_mnemonic(entropy, BIP39::language::en);
+    mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
+}
+
+std::string SeedGenerator::getCurrentWord() {
+    return mnemonic.getWordAt(currentWordIndex);
+}
+
+void SeedGenerator::increment() {
+    if(currentWordIndex < 23) {
+        currentWordIndex++;
+    }
+}
+
+void SeedGenerator::decrement() {
+    if(currentWordIndex > 0) {
+        currentWordIndex--;
+    }
 }

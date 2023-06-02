@@ -37,8 +37,8 @@ void Disp::begin() {
     display.clearDisplay();
 }
 
-void Disp::setText(const std::string &text) {
-    clearText();
+void Disp::setText(const std::string &text, uint8_t toLine) {
+    clearText(toLine);
     display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
     display.setCursor(5, 5);
@@ -46,17 +46,29 @@ void Disp::setText(const std::string &text) {
     display.display();
 }
 
-void Disp::blinkTextWithSign(const std::string &text) {
+void Disp::setTextAtCenter(const std::string &text, uint8_t y) {
+    display.setTextSize(TEXT_SIZE);
+    display.setTextColor(WHITE);
+    setCursorRelativeToCenter(text, SCREEN_CENTER, y);
+    display.println(text.c_str());
+    display.display();
+}
+
+void Disp::blinkTextWithSign(const std::string &text, uint8_t toLine) {
     std::string text2;
     text2.assign(text);
     text2.append(" >");
-    animateText(text, text2);
+    animateText(text, text2, toLine);
 }
 
-void Disp::drawTwoBoxes(const std::string &text1, const std::string &text2, bool leftHighlighted) {
+void Disp::blinkTextWithSign(const std::string &text) {
+    blinkTextWithSign(text, SCREEN_TEXT_MENU_BORDER_POSITION);
+}
+
+void Disp::drawTwoBoxes(const std::string &text1, const std::string &text2, bool rightHighlighted) {
     clearMenu();
-    drawLeftBox(text1, leftHighlighted);
-    drawRightBox(text2, !leftHighlighted);
+    drawLeftBox(text1, !rightHighlighted);
+    drawRightBox(text2, rightHighlighted);
     display.display();
 }
 
@@ -83,7 +95,7 @@ void Disp::drawLeftBox(const std::string &text, bool highlighted) {
         display.setTextColor(WHITE);
     }
 
-    setCursorRelativeToCenter(text, SCREEN_LEFT_HALF_CENTER);
+    setCursorRelativeToCenter(text, SCREEN_LEFT_HALF_CENTER, BOX_Y_CURSOR);
     display.setTextSize(TEXT_SIZE);
     display.println(text.c_str());
 }
@@ -98,7 +110,7 @@ void Disp::drawRightBox(const std::string &text, bool highlighted) {
         display.setTextColor(WHITE);
     }
 
-    setCursorRelativeToCenter(text, SCREEN_RIGHT_HALF_CENTER);
+    setCursorRelativeToCenter(text, SCREEN_RIGHT_HALF_CENTER, BOX_Y_CURSOR);
     display.setTextSize(TEXT_SIZE);
     display.println(text.c_str());
 }
@@ -109,16 +121,16 @@ void Disp::drawOneBox(const std::string &text, uint8_t width) {
     display.fillRect(begin, BOX_Y_START, width, BOX_HEIGHT, WHITE);
     display.drawRect(begin + 1, BOX_Y_START + 1, width - 2, BOX_HEIGHT - 2, BLACK);
 
-    setCursorRelativeToCenter(text, SCREEN_CENTER);
+    setCursorRelativeToCenter(text, SCREEN_CENTER, BOX_Y_CURSOR);
     display.setTextColor(BLACK);
     display.setTextSize(TEXT_SIZE);
     display.println(text.c_str());
     display.display();
 }
 
-void Disp::setCursorRelativeToCenter(const std::string &text, uint8_t textCenter) {
+void Disp::setCursorRelativeToCenter(const std::string &text, uint8_t textCenter, uint8_t y) {
     uint8_t halfTextWidth = ((text.length() * 6)) / 2;
-    display.setCursor(textCenter - halfTextWidth, BOX_Y_CURSOR);
+    display.setCursor(textCenter - halfTextWidth, y);
 }
 
 void Disp::drawPin() {
@@ -130,17 +142,17 @@ void Disp::drawPin() {
     display.display();
 }
 
-void Disp::animateText(const std::string &text1, const std::string &text2) {
+void Disp::animateText(const std::string &text1, const std::string &text2, uint8_t toLine) {
     unsigned long currentMillis = millis();
     if (currentMillis - lastTextBlinked < 500) return;
     std::string text = blink ? text1 : text2;
-    setText(text);
+    setText(text, toLine);
     lastTextBlinked = currentMillis;
     blink = !blink;
 }
 
-void Disp::clearText() {
-    display.fillRect(0, 0, SCREEN_WIDTH, SCREEN_TEXT_MENU_BORDER_POSITION, BLACK);
+void Disp::clearText(uint8_t toLine) {
+    display.fillRect(0, 0, SCREEN_WIDTH, toLine, BLACK);
 }
 
 void Disp::clearMenu() {
