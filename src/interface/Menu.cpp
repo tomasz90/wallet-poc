@@ -54,7 +54,7 @@ void Menu::doOnce(void (*_doOnce)()) {
 }
 
 void Menu::s0() {
-    doOnce([]() { Disp::drawOneBox("PROCEED?", 80); });
+    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
     Disp::blinkTextWithSign("Hello!");
 }
 
@@ -88,17 +88,17 @@ void Menu::s3() {
 }
 
 void Menu::s4_0() {
-    doOnce([]() { Disp::drawOneBox("OK", 80); });
+    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
     Disp::blinkTextWithSign("Pin confirmed!");
 }
 
 void Menu::s4_1() {
-    doOnce([]() { Disp::drawOneBox("BACK", 80); });
+    doOnce([]() { Disp::drawOnlyLeftBox("BACK"); });
     Disp::blinkTextWithSign("Pin not matching ;(  try again...");
 }
 
 void Menu::s5() {
-    doOnce([]() { Disp::drawOneBox("PROCEED?", 80); });
+    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
     Disp::blinkTextWithSign("Now please save your seed phrase!");
 }
 

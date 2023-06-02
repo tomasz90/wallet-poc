@@ -20,11 +20,11 @@ unsigned long Disp::lastTextBlinked;
 
 const int SCREEN_CENTER = SCREEN_WIDTH / 2 - 1;
 
-const int SCREEN_FIRST_HALF_CENTER = SCREEN_CENTER - (SCREEN_WIDTH / 4);
-const int SCREEN_SECOND_HALF_CENTER = SCREEN_CENTER + (SCREEN_WIDTH / 4);
+const int SCREEN_LEFT_HALF_CENTER = SCREEN_CENTER - (SCREEN_WIDTH / 4);
+const int SCREEN_RIGHT_HALF_CENTER = SCREEN_CENTER + (SCREEN_WIDTH / 4);
 
-const int BOX_X_1_START = SCREEN_FIRST_HALF_CENTER - (BOX_WIDTH / 2);
-const int BOX_X_2_START = SCREEN_SECOND_HALF_CENTER - (BOX_WIDTH / 2);
+const int BOX_X_1_START = SCREEN_LEFT_HALF_CENTER - (BOX_WIDTH / 2);
+const int BOX_X_2_START = SCREEN_RIGHT_HALF_CENTER - (BOX_WIDTH / 2);
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
@@ -53,33 +53,54 @@ void Disp::blinkTextWithSign(const std::string &text) {
     animateText(text, text2);
 }
 
-void Disp::drawTwoBoxes(const std::string &text1, const std::string &text2, bool firstHighlighted) {
+void Disp::drawTwoBoxes(const std::string &text1, const std::string &text2, bool leftHighlighted) {
     clearMenu();
-    bool textColor1 = 0;
-    bool textColor2 = 1;
+    drawLeftBox(text1, leftHighlighted);
+    drawRightBox(text2, !leftHighlighted);
+    display.display();
+}
 
-    if (firstHighlighted) {
-        display.drawRect(BOX_X_2_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
+void Disp::drawOnlyLeftBox(const std::string &text) {
+    clearMenu();
+    drawLeftBox(text, true);
+    display.display();
+}
+
+void Disp::drawOnlyRightBox(const std::string &text) {
+    clearMenu();
+    drawRightBox(text, true);
+    display.display();
+}
+
+void Disp::drawLeftBox(const std::string &text, bool highlighted) {
+    if (highlighted) {
         display.fillRect(BOX_X_1_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
         display.drawRect(BOX_X_1_START + 1, BOX_Y_START + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2, BLACK);
-    } else {
-        textColor1 = 1;
-        textColor2 = 0;
+        display.setTextColor(BLACK);
 
+    } else {
         display.drawRect(BOX_X_1_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
-        display.fillRect(BOX_X_2_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
-        display.drawRect(BOX_X_2_START + 1, BOX_Y_START + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2, BLACK);
+        display.setTextColor(WHITE);
     }
 
-    setCursorRelativeToCenter(text1, SCREEN_FIRST_HALF_CENTER);
-    display.setTextColor(textColor1);
+    setCursorRelativeToCenter(text, SCREEN_LEFT_HALF_CENTER);
     display.setTextSize(TEXT_SIZE);
-    display.println(text1.c_str());
+    display.println(text.c_str());
+}
 
-    setCursorRelativeToCenter(text2, SCREEN_SECOND_HALF_CENTER);
-    display.setTextColor(textColor2);
-    display.println(text2.c_str());
-    display.display();
+void Disp::drawRightBox(const std::string &text, bool highlighted) {
+    if (highlighted) {
+        display.fillRect(BOX_X_2_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
+        display.drawRect(BOX_X_2_START + 1, BOX_Y_START + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2, BLACK);
+        display.setTextColor(BLACK);
+    } else {
+        display.drawRect(BOX_X_2_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
+        display.setTextColor(WHITE);
+    }
+
+    setCursorRelativeToCenter(text, SCREEN_RIGHT_HALF_CENTER);
+    display.setTextSize(TEXT_SIZE);
+    display.println(text.c_str());
 }
 
 void Disp::drawOneBox(const std::string &text, uint8_t width) {

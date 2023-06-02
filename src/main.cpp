@@ -11,8 +11,8 @@
 
 Led* led = new Led(LED, 0, 20, 4);
 
-Button previous(PREVIOUS_BUTTON, IN_PULLUP);
-Button next(NEXT_BUTTON, IN_PULLUP);
+Button previous(PREVIOUS_BUTTON, IN_PULLDOWN);
+Button next(NEXT_BUTTON, IN_PULLDOWN);
 
 ButtonsHandler buttonHandler(previous, next);
 
