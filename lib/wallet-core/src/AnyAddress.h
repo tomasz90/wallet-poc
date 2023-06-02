@@ -9,9 +9,9 @@
 #include "Data.h"
 #include "PublicKey.h"
 
-#include <TrustWalletCore/TWCoinType.h>
-#include <TrustWalletCore/TWPublicKey.h>
-#include <TrustWalletCore/TWData.h>
+#include "TWCoinType.h"
+#include "TWPublicKey.h"
+#include "TWData.h"
 #include <CoinEntry.h>
 #include <string>
 

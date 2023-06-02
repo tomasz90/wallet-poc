@@ -6,8 +6,8 @@
 
 #include "Mnemonic.h"
 
-#include <TrezorCrypto/bip39_english.h>
-#include <TrezorCrypto/bip39.h>
+#include <bip39_english.h>
+#include <bip39.h>
 
 #include <algorithm>
 #include <string>

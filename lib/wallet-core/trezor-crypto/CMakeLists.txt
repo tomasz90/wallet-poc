@@ -26,11 +26,11 @@ set(TW_WARNING_FLAGS
 )
 
 add_library(TrezorCrypto
-    crypto/bignum.c crypto/ecdsa.c crypto/curves.c crypto/secp256k1.c crypto/rand.c crypto/hmac.c crypto/bip32.c crypto/bip39.c crypto/slip39.c crypto/pbkdf2.c crypto/base58.c crypto/base32.c
-    crypto/address.c
+    crypto/bignum.c ../src/curves.c crypto/secp256k1.c ../src/rand.c ../src/hmac.c ../src/bip39.c crypto/slip39.c crypto/pbkdf2.c
+        crypto/address.c
     crypto/script.c
     crypto/ripemd160.c
-    crypto/sha2.c
+        ../src/sha2.c
     crypto/sha3.c
     crypto/hasher.c
     crypto/aes/aescrypt.c crypto/aes/aeskey.c crypto/aes/aestab.c crypto/aes/aes_modes.c
@@ -48,9 +48,8 @@ add_library(TrezorCrypto
     crypto/chacha20poly1305/chacha20poly1305.c crypto/chacha20poly1305/chacha_merged.c crypto/chacha20poly1305/poly1305-donna.c crypto/chacha20poly1305/rfc7539.c
     crypto/rc4.c
     crypto/nano.c
-    crypto/nem.c
-    crypto/cash_addr.c
-    crypto/memzero.c
+        crypto/cash_addr.c
+        ../src/memzero.c
     crypto/scrypt.c
     crypto/nist256p1.c
     crypto/groestl.c
