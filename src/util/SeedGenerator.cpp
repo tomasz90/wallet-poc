@@ -24,6 +24,7 @@ std::vector<uint8_t> SeedGenerator::generateEntropy() {
 void SeedGenerator::createMnemonic() {
     std::vector<uint8_t> entropy = generateEntropy();
     mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
+    Serial.println(mnemonic.to_string().c_str());
     randomSequence = generateRandomSequence();
 }
 
@@ -62,10 +63,7 @@ int SeedGenerator::getCurrentRandom() {
 }
 
 bool SeedGenerator::validateWord(const std::string &word) {
-    Serial.println(mnemonic.getWordAt(currentIndex).c_str());
-    Serial.println(currentIndex);
-    Serial.println(word.c_str());
-    return mnemonic.getWordAt(currentIndex) == word;
+    return mnemonic.getWordAt(randomSequence[currentIndex]) == word;
 }
 
 bool SeedGenerator::isSecond() {

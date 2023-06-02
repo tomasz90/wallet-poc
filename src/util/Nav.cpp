@@ -104,15 +104,18 @@ void Nav::navigateSeed(bool nextHighlighted) {
     else if (_bothCalled && nextHighlighted) {
         nextSeedScreenCalled.set();
         SeedGenerator::increment();
+        Disp::clearTextCenter();
     }
     // DECREMENT WORD GO FIRST SCREEN
     else if (_bothCalled && SeedGenerator::isSecond()) {
         firstSeedScreenCalled.set();
         SeedGenerator::decrement();
+        Disp::clearTextCenter();
     }
     // DECREMENT WORD GO PREVIOUS SCREEN
     else if (_bothCalled) {
         previousSeedScreenCalled.set();
         SeedGenerator::decrement();
+        Disp::clearTextCenter();
     }
 }
