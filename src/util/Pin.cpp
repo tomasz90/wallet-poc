@@ -12,7 +12,7 @@ DigitState Pin::stateCombination[4];
 
 void Pin::clearValues() {
     currentIndex = 0;
-    rawCombination[0] = _random(-1);
+    rawCombination[0] = _random(0);
     rawCombination[1] = _random(-1);
     rawCombination[2] = _random(-1);
     rawCombination[3] = _random(-1);
@@ -25,14 +25,6 @@ void Pin::clearValues() {
 void Pin::setMode(PinMode _mode) {
     clearValues();
     mode = _mode;
-    switch (mode) {
-        case PinMode::SET:
-            rawCombination[0] = _random(-1);
-            break;
-        case PinMode::CONFIRM:
-            rawCombination[0] = _random(0);
-            break;
-    }
 }
 
 std::string Pin::getPinString() {
@@ -87,8 +79,7 @@ bool Pin::isLastDigit() {
 }
 
 void Pin::setOneDigit() {
-    //if (currentIndex > 3) throwException("Setting at index more than 3");
-    Serial.println("Setting at index: " + String(currentIndex) + " value: " + String(rawCombination[currentIndex]));
+    if (currentIndex > 3) throwException("Setting at index more than 3");
     stateCombination[currentIndex] = DigitState::SET;
     if (currentIndex < 3) {
         currentIndex++;
@@ -107,7 +98,7 @@ void Pin::unsetOneDigit() {
 
 bool Pin::savePin() {
     if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i <= 3 ; i++) {
         if (rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
         switch (mode) {
             case PinMode::SET:
