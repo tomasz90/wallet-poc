@@ -23,10 +23,6 @@ public:
     static bool savePin();
     static void setMode(PinMode mode);
 
-    // ONLY FOR TESTING
-    static int* testRawCombination();
-    static int* testStateCombination();
-
 private:
     static PinMode mode;
     static int rawCombination[4];

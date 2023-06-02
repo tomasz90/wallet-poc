@@ -137,11 +137,4 @@ char Pin::getCharAt(int index) {
             return '$';
     }
 }
- int* Pin::testRawCombination() {
-    return rawCombination;
-}
-
-int *Pin::testStateCombination() {
-    return (int *) stateCombination;
-}
 
