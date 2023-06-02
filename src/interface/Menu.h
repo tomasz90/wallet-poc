@@ -26,13 +26,8 @@ private:
     static void s6_1();
     static void s6_2();
     static void s7();
-    static void s8();
-    static void readStringFromSerial();
-
     static void s8_0();
-
     static void s8_1();
-
     static void s8_2();
 };
 

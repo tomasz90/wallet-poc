@@ -17,6 +17,7 @@ unsigned long Disp::lastTextBlinked;
 #define TEXT_SIZE 1
 #define PIN_SIZE 2
 
+#define SEED_WORD_Y_POSITION 24
 
 const int SCREEN_CENTER = SCREEN_WIDTH / 2 - 1;
 
@@ -51,6 +52,30 @@ void Disp::setTextAtCenter(const std::string &text, uint8_t y) {
     display.setTextColor(WHITE);
     setCursorRelativeToCenter(text, SCREEN_CENTER, y);
     display.println(text.c_str());
+}
+
+void Disp::blinkTextWarningAtCenter(const std::string &text) {
+    clearTextCenter();
+    uint16_t _delay = 300;
+    setTextAtCenter(text, SEED_WORD_Y_POSITION);
+    display.display();
+    delay(_delay);
+    clearTextCenter();
+    disp();
+    delay(_delay);
+
+    setTextAtCenter(text, SEED_WORD_Y_POSITION);
+    disp();
+    delay(_delay);
+    clearTextCenter();
+    disp();
+    delay(_delay);
+
+    setTextAtCenter(text, SEED_WORD_Y_POSITION);
+    disp();
+    delay(_delay);
+    clearTextCenter();
+    disp();
 }
 
 void Disp::blinkTextWithSign(const std::string &text, uint8_t toLine) {

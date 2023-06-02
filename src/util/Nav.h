@@ -32,6 +32,7 @@ public:
     static void onBoth();
     static void enterPin();
     static void navigateSeed(bool nextHighlighted);
+    static void readSeedWordFromSerial();
 
 private:
 

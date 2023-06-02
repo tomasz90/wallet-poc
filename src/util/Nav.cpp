@@ -98,8 +98,10 @@ void Nav::navigateSeed(bool nextHighlighted) {
     bool isValid = true;
 
     // isValidWordCalled needs to be checked only when both buttons are pressed
-    if(_bothCalled && SeedGenerator::mode == SeedGeneratorMode::CONFIRM) {
+    if (SeedGenerator::mode == SeedGeneratorMode::CONFIRM && _bothCalled) {
         isValid = isValidWordCalled.check();
+    } else if (SeedGenerator::mode == SeedGeneratorMode::CONFIRM) {
+        readSeedWordFromSerial();
     }
 
     // CONFIRM SEED PHRASE
@@ -115,25 +117,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
     }
     // INCREMENT WORD GO NEXT SCREEN
     else if (_bothCalled && nextHighlighted) {
-        std::string incomingString = "Need valid word!";
-        Disp::clearTextCenter();
-        Disp::setTextAtCenter(incomingString, 24);
-        Disp::disp();
-        delay(300);
-        Disp::clearTextCenter();
-        Disp::disp();
-        delay(300);
-        Disp::setTextAtCenter(incomingString, 24);
-        Disp::disp();
-        delay(300);
-        Disp::clearTextCenter();
-        Disp::disp();
-        delay(300);
-        Disp::setTextAtCenter(incomingString, 24);
-        Disp::disp();
-        delay(300);
-        Disp::clearTextCenter();
-        Disp::disp();
+        Disp::blinkTextWarningAtCenter("Need valid word!");
     }
     // DECREMENT WORD GO FIRST SCREEN
     else if (_bothCalled && SeedGenerator::isSecond()) {
@@ -146,5 +130,25 @@ void Nav::navigateSeed(bool nextHighlighted) {
         previousSeedScreenCalled.set();
         SeedGenerator::decrement();
         Disp::clearTextCenter();
+    }
+}
+
+void Nav::readSeedWordFromSerial() {
+    std::string incomingString;
+    while (Serial.available() > 0) {
+        char incomingByte = Serial.read();
+        if (incomingByte == '\n') { break; }
+        incomingString += incomingByte;
+    }
+    if (incomingString.length() > 0) {
+        bool isValid = SeedGenerator::validateWord(incomingString);
+        if (isValid) {
+            Nav::isValidWordCalled.set();
+            Disp::clearTextCenter();
+            Disp::setTextAtCenter(incomingString, 24);
+            Disp::disp();
+        } else {
+            Disp::blinkTextWarningAtCenter("Invalid word!");
+        }
     }
 }

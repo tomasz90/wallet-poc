@@ -12,6 +12,7 @@ public:
     static void setText(const std::string &text, uint8_t toLine);
     static void setTextAtCenter(const std::string &text, uint8_t y);
     static void blinkTextWithSign(const std::string &text, uint8_t toLine);
+    static void blinkTextWarningAtCenter(const std::string &text);
     static void drawPin();
     static void drawTwoBoxes(const std::string &text1, const std::string &text2, bool rightHighlighted);
     static void drawOnlyLeftBox(const std::string &text);
@@ -22,14 +23,10 @@ public:
     static void clearMenu();
     static void blinkTextWithSign(const std::string &text);
     static void disp();
-
 private:
     static bool blink;
     static void setCursorRelativeToCenter(const std::string &text, uint8_t textCenter, uint8_t y);
     static void animateText(const std::string &text1, const std::string &text2, uint8_t toLine);
     static void drawLeftBox(const std::string &text, bool highlighted);
-
     static void drawRightBox(const std::string &text, bool highlighted);
-
-
 };

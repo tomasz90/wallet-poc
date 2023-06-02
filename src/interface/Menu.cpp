@@ -165,58 +165,17 @@ void Menu::s8_0() {
     });
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(true);
-    readStringFromSerial();
 }
 
 void Menu::s8_1() {
     doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", true); });
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(true);
-    readStringFromSerial();
 }
 
 void Menu::s8_2() {
     doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", false); });
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(false);
-    readStringFromSerial();
-}
-
-void Menu::readStringFromSerial() {
-    std::string incomingString;
-    while (Serial.available() > 0) {
-        char incomingByte = Serial.read();
-        if (incomingByte == '\n') { break; }
-        incomingString += incomingByte;
-    }
-    if (incomingString.length() > 0) {
-        bool isValid = SeedGenerator::validateWord(incomingString);
-        if (isValid) {
-            Nav::isValidWordCalled.set();
-            Disp::clearTextCenter();
-            Disp::setTextAtCenter(incomingString, 24);
-            Disp::disp();
-        } else {
-            incomingString = "Invalid word!";
-            Disp::clearTextCenter();
-            Disp::setTextAtCenter(incomingString, 24);
-            Disp::disp();
-            delay(300);
-            Disp::clearTextCenter();
-            Disp::disp();
-            delay(300);
-            Disp::setTextAtCenter(incomingString, 24);
-            Disp::disp();
-            delay(300);
-            Disp::clearTextCenter();
-            Disp::disp();
-            delay(300);
-            Disp::setTextAtCenter(incomingString, 24);
-            Disp::disp();
-            delay(300);
-            Disp::clearTextCenter();
-            Disp::disp();
-        }
-    }
 }
 
