@@ -4,6 +4,11 @@
 #include "util/SeedGenerator.h"
 #include "util/Pin.h"
 
+int getDigitAt(uint8_t index) {
+    char c = Pin::getPinString()[index * 2];
+    return c == '<' ? -1 : c - '0';
+}
+
 void should_initiate_with_proper_values() {
     Pin::setMode(PinMode::SET);
     bool hiddenPin = Pin::getPinString().substr(1) == " * * *";
@@ -19,11 +24,11 @@ void should_initiate_with_proper_values() {
 void should_increment_digit_mode_SET() {
     Pin::setMode(PinMode::SET);
 
-    int digit = Pin::testRawCombination()[0];
+    int digit = getDigitAt(0);
     int expectedDigit = digit < 9 ? digit + 1 : 0;
 
     Pin::incrementCurrentDigit();
-    digit = Pin::testRawCombination()[0];
+    digit = getDigitAt(0);
 
     TEST_ASSERT_EQUAL(expectedDigit, digit);
 }
@@ -31,35 +36,35 @@ void should_increment_digit_mode_SET() {
 void should_decrement_digit_mode_SET() {
     Pin::setMode(PinMode::SET);
 
-    int digit = Pin::testRawCombination()[0];
+    int digit = getDigitAt(0);
     int expectedDigit = digit > 0 ? digit - 1 : 9;
 
     Pin::decrementCurrentDigit();
-    digit = Pin::testRawCombination()[0];
+    digit = getDigitAt(0);
 
     TEST_ASSERT_EQUAL(expectedDigit, digit);
 }
 
 void should_increment_digit_mode_CONFIRM() {
-    Pin::setMode(PinMode::SET);
+    Pin::setMode(PinMode::CONFIRM);
 
-    int digit = Pin::testRawCombination()[0];
+    int digit = getDigitAt(0);
     int expectedDigit = digit < 9 ? digit + 1 : -1;
 
     Pin::incrementCurrentDigit();
-    digit = Pin::testRawCombination()[0];
+    digit = getDigitAt(0);
 
     TEST_ASSERT_EQUAL(expectedDigit, digit);
 }
 
 void should_decrement_digit_mode_CONFIRM() {
-    Pin::setMode(PinMode::SET);
+    Pin::setMode(PinMode::CONFIRM);
 
-    int digit = Pin::testRawCombination()[0];
+    int digit = getDigitAt(0);
     int expectedDigit = digit > -1 ? digit - 1 : 9;
 
     Pin::decrementCurrentDigit();
-    digit = Pin::testRawCombination()[0];
+    digit = getDigitAt(0);
 
     TEST_ASSERT_EQUAL(expectedDigit, digit);
 }
