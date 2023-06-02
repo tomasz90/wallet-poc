@@ -154,6 +154,11 @@ void Disp::clearText(uint8_t toLine) {
     display.fillRect(0, 0, SCREEN_WIDTH, toLine, BLACK);
 }
 
+void Disp::clearTextCenter() {
+    uint8_t begin = 20;
+    display.fillRect(0, begin, SCREEN_WIDTH, SCREEN_TEXT_MENU_BORDER_POSITION - begin, BLACK);
+}
+
 void Disp::clearMenu() {
     display.fillRect(
             0,

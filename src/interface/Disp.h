@@ -18,10 +18,9 @@ public:
     static void drawOnlyRightBox(const std::string &text);
     static void drawOneBox(const std::string &text, uint8_t width);
     static void clearText(uint8_t toLine);
+    static void clearTextCenter();
     static void clearMenu();
-
     static void blinkTextWithSign(const std::string &text);
-
     static void disp();
 
 private:
@@ -31,5 +30,6 @@ private:
     static void drawLeftBox(const std::string &text, bool highlighted);
 
     static void drawRightBox(const std::string &text, bool highlighted);
+
 
 };

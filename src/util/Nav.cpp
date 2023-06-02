@@ -96,7 +96,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
     bool _bothCalled = bothCalled.check();
 
     // INCREMENT WORD CONFIRM SEED PHRASE
-    if (_bothCalled && nextHighlighted && SeedGenerator::currentWordIndex == 23) {
+    if (_bothCalled && nextHighlighted && SeedGenerator::currentIndex == 23) {
         confirmSeedScreenCalled.set();
         SeedGenerator::increment();
     }
@@ -106,7 +106,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
         SeedGenerator::increment();
     }
     // DECREMENT WORD GO FIRST SCREEN
-    else if (_bothCalled && SeedGenerator::currentWordIndex == 1) {
+    else if (_bothCalled && SeedGenerator::currentIndex == 1) {
         firstSeedScreenCalled.set();
         SeedGenerator::decrement();
     }
