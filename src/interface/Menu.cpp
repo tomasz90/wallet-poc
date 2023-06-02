@@ -21,10 +21,10 @@ void Menu::begin() {
 //    CustomState *S4_0 = machine.addState(&s4_0);
 //    CustomState *S4_1 = machine.addState(&s4_1);
 //    CustomState *S5 =   machine.addState(&s5);
-//    CustomState *S6_0 = machine.addState(&s6_0);
-//    CustomState *S6_1 = machine.addState(&s6_1);
-//    CustomState *S6_2 = machine.addState(&s6_2);
-//    CustomState *S7 = machine.addState(&s7);
+    CustomState *S6_0 = machine.addState(&s6_0);
+    CustomState *S6_1 = machine.addState(&s6_1);
+    CustomState *S6_2 = machine.addState(&s6_2);
+    CustomState *S7 = machine.addState(&s7);
     CustomState *S8_0 = machine.addState(&s8_0);
     CustomState *S8_1 = machine.addState(&s8_1);
     CustomState *S8_2 = machine.addState(&s8_2);
@@ -45,20 +45,20 @@ void Menu::begin() {
 //    S3->addTransition(S2,    Nav::dropPinCalled);
 //
 //    S5->addTransition(S6_0,    Nav::bothCalled);
-//    S6_0->addTransition(S6_1,  Nav::nextSeedScreenCalled);
-//    S6_1->addTransition(S6_2,  Nav::previousCalled);
-//    S6_2->addTransition(S6_1,  Nav::nextCalled);
-//    S6_1->addTransition(S6_1,  Nav::nextSeedScreenCalled);
-//    S6_1->addTransition(S7,    Nav::confirmSeedScreenCalled);
-//    S6_2->addTransition(S6_2,  Nav::previousSeedScreenCalled);
-//    S6_2->addTransition(S6_0,  Nav::firstSeedScreenCalled);
-//    S7->addTransition(S8_0, Nav::bothCalled);
-    S8_0->addTransition(S8_1, Nav::nextSeedScreenCalled);
-    S8_1->addTransition(S8_2, Nav::previousCalled);
-    S8_2->addTransition(S8_1, Nav::nextCalled);
-    S8_1->addTransition(S8_1, Nav::nextSeedScreenCalled);
-    S8_2->addTransition(S8_2, Nav::previousSeedScreenCalled);
-    S8_2->addTransition(S8_0, Nav::firstSeedScreenCalled);
+    S6_0->addTransition(S6_1,Nav::nextSeedScreenCalled);
+    S6_1->addTransition(S6_2,Nav::previousCalled);
+    S6_2->addTransition(S6_1,Nav::nextCalled);
+    S6_1->addTransition(S6_1,Nav::nextSeedScreenCalled);
+    S6_1->addTransition(S7,  Nav::confirmSeedScreenCalled);
+    S6_2->addTransition(S6_2,Nav::previousSeedScreenCalled);
+    S6_2->addTransition(S6_0,Nav::firstSeedScreenCalled);
+    S7->addTransition(S8_0,  Nav::bothCalled);
+    S8_0->addTransition(S8_1,Nav::nextSeedScreenCalled);
+    S8_1->addTransition(S8_2,Nav::previousCalled);
+    S8_2->addTransition(S8_1,Nav::nextCalled);
+    S8_1->addTransition(S8_1,Nav::nextSeedScreenCalled);
+    S8_2->addTransition(S8_2,Nav::previousSeedScreenCalled);
+    S8_2->addTransition(S8_0,Nav::firstSeedScreenCalled);
 }
 
 void Menu::run() {
@@ -159,21 +159,21 @@ void Menu::s7() {
 
 void Menu::s8_0() {
     doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
-    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom()) + " word:", 20);
+    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(true);
     readStringFromSerial();
 }
 
 void Menu::s8_1() {
     doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", true); });
-    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom()) + " word:", 20);
+    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(true);
     readStringFromSerial();
 }
 
 void Menu::s8_2() {
     doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", false); });
-    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom()) + " word:", 20);
+    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(false);
     readStringFromSerial();
 }
@@ -186,8 +186,12 @@ void Menu::readStringFromSerial() {
         incomingString += incomingByte;
     }
     if (incomingString.length() > 0) {
-        bool isValid = true;//SeedGenerator::validateWord(incomingString);
-        if(isValid) {
+        bool isValid = SeedGenerator::validateWord(incomingString);
+        if (isValid) {
+            Disp::clearTextCenter();
+            Disp::setTextAtCenter(incomingString, 24);
+            Disp::disp();
+        } else {
             incomingString = "Invalid word!";
             Disp::clearTextCenter();
             Disp::setTextAtCenter(incomingString, 24);
@@ -206,10 +210,6 @@ void Menu::readStringFromSerial() {
             Disp::disp();
             delay(300);
             Disp::clearTextCenter();
-            Disp::disp();
-        } else {
-            Disp::clearTextCenter();
-            Disp::setTextAtCenter(incomingString, 24);
             Disp::disp();
         }
     }

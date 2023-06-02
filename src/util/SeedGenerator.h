@@ -7,10 +7,12 @@
 class SeedGenerator {
 public:
     static uint8_t currentIndex;
-    static std::array<int, 24> randomSequence;
+    static std::array<int, 12> randomSequence;
     static BIP39::word_list mnemonic;
 
     static void createMnemonic();
+    static bool isSecond();
+    static bool isLast();
     static void increment();
     static std::string getCurrentWord();
     static void decrement();
@@ -18,7 +20,8 @@ public:
     static bool validateWord(const std::string &word);
 private:
     SeedGenerator() = default;
-    static std::array<int, 24> generateRandomSequence();
+    static std::array<int, 12> generateRandomSequence();
+
     static std::vector<uint8_t> generateEntropy();
 };
 

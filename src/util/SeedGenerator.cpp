@@ -1,12 +1,13 @@
 #include <esp_random.h>
 #include <random>
 #include <algorithm>
+#include <HardwareSerial.h>
 #include "SeedGenerator.h"
 #include "bip39/bip39.h"
 
 BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
-std::array<int, 24> SeedGenerator::randomSequence;
+std::array<int, 12> SeedGenerator::randomSequence;
 
 std::vector<uint8_t> SeedGenerator::generateEntropy() {
     // Resize the vector to accommodate the desired number of bytes
@@ -31,7 +32,7 @@ std::string SeedGenerator::getCurrentWord() {
 }
 
 void SeedGenerator::increment() {
-    if(currentIndex < 23) {
+    if(currentIndex < 11) {
         currentIndex++;
     } else {
         currentIndex = 0;
@@ -44,10 +45,10 @@ void SeedGenerator::decrement() {
     }
 }
 
-std::array<int, 24> SeedGenerator::generateRandomSequence() {
-    std::array<int, 24> numbers{};
+std::array<int, 12> SeedGenerator::generateRandomSequence() {
+    std::array<int, 12> numbers{};
 
-    for (int i = 0; i < 24; ++i) {
+    for (int i = 0; i < 12; ++i) {
         numbers[i] = i;
     }
     std::random_device rd;
@@ -61,5 +62,16 @@ int SeedGenerator::getCurrentRandom() {
 }
 
 bool SeedGenerator::validateWord(const std::string &word) {
+    Serial.println(mnemonic.getWordAt(currentIndex).c_str());
+    Serial.println(currentIndex);
+    Serial.println(word.c_str());
     return mnemonic.getWordAt(currentIndex) == word;
+}
+
+bool SeedGenerator::isSecond() {
+    return currentIndex == 1;
+}
+
+bool SeedGenerator::isLast() {
+    return currentIndex == 11;
 }
