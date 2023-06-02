@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "SeedGenerator.h"
 #include "bip39/bip39.h"
+#include "../../lib/wallet-core/trezor-crypto/include/TrezorCrypto/bip39.h"
 
 BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
@@ -72,6 +73,9 @@ void SeedGenerator::generateRandomSequence() {
 }
 
 std::vector<uint8_t> SeedGenerator::generateEntropy() {
+    uint8_t seed[512 / 8];
+
+    mnemonic_to_seed(mnemonic.to_string().c_str(), "", seed, 0);
     // Resize the vector to accommodate the desired number of bytes
     size_t numBytes = 16;
     std::vector<uint8_t> entropy(numBytes);
