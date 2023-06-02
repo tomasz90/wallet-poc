@@ -1,7 +1,5 @@
-#include <HardwareSerial.h>
 #include "Pin.h"
 #include "Wmath.cpp"
-#include "Util.h"
 #include "Nav.h"
 
 PinMode Pin::mode;
@@ -79,7 +77,6 @@ bool Pin::isLastDigit() {
 }
 
 void Pin::setOneDigit() {
-    if (currentIndex > 3) throwException("Setting at index more than 3");
     stateCombination[currentIndex] = DigitState::SET;
     if (currentIndex < 3) {
         currentIndex++;
@@ -97,9 +94,7 @@ void Pin::unsetOneDigit() {
 }
 
 bool Pin::savePin() {
-    if (currentIndex != 3) throwException("Invalid current index: " + String(currentIndex));
     for (int i = 0; i <= 3 ; i++) {
-        if (rawCombination[i] < 0) throwException("Invalid digit at index: " + String(i) + " value: " + rawCombination[i]);
         switch (mode) {
             case PinMode::SET:
                 savedCombination[i] = rawCombination[i];

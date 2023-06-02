@@ -1,8 +1,8 @@
 #include <esp_random.h>
 #include <HardwareSerial.h>
+#include <bootloader_random.h>
 #include "SeedGenerator.h"
 #include "bip39/bip39.h"
-#include "Util.h"
 
 BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
@@ -10,10 +10,12 @@ uint8_t SeedGenerator::randomSequence[MNEMONIC_LENGTH];
 SeedGeneratorMode SeedGenerator::mode;
 
 void SeedGenerator::createMnemonic() {
+    bootloader_random_enable();
     std::vector<uint8_t> entropy = generateEntropy();
     mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
     Serial.println(mnemonic.to_string().c_str());
     generateRandomSequence();
+    bootloader_random_disable();
 }
 
 void SeedGenerator::setMode(SeedGeneratorMode _mode) {
@@ -31,16 +33,12 @@ bool SeedGenerator::isLast() {
 void SeedGenerator::increment() {
     if(currentIndex < MNEMONIC_LENGTH - 1) {
         currentIndex++;
-    } else {
-        throwException("SeedGenerator: Index out of bounds");
     }
 }
 
 void SeedGenerator::decrement() {
     if(currentIndex > 0) {
         currentIndex--;
-    } else {
-        throwException("SeedGenerator: Index out of bounds");
     }
 }
 
