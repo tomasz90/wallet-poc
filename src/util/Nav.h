@@ -24,6 +24,7 @@ public:
     static Flag previousSeedScreenCalled;
     static Flag nextSeedScreenCalled;
     static Flag confirmSeedScreenCalled;
+    static Flag isValidWordCalled;
 
     static void begin(Led *_led, ButtonsHandler &buttonHandler);
     static void onPrevious();
@@ -31,10 +32,10 @@ public:
     static void onBoth();
     static void enterPin();
     static void navigateSeed(bool nextHighlighted);
+
 private:
 
     static Led* led;
-
 };
 
 #endif //WALLET_POC_NAV_H

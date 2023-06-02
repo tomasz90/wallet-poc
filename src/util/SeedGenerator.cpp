@@ -8,6 +8,7 @@
 BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
 std::array<int, 12> SeedGenerator::randomSequence;
+SeedGeneratorMode SeedGenerator::mode;
 
 std::vector<uint8_t> SeedGenerator::generateEntropy() {
     // Resize the vector to accommodate the desired number of bytes
@@ -35,9 +36,11 @@ std::string SeedGenerator::getCurrentWord() {
 void SeedGenerator::increment() {
     if(currentIndex < 11) {
         currentIndex++;
-    } else {
-        currentIndex = 0;
     }
+}
+
+void SeedGenerator::resetIndex() {
+    currentIndex = 0;
 }
 
 void SeedGenerator::decrement() {
@@ -72,4 +75,8 @@ bool SeedGenerator::isSecond() {
 
 bool SeedGenerator::isLast() {
     return currentIndex == 11;
+}
+
+void SeedGenerator::setMode(SeedGeneratorMode _mode) {
+    mode = _mode;
 }

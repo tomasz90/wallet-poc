@@ -123,6 +123,7 @@ void Menu::s5() {
 
 void Menu::s6_0() {
     doOnce([]() {
+        SeedGenerator::setMode(SeedGeneratorMode::SET);
         Disp::clearMenu();
         Disp::drawOnlyRightBox("NEXT");
         Disp::clearText(40);
@@ -158,7 +159,10 @@ void Menu::s7() {
 }
 
 void Menu::s8_0() {
-    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
+    doOnce([]() {
+        SeedGenerator::setMode(SeedGeneratorMode::CONFIRM);
+        Disp::drawOnlyRightBox("NEXT");
+    });
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(true);
     readStringFromSerial();
@@ -188,6 +192,7 @@ void Menu::readStringFromSerial() {
     if (incomingString.length() > 0) {
         bool isValid = SeedGenerator::validateWord(incomingString);
         if (isValid) {
+            Nav::isValidWordCalled.set();
             Disp::clearTextCenter();
             Disp::setTextAtCenter(incomingString, 24);
             Disp::disp();

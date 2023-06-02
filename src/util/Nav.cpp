@@ -29,6 +29,7 @@ Flag Nav::firstSeedScreenCalled;
 Flag Nav::previousSeedScreenCalled;
 Flag Nav::nextSeedScreenCalled;
 Flag Nav::confirmSeedScreenCalled;
+Flag Nav::isValidWordCalled;
 
 Led *Nav::led = nullptr;
 
@@ -94,17 +95,45 @@ void Nav::enterPin() {
 void Nav::navigateSeed(bool nextHighlighted) {
     // bothCalled.check() needs to be called only once here
     bool _bothCalled = bothCalled.check();
+    bool isValid = true;
 
-    // INCREMENT WORD CONFIRM SEED PHRASE
+    // isValidWordCalled needs to be checked only when both buttons are pressed
+    if(_bothCalled && SeedGenerator::mode == SeedGeneratorMode::CONFIRM) {
+        isValid = isValidWordCalled.check();
+    }
+
+    // CONFIRM SEED PHRASE
     if (_bothCalled && nextHighlighted && SeedGenerator::isLast()) {
         confirmSeedScreenCalled.set();
-        SeedGenerator::increment();
+        SeedGenerator::resetIndex();
     }
     // INCREMENT WORD GO NEXT SCREEN
-    else if (_bothCalled && nextHighlighted) {
+    else if (_bothCalled && nextHighlighted && isValid) {
         nextSeedScreenCalled.set();
         SeedGenerator::increment();
         Disp::clearTextCenter();
+    }
+    // INCREMENT WORD GO NEXT SCREEN
+    else if (_bothCalled && nextHighlighted) {
+        std::string incomingString = "Need valid word!";
+        Disp::clearTextCenter();
+        Disp::setTextAtCenter(incomingString, 24);
+        Disp::disp();
+        delay(300);
+        Disp::clearTextCenter();
+        Disp::disp();
+        delay(300);
+        Disp::setTextAtCenter(incomingString, 24);
+        Disp::disp();
+        delay(300);
+        Disp::clearTextCenter();
+        Disp::disp();
+        delay(300);
+        Disp::setTextAtCenter(incomingString, 24);
+        Disp::disp();
+        delay(300);
+        Disp::clearTextCenter();
+        Disp::disp();
     }
     // DECREMENT WORD GO FIRST SCREEN
     else if (_bothCalled && SeedGenerator::isSecond()) {
