@@ -24,6 +24,8 @@ void Menu::begin() {
     CustomState *S6_0 = machine.addState(&s6_0);
     CustomState *S6_1 = machine.addState(&s6_1);
     CustomState *S6_2 = machine.addState(&s6_2);
+    CustomState *S7 = machine.addState(&s7);
+    CustomState *S8 = machine.addState(&s8);
 
     // NEXT
 //    S0->addTransition(S1_0,  Nav::bothCalled);
@@ -45,8 +47,10 @@ void Menu::begin() {
     S6_1->addTransition(S6_2,  Nav::previousCalled);
     S6_2->addTransition(S6_1,  Nav::nextCalled);
     S6_1->addTransition(S6_1,  Nav::nextSeedScreenCalled);
+    S6_1->addTransition(S7,    Nav::confirmSeedScreenCalled);
     S6_2->addTransition(S6_2,  Nav::previousSeedScreenCalled);
     S6_2->addTransition(S6_0,  Nav::firstSeedScreenCalled);
+    S7->addTransition(S8, Nav::bothCalled);
 }
 
 void Menu::run() {
@@ -138,5 +142,29 @@ void Menu::s6_2() {
     });
     Disp::blinkTextWithSign(std::to_string(SeedGenerator::currentWordIndex + 1) + ". word is: ", 20);
     Nav::navigateSeed(false);
+}
+
+void Menu::s7() {
+    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
+    Disp::blinkTextWithSign("Now please confirm your seed.");
+}
+
+void Menu::s8() {
+    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
+    Disp::blinkTextWithSign("Enter 1. word:", 20);
+    readStringFromSerial();
+}
+
+void Menu::readStringFromSerial() {
+    std::string incomingString;
+    while (Serial.available() > 0) {
+        char incomingByte = Serial.read();
+        if (incomingByte == '\n') { break; }
+        incomingString += incomingByte;
+    }
+    if(incomingString.length() > 0) {
+        Disp::setTextAtCenter(incomingString, 24);
+        Disp::disp();
+    }
 }
 

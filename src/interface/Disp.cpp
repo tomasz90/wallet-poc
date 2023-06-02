@@ -51,7 +51,6 @@ void Disp::setTextAtCenter(const std::string &text, uint8_t y) {
     display.setTextColor(WHITE);
     setCursorRelativeToCenter(text, SCREEN_CENTER, y);
     display.println(text.c_str());
-    display.display();
 }
 
 void Disp::blinkTextWithSign(const std::string &text, uint8_t toLine) {
@@ -163,6 +162,10 @@ void Disp::clearMenu() {
             SCREEN_HEIGHT - SCREEN_TEXT_MENU_BORDER_POSITION,
             BLACK
     );
+}
+
+void Disp::disp() {
+    display.display();
 }
 
 // TODO: not used, but keep it for now

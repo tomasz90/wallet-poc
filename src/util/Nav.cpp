@@ -28,6 +28,7 @@ Flag Nav::pinMismatchCalled;
 Flag Nav::firstSeedScreenCalled;
 Flag Nav::previousSeedScreenCalled;
 Flag Nav::nextSeedScreenCalled;
+Flag Nav::confirmSeedScreenCalled;
 
 Led *Nav::led = nullptr;
 
@@ -94,18 +95,21 @@ void Nav::navigateSeed(bool nextHighlighted) {
     // bothCalled.check() needs to be called only once here
     bool _bothCalled = bothCalled.check();
 
+    // INCREMENT WORD CONFIRM SEED PHRASE
+    if (_bothCalled && nextHighlighted && SeedGenerator::currentWordIndex == 23) {
+        confirmSeedScreenCalled.set();
+        SeedGenerator::increment();
+    }
     // INCREMENT WORD GO NEXT SCREEN
-    if (_bothCalled && nextHighlighted) {
+    else if (_bothCalled && nextHighlighted) {
         nextSeedScreenCalled.set();
         SeedGenerator::increment();
     }
-
     // DECREMENT WORD GO FIRST SCREEN
     else if (_bothCalled && SeedGenerator::currentWordIndex == 1) {
         firstSeedScreenCalled.set();
         SeedGenerator::decrement();
     }
-
     // DECREMENT WORD GO PREVIOUS SCREEN
     else if (_bothCalled) {
         previousSeedScreenCalled.set();

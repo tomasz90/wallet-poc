@@ -22,6 +22,8 @@ public:
 
     static void blinkTextWithSign(const std::string &text);
 
+    static void disp();
+
 private:
     static bool blink;
     static void setCursorRelativeToCenter(const std::string &text, uint8_t textCenter, uint8_t y);

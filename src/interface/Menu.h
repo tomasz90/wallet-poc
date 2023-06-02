@@ -25,6 +25,9 @@ private:
     static void s6_0();
     static void s6_1();
     static void s6_2();
+    static void s7();
+    static void s8();
+    static void readStringFromSerial();
 };
 
 #endif //WALLET_POC_MENU_H

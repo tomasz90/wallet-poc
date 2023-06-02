@@ -23,6 +23,7 @@ public:
     static Flag firstSeedScreenCalled;
     static Flag previousSeedScreenCalled;
     static Flag nextSeedScreenCalled;
+    static Flag confirmSeedScreenCalled;
 
     static void begin(Led *_led, ButtonsHandler &buttonHandler);
     static void onPrevious();
