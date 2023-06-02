@@ -11,7 +11,7 @@ enum class SeedGeneratorMode { SET, CONFIRM };
 class SeedGenerator {
 public:
     static uint8_t currentIndex;
-    static uint8_t randomSequence[MNEMONIC_LENGTH];
+    static std::array<int, MNEMONIC_LENGTH> randomSequence;
     static BIP39::word_list mnemonic;
     static SeedGeneratorMode mode;
 

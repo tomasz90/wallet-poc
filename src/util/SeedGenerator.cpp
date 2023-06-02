@@ -1,12 +1,13 @@
 #include <esp_random.h>
 #include <HardwareSerial.h>
 #include <bootloader_random.h>
+#include <algorithm>
 #include "SeedGenerator.h"
 #include "bip39/bip39.h"
 
 BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
-uint8_t SeedGenerator::randomSequence[MNEMONIC_LENGTH];
+std::array<int, MNEMONIC_LENGTH> SeedGenerator::randomSequence;
 SeedGeneratorMode SeedGenerator::mode;
 
 void SeedGenerator::createMnemonic() {
@@ -31,13 +32,13 @@ bool SeedGenerator::isLast() {
 }
 
 void SeedGenerator::increment() {
-    if(currentIndex < MNEMONIC_LENGTH - 1) {
+    if (currentIndex < MNEMONIC_LENGTH - 1) {
         currentIndex++;
     }
 }
 
 void SeedGenerator::decrement() {
-    if(currentIndex > 0) {
+    if (currentIndex > 0) {
         currentIndex--;
     }
 }
@@ -59,8 +60,14 @@ bool SeedGenerator::validateWord(const std::string &word) {
 }
 
 void SeedGenerator::generateRandomSequence() {
-    for (unsigned char &i : randomSequence) {
-        i = esp_random() % MNEMONIC_LENGTH;
+    std::string s;
+    randomSequence.fill(-1);
+    for (int &i: randomSequence) {
+        uint8_t temp = esp_random() % MNEMONIC_LENGTH;
+        while (std::find(randomSequence.begin(), randomSequence.end(), temp) != randomSequence.end()) {
+            temp = esp_random() % MNEMONIC_LENGTH;
+        }
+        i = temp;
     }
 }
 
