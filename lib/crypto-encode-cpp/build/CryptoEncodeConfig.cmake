@@ -1,6 +1,6 @@
 include(CMakeFindDependencyMacro)
 
-include("${CMAKE_CURRENT_LIST_DIR}/CMakeFiles/Export/43cfc505605e531d15504211aff6f99a/CryptoHashTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/CryptoEncodeTargets.cmake")
 
 get_filename_component(CMAKE_CURRENT_LIST_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 get_filename_component(_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
@@ -8,7 +8,7 @@ get_filename_component(_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}/../../../" ABS
 
 ####### Expanded from @PACKAGE_INIT@ by configure_package_config_file() #######
 ####### Any changes to this file will be overwritten by the next CMake run ####
-####### The input file was CryptoHashConfig.cmake.in                            ########
+####### The input file was CryptoEncodeConfig.cmake.in                            ########
 
 get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
 
@@ -30,22 +30,22 @@ macro(check_required_components _NAME)
 endmacro()
 
 ####################################################################################
-#set_and_check(CryptoHash_INCLUDE_DIR  "${_INSTALL_PREFIX}/include/safeheron")
-#set_and_check(CryptoHash_INCLUDE_DIRS "${_INSTALL_PREFIX}/include/safeheron")
-set_and_check(CryptoHash_LIBRARY_DIR "${_INSTALL_PREFIX}/lib")
+set_and_check(CryptoEncode_INCLUDE_DIR  "${_INSTALL_PREFIX}/include/safeheron")
+set_and_check(CryptoEncode_INCLUDE_DIRS "${_INSTALL_PREFIX}/include/safeheron")
+set_and_check(CryptoEncode_LIBRARY_DIR "${_INSTALL_PREFIX}/lib")
 
 MESSAGE(STATUS "###################################")
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
     MESSAGE(STATUS "current platform: Darwin ")
-    set_and_check(CryptoHash_LIBRARY "/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-hash-cpp/build/lib/libCryptoHash.dylib")
+    set_and_check(CryptoEncode_LIBRARY "${_INSTALL_PREFIX}/lib/libCryptoEncode.dylib")
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     MESSAGE(STATUS "current platform: Windows")
-    set_and_check(CryptoHash_LIBRARY "${_INSTALL_PREFIX}/lib/libCryptoHash.dll")
+    set_and_check(CryptoEncode_LIBRARY "${_INSTALL_PREFIX}/lib/libCryptoEncode.dll")
 ELSE ()
     MESSAGE(STATUS "other platform: ${CMAKE_SYSTEM_NAME}")
-    set_and_check(CryptoHash_LIBRARY "${_INSTALL_PREFIX}/lib/libCryptoHash.so")
+    set_and_check(CryptoEncode_LIBRARY "${_INSTALL_PREFIX}/lib/libCryptoEncode.so")
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
 MESSAGE(STATUS "###################################")
