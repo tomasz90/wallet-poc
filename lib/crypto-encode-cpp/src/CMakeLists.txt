@@ -7,6 +7,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         crypto-encode/base58_imp.cpp
         )
 
+set(CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/../crypto-hash-cpp/build")
 
 # Refer to single internal library only if it's not assembled into a big library.
 option(ENABLE_ASSEMBLE "Enable assemble" OFF)
