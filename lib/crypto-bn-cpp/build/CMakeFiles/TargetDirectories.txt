@@ -1,0 +1,13 @@
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/CMakeFiles/CryptoBN.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/CMakeFiles/edit_cache.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/CMakeFiles/rebuild_cache.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/CMakeFiles/list_install_components.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/CMakeFiles/install.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/CMakeFiles/install/local.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/CMakeFiles/install/strip.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/src/CMakeFiles/edit_cache.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/src/CMakeFiles/rebuild_cache.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/src/CMakeFiles/list_install_components.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/src/CMakeFiles/install.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/src/CMakeFiles/install/local.dir
+/Users/tomasz/CLionProjects/wallet-poc/lib/crypto-bn-cpp/build/src/CMakeFiles/install/strip.dir
