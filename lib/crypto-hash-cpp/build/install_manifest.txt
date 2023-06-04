@@ -1,0 +1,15 @@
+/usr/local/lib/libCryptoHash.dylib
+/usr/local/share/cmake/CryptoHash/CryptoHashTargets.cmake
+/usr/local/share/cmake/CryptoHash/CryptoHashTargets-release.cmake
+/usr/local/share/cmake/CryptoHash/CryptoHashConfig.cmake
+/usr/local/share/cmake/CryptoHash/CryptoHashConfigVersion.cmake
+/usr/local/include/safeheron/crypto-hash/ripemd160.h
+/usr/local/include/safeheron/crypto-hash/hash160.h
+/usr/local/include/safeheron/crypto-hash/hash256.h
+/usr/local/include/safeheron/crypto-hash/hmac_sha512.h
+/usr/local/include/safeheron/crypto-hash/sha256.h
+/usr/local/include/safeheron/crypto-hash/hmac_sha256.h
+/usr/local/include/safeheron/crypto-hash/sha512.h
+/usr/local/include/safeheron/crypto-hash/common.h
+/usr/local/include/safeheron/crypto-hash/chacha20.h
+/usr/local/include/safeheron/crypto-hash/sha1.h
