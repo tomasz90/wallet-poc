@@ -1,9 +1,0 @@
-/usr/local/lib/libCryptoBN.dylib
-/usr/local/share/cmake/CryptoBN/CryptoBNTargets.cmake
-/usr/local/share/cmake/CryptoBN/CryptoBNTargets-release.cmake
-/usr/local/share/cmake/CryptoBN/CryptoBNConfig.cmake
-/usr/local/share/cmake/CryptoBN/CryptoBNConfigVersion.cmake
-/usr/local/include/safeheron/crypto-bn/bn.h
-/usr/local/include/safeheron/crypto-bn/rand.h
-/usr/local/include/safeheron/exception/safeheron_exceptions.h
-/usr/local/include/safeheron/exception/located_exception.h
