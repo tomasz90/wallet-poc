@@ -1,4 +1,12 @@
-.pio
+.pio/build
+.pio/libdeps/esp32dev/Adafruit BusIO
+.pio/libdeps/esp32dev/Adafruit GFX Library
+.pio/libdeps/esp32dev/Adafruit SSD1306
+.pio/libdeps/esp32dev/ArduinoJson
+.pio/libdeps/esp32dev/LinkedList
+.pio/libdeps/esp32dev/TwoButtonsInterface
+.pio/libdeps/esp32dev/uBitcoin
+.pio/libdeps/esp32dev/Unity
 CMakeListsPrivate.txt
 cmake-build-*/
 .idea
