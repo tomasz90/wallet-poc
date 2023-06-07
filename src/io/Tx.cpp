@@ -13,14 +13,13 @@ Tx::Tx(std::string &receiverValue) {
         Serial.println("parseObject() failed");
         return;
     }
-    nonce = obj["nonce"];
+    nonce = obj["nonce"].as<uint32_t>();
     gasPrice = std::stoull(obj["gasPrice"].as<char *>());
-    gasLimit = obj["gasLimit"];
+    gasLimit = obj["gasLimit"].as<uint32_t>();
     destinationAddress = obj["destinationAddress"].as<char *>();
     value = toUint256(obj["value"].as<char *>());
     data = obj["data"].as<char *>();
 
-    Serial.println(value.str().c_str());
 }
 
 void Tx::sign(char *&buffer) {
@@ -33,13 +32,29 @@ void Tx::sign(char *&buffer) {
 //    contract->GenerateSignature(signature, recid, nonce, gasPrice, gasLimit,
 //                      &destinationAddress, &value, &data);
 
-    obj["nonce"] = nonce;
-    obj["gasPrice"] = std::to_string(gasPrice).c_str();
-    obj["gasLimit"] = gasLimit;
-    obj["destinationAddress"] = destinationAddress.c_str();
-    obj["value"] = value.str().c_str();
-    obj["data"] = data.c_str();
-    obj["signature"] = "signature";
+    string nonceStr = std::to_string(nonce);
+    string gasPriceStr = std::to_string(gasPrice);
+    string gasLimitStr = std::to_string(gasLimit);
+    string destinationAddressStr = destinationAddress;
+    string valueStr = value.str();
+    string dataStr = data;
+    string signatureStr = "signature";
+
+    obj["nonce"] = nonceStr.c_str();
+    obj["gasPrice"] = gasPriceStr.c_str();
+    obj["gasLimit"] = gasLimitStr.c_str();;
+    obj["destinationAddress"] = destinationAddressStr.c_str();
+    obj["value"] = valueStr.c_str();
+    obj["data"] = dataStr.c_str();
+    obj["signature"] = signatureStr.c_str();
+
+    Serial.println(obj["nonce"].as<char *>());
+    Serial.println(obj["gasPrice"].as<char *>());
+    Serial.println(obj["gasLimit"].as<char *>());
+    Serial.println(obj["destinationAddress"].as<char *>());
+    Serial.println(obj["value"].as<char *>());
+    Serial.println(obj["data"].as<char *>());
+    Serial.println(obj["signature"].as<char *>());
 
     // Get the size of the JSON string
     size_t bufferSize = obj.measureLength() + 1;
