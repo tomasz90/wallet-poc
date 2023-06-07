@@ -63,6 +63,7 @@ void Bluetooth::poll() {
             tx = new Tx(receiverValue);
 
             Serial.println(tx->nonce);
+            Serial.println(std::to_string(tx->gasPrice).c_str());
             Serial.println(tx->gasLimit);
             Serial.println(tx->destinationAddress.c_str());
             Serial.println(tx->value.c_str());
@@ -74,7 +75,7 @@ void Bluetooth::poll() {
 
         bool pressed = !digitalRead(0);
         if (pressed && millis() - lastMillis > 1000) {
-            tx->serialize(buffer);
+            tx->sign(buffer);
             pCharacteristicSender->setValue(buffer);
             pCharacteristicSender->notify();
             lastMillis = millis();
