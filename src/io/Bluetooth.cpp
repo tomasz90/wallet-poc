@@ -4,14 +4,16 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "Tx.h"
+#include "BluetoothCallbacks.h"
+#include "Bluetooth.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristicSender = NULL;
 BLECharacteristic *pCharacteristicReceiver = NULL;
 BLE2902 *pBLE2902;
 
-bool deviceConnected = false;
-bool oldDeviceConnected = false;
+BluetoothCallbacks* bc = new BluetoothCallbacks();
+
 char *buffer;
 Tx *tx;
 
@@ -21,27 +23,14 @@ unsigned long lastMillis = 0;
 #define SENDER_UUID   "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 #define RECEIVER_UUID "03d2fde6-1615-461d-897b-6b0220bdd335"
 
-class MyServerCallbacks : public BLEServerCallbacks {
-    void onConnect(BLEServer *pServer) {
-        Serial.println("connected");
-        deviceConnected = true;
-    };
-
-    void onDisconnect(BLEServer *pServer) {
-        Serial.println("disconnected");
-        deviceConnected = false;
-    }
-};
-
-void setup() {
-    Serial.begin(115200);
+void Bluetooth::begin() {
     pinMode(0, INPUT);
     // Create the BLE Device
     BLEDevice::init("ESP32");
 
     // Create the BLE Server
     pServer = BLEDevice::createServer();
-    pServer->setCallbacks(new MyServerCallbacks());
+    pServer->setCallbacks(bc);
 
     // Create the BLE Service
     BLEService *pService = pServer->createService(SERVICE_UUID);
@@ -65,8 +54,8 @@ void setup() {
     Serial.println("Waiting a client connection to notify...");
 }
 
-void loop() {
-    if (deviceConnected) {
+void Bluetooth::poll() {
+    if (bc->deviceConnected) {
         auto receiverValue = pCharacteristicReceiver->getValue();
         if (receiverValue.length() > 0) {
             tx = new Tx(receiverValue);
@@ -83,6 +72,7 @@ void loop() {
 
         bool pressed = !digitalRead(0);
         if (pressed && millis() - lastMillis > 1000) {
+            Serial.println("pressed");
             tx->serialize(buffer);
             pCharacteristicSender->setValue(buffer);
             pCharacteristicSender->notify();
@@ -91,15 +81,15 @@ void loop() {
         delay(50);
     }
     // disconnecting
-    if (!deviceConnected && oldDeviceConnected) {
+    if (!bc->deviceConnected && bc->oldDeviceConnected) {
         delay(500); // give the bluetooth stack the chance to get things ready
         pServer->startAdvertising(); // restart advertising
         Serial.println("start advertising");
-        oldDeviceConnected = deviceConnected;
+        bc->oldDeviceConnected = bc->deviceConnected;
     }
     // connecting
-    if (deviceConnected && !oldDeviceConnected) {
+    if (bc->deviceConnected && !bc->oldDeviceConnected) {
         // do stuff here on connecting
-        oldDeviceConnected = deviceConnected;
+        bc->oldDeviceConnected = bc->deviceConnected;
     }
 }

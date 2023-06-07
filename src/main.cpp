@@ -4,6 +4,7 @@
 #include "interface/Menu.h"
 #include "util/Nav.h"
 #include "util/Pin.h"
+#include "io/Bluetooth.h"
 
 #define PREVIOUS_BUTTON 2
 #define NEXT_BUTTON 25
@@ -19,6 +20,7 @@ ButtonsHandler buttonHandler(previous, next);
 void setup() {
     Serial.begin(115200);
     Disp::begin();
+    Bluetooth::begin();
     buttonHandler.setDebounceTime(10);
     Nav::begin(led, buttonHandler);
     Menu::begin();
@@ -27,5 +29,6 @@ void setup() {
 
 void loop() {
     Menu::run();
+    Bluetooth::poll();
     buttonHandler.poll();
 }

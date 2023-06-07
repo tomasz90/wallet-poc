@@ -21,13 +21,14 @@ void Menu::begin() {
 //    CustomState *S4_0 = machine.addState(&s4_0);
 //    CustomState *S4_1 = machine.addState(&s4_1);
 //    CustomState *S5 =   machine.addState(&s5);
-    CustomState *S6_0 = machine.addState(&s6_0);
-    CustomState *S6_1 = machine.addState(&s6_1);
-    CustomState *S6_2 = machine.addState(&s6_2);
-    CustomState *S7 = machine.addState(&s7);
-    CustomState *S8_0 = machine.addState(&s8_0);
-    CustomState *S8_1 = machine.addState(&s8_1);
-    CustomState *S8_2 = machine.addState(&s8_2);
+//    CustomState *S6_0 = machine.addState(&s6_0);
+//    CustomState *S6_1 = machine.addState(&s6_1);
+//    CustomState *S6_2 = machine.addState(&s6_2);
+//    CustomState *S7 = machine.addState(&s7);
+//    CustomState *S8_0 = machine.addState(&s8_0);
+//    CustomState *S8_1 = machine.addState(&s8_1);
+//    CustomState *S8_2 = machine.addState(&s8_2);
+    CustomState *S9 = machine.addState(&s9);
 
     // NEXT
 //    S0->addTransition(S1_0,  Nav::bothCalled);
@@ -45,20 +46,20 @@ void Menu::begin() {
 //    S3->addTransition(S2,    Nav::dropPinCalled);
 //
 //    S5->addTransition(S6_0,    Nav::bothCalled);
-    S6_0->addTransition(S6_1,Nav::nextSeedScreenCalled);
-    S6_1->addTransition(S6_2,Nav::previousCalled);
-    S6_2->addTransition(S6_1,Nav::nextCalled);
-    S6_1->addTransition(S6_1,Nav::nextSeedScreenCalled);
-    S6_1->addTransition(S7,  Nav::confirmSeedScreenCalled);
-    S6_2->addTransition(S6_2,Nav::previousSeedScreenCalled);
-    S6_2->addTransition(S6_0,Nav::firstSeedScreenCalled);
-    S7->addTransition(S8_0,  Nav::bothCalled);
-    S8_0->addTransition(S8_1,Nav::nextSeedScreenCalled);
-    S8_1->addTransition(S8_2,Nav::previousCalled);
-    S8_2->addTransition(S8_1,Nav::nextCalled);
-    S8_1->addTransition(S8_1,Nav::nextSeedScreenCalled);
-    S8_2->addTransition(S8_2,Nav::previousSeedScreenCalled);
-    S8_2->addTransition(S8_0,Nav::firstSeedScreenCalled);
+//    S6_0->addTransition(S6_1,Nav::nextSeedScreenCalled);
+//    S6_1->addTransition(S6_2,Nav::previousCalled);
+//    S6_2->addTransition(S6_1,Nav::nextCalled);
+//    S6_1->addTransition(S6_1,Nav::nextSeedScreenCalled);
+//    S6_1->addTransition(S7,  Nav::confirmSeedScreenCalled);
+//    S6_2->addTransition(S6_2,Nav::previousSeedScreenCalled);
+//    S6_2->addTransition(S6_0,Nav::firstSeedScreenCalled);
+//    S7->addTransition(S8_0,  Nav::bothCalled);
+//    S8_0->addTransition(S8_1,Nav::nextSeedScreenCalled);
+//    S8_1->addTransition(S8_2,Nav::previousCalled);
+//    S8_2->addTransition(S8_1,Nav::nextCalled);
+//    S8_1->addTransition(S8_1,Nav::nextSeedScreenCalled);
+//    S8_2->addTransition(S8_2,Nav::previousSeedScreenCalled);
+//    S8_2->addTransition(S8_0,Nav::firstSeedScreenCalled);
 }
 
 void Menu::run() {
@@ -178,4 +179,6 @@ void Menu::s8_2() {
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     Nav::navigateSeed(false);
 }
+
+void Menu::s9() {}
 
