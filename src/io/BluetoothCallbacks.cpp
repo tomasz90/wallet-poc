@@ -8,5 +8,7 @@ void BluetoothCallbacks::onConnect(BLEServer *pServer) {
 
 void BluetoothCallbacks::onDisconnect(BLEServer *pServer) {
     Serial.println("disconnected");
+    pServer->startAdvertising(); // restart advertising
+    Serial.println("start advertising");
     deviceConnected = false;
 }

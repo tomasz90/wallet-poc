@@ -50,8 +50,10 @@ void Bluetooth::begin() {
     // Start advertising
     BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(SERVICE_UUID);
-    BLEDevice::startAdvertising();
     Serial.println("Waiting a client connection to notify...");
+
+    pServer->startAdvertising();
+    Serial.println("start advertising");
 }
 
 void Bluetooth::poll() {
@@ -72,24 +74,10 @@ void Bluetooth::poll() {
 
         bool pressed = !digitalRead(0);
         if (pressed && millis() - lastMillis > 1000) {
-            Serial.println("pressed");
             tx->serialize(buffer);
             pCharacteristicSender->setValue(buffer);
             pCharacteristicSender->notify();
             lastMillis = millis();
         }
-        delay(50);
-    }
-    // disconnecting
-    if (!bc->deviceConnected && bc->oldDeviceConnected) {
-        delay(500); // give the bluetooth stack the chance to get things ready
-        pServer->startAdvertising(); // restart advertising
-        Serial.println("start advertising");
-        bc->oldDeviceConnected = bc->deviceConnected;
-    }
-    // connecting
-    if (bc->deviceConnected && !bc->oldDeviceConnected) {
-        // do stuff here on connecting
-        bc->oldDeviceConnected = bc->deviceConnected;
     }
 }

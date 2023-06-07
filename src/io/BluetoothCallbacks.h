@@ -11,7 +11,6 @@
 class BluetoothCallbacks : public BLEServerCallbacks {
 public:
     bool deviceConnected = false;
-    bool oldDeviceConnected = false;
 
     void onConnect(BLEServer *pServer);
     void onDisconnect(BLEServer *pServer);

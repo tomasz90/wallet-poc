@@ -27,7 +27,7 @@ void Menu::begin() {
 //    CustomState *S7 = machine.addState(&s7);
 //    CustomState *S8_0 = machine.addState(&s8_0);
 //    CustomState *S8_1 = machine.addState(&s8_1);
-//    CustomState *S8_2 = machine.addState(&s8_2);
+    CustomState *S8_2 = machine.addState(&s8_2);
     CustomState *S9 = machine.addState(&s9);
 
     // NEXT
