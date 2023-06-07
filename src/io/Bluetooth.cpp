@@ -61,14 +61,6 @@ void Bluetooth::poll() {
         auto receiverValue = pCharacteristicReceiver->getValue();
         if (receiverValue.length() > 0) {
             tx = new Tx(receiverValue);
-
-            Serial.println(tx->nonce);
-            Serial.println(std::to_string(tx->gasPrice).c_str());
-            Serial.println(tx->gasLimit);
-            Serial.println(tx->destinationAddress.c_str());
-            Serial.println(tx->value.c_str());
-            Serial.println(tx->data.c_str());
-
             // received, so reset value for now
             pCharacteristicReceiver->setValue("");
         }

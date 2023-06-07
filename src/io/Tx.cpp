@@ -17,8 +17,15 @@ Tx::Tx(std::string &receiverValue) {
     gasPrice = std::stoull(obj["gasPrice"].as<char *>());
     gasLimit = obj["gasLimit"];
     destinationAddress = obj["destinationAddress"].as<char *>();
-    value = obj["value"].as<char *>();
+    value = uint256_t(std::string(obj["value"].as<char *>()));
     data = obj["data"].as<char *>();
+
+    auto s = std::string(obj["value"].as<char *>());
+    Serial.println(s.c_str());
+
+    uint256_t u = 1000005;
+
+    Serial.println(u.str().c_str());
 }
 
 void Tx::sign(char *&buffer) {
@@ -35,7 +42,7 @@ void Tx::sign(char *&buffer) {
     obj["gasPrice"] = std::to_string(gasPrice).c_str();
     obj["gasLimit"] = gasLimit;
     obj["destinationAddress"] = destinationAddress.c_str();
-    obj["value"] = value.c_str();
+    obj["value"] = value.str().c_str();
     obj["data"] = data.c_str();
     obj["signature"] = "signature";
 

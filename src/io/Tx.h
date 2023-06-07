@@ -14,7 +14,7 @@ public:
     unsigned long long gasPrice;
     uint32_t gasLimit;
     std::string destinationAddress;
-    std::string value;
+    uint256_t value;
     std::string data;
 
     DynamicJsonBuffer jb;
