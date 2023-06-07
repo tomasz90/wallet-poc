@@ -4,6 +4,8 @@
 #include "Contract.h"
 #include "/Users/tomasz/CLionProjects/wallet-poc/.pio/libdeps/esp32dev/Web3E/src/Util.h"
 
+#define SIGNATURE_LENGTH 64
+
 Tx::Tx() {}
 
 Tx::Tx(std::string &receiverValue) {
@@ -24,8 +26,8 @@ Tx::Tx(std::string &receiverValue) {
 void Tx::sign(char *&buffer) {
     JsonObject &obj = jb.createObject();
 
-    uint8_t signature[ETHERS_SIGNATURE_LENGTH];
-    memset(signature, 0, ETHERS_SIGNATURE_LENGTH);
+    uint8_t signature[SIGNATURE_LENGTH];
+    memset(signature, 0, SIGNATURE_LENGTH);
     int recid[1] = {0};
     auto web3 = new Web3(GOERLI_ID);
     Contract contract(web3, "");
