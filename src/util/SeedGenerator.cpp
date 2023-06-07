@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "SeedGenerator.h"
 #include "bip39/bip39.h"
+#include "ethereumHDKeysGenerator/EthereumHDPrivateKey.h"
 
 BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
@@ -15,6 +16,8 @@ void SeedGenerator::createMnemonic() {
     std::vector<uint8_t> entropy = generateEntropy();
     mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
     Serial.println(mnemonic.to_string().c_str());
+    EthereumHDPrivateKey hd(String(mnemonic.to_string().c_str()));
+    EthereumHDPrivateKey account = hd.derive("m/44'/60'/0'/0/0");
     generateRandomSequence();
     bootloader_random_disable();
 }
