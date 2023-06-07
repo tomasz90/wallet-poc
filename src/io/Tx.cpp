@@ -25,12 +25,15 @@ Tx::Tx(std::string &receiverValue) {
 void Tx::sign(char *&buffer) {
     JsonObject &obj = jb.createObject();
 
-//    uint8_t signature[SIGNATURE_LENGTH];
-//    memset(signature, 0, SIGNATURE_LENGTH);
-//    int recid[1] = {0};
-//    auto contract = new Contract();
-//    contract->GenerateSignature(signature, recid, nonce, gasPrice, gasLimit,
-//                      &destinationAddress, &value, &data);
+    uint8_t signature[SIGNATURE_LENGTH];
+    memset(signature, 0, SIGNATURE_LENGTH);
+    int recid[1] = {0};
+    auto web3 = new Web3(RINKEBY_ID);
+    Contract contract(web3, "");
+    contract.SetPrivateKey("0x6d304a7dfcdbc740c38f4102e47135d73ef1347f1316bfe608e73f8151062821");
+
+    contract.GenerateSignature(signature, recid, nonce, gasPrice, gasLimit,
+                      &destinationAddress, &value, &data);
 
     string nonceStr = std::to_string(nonce);
     string gasPriceStr = std::to_string(gasPrice);
@@ -38,7 +41,6 @@ void Tx::sign(char *&buffer) {
     string destinationAddressStr = destinationAddress;
     string valueStr = value.str();
     string dataStr = data;
-    string signatureStr = "signature";
 
     obj["nonce"] = nonceStr.c_str();
     obj["gasPrice"] = gasPriceStr.c_str();
@@ -46,7 +48,7 @@ void Tx::sign(char *&buffer) {
     obj["destinationAddress"] = destinationAddressStr.c_str();
     obj["value"] = valueStr.c_str();
     obj["data"] = dataStr.c_str();
-    obj["signature"] = signatureStr.c_str();
+    obj["signature"] = reinterpret_cast<char*>(signature);
 
     Serial.println(obj["nonce"].as<char *>());
     Serial.println(obj["gasPrice"].as<char *>());
