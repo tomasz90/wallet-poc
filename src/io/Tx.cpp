@@ -29,10 +29,16 @@ void Tx::sign(char *&buffer) {
     int recid[1] = {0};
     auto web3 = new Web3(GOERLI_ID);
     Contract contract(web3, "");
-    contract.SetPrivateKey("0x6d304a7dfcdbc740c38f4102e47135d73ef1347f1316bfe608e73f8151062821");
+    contract.SetPrivateKey("0x4c58c5766b922285e8f50fbd5fbd814cabc0b64fabba5bed5800caad6940b520");
 
     contract.GenerateSignature(signature, recid, nonce, gasPrice, gasLimit,
                       &destinationAddress, &value, &data);
+
+    vector<uint8_t> param = contract.RlpEncodeForRawTransaction(nonce, gasPrice, gasLimit,
+                                                       &destinationAddress, &value, &data,
+                                                       signature, recid[0]);
+
+    string encoded = Util::VectorToString(&param);
 
     string nonceStr = std::to_string(nonce);
     string gasPriceStr = std::to_string(gasPrice);
@@ -47,6 +53,7 @@ void Tx::sign(char *&buffer) {
     obj["value"] = valueStr.c_str();
     obj["data"] = data.c_str();
     obj["signature"] = signatureStr.c_str();
+    obj["encoded"] = encoded.c_str();
 
     Serial.println(obj["nonce"].as<char *>());
     Serial.println(obj["gasPrice"].as<char *>());
@@ -55,6 +62,7 @@ void Tx::sign(char *&buffer) {
     Serial.println(obj["value"].as<char *>());
     Serial.println(obj["data"].as<char *>());
     Serial.println(obj["signature"].as<char *>());
+    Serial.println(obj["encoded"].as<char *>());
 
     // Get the size of the JSON string
     size_t bufferSize = obj.measureLength() + 1;
