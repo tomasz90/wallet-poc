@@ -1,6 +1,6 @@
 #include <Arduino.h>
+#include <sstream>
 #include "Tx.h"
-#include "Util.h"
 #include "Contract.h"
 
 #define SIGNATURE_LENGTH 64
@@ -17,19 +17,14 @@ Tx::Tx(std::string &receiverValue) {
     gasPrice = std::stoull(obj["gasPrice"].as<char *>());
     gasLimit = obj["gasLimit"];
     destinationAddress = obj["destinationAddress"].as<char *>();
-    value = uint256_t(std::string(obj["value"].as<char *>()));
+    value = toUint256(obj["value"].as<char *>());
     data = obj["data"].as<char *>();
 
-    auto s = std::string(obj["value"].as<char *>());
-    Serial.println(s.c_str());
-
-    uint256_t u = 1000005;
-
-    Serial.println(u.str().c_str());
+    Serial.println(value.str().c_str());
 }
 
 void Tx::sign(char *&buffer) {
-    JsonObject& obj = jb.createObject();
+    JsonObject &obj = jb.createObject();
 
 //    uint8_t signature[SIGNATURE_LENGTH];
 //    memset(signature, 0, SIGNATURE_LENGTH);
@@ -51,4 +46,10 @@ void Tx::sign(char *&buffer) {
     buffer = new char[bufferSize];
 
     obj.printTo(buffer, bufferSize);
+}
+
+uint256_t Tx::toUint256(const char *decimalStr) {
+    std::stringstream ss;
+    ss << std::hex << std::stoul(decimalStr);
+    return {ss.str()};
 }

@@ -24,6 +24,8 @@ public:
     explicit Tx(std::string &receiverValue);
 
     void sign(char *&buffer);
+
+    static uint256_t toUint256(const char *decimalStr);
 };
 
 
