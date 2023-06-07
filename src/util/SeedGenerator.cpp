@@ -2,12 +2,8 @@
 #include <HardwareSerial.h>
 #include <bootloader_random.h>
 #include <algorithm>
-#include <sstream>
-#include <ios>
-#include <iomanip>
 #include "SeedGenerator.h"
 #include "bip39/bip39.h"
-#include "bip39.h"
 
 BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
@@ -19,19 +15,6 @@ void SeedGenerator::createMnemonic() {
     std::vector<uint8_t> entropy = generateEntropy();
     mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
     Serial.println(mnemonic.to_string().c_str());
-
-    uint8_t seed[512 / 8];
-
-    mnemonic_to_seed(mnemonic.to_string().c_str(), "", seed, 0);
-
-    std::stringstream ss;
-    for (int i = 0; i < sizeof(seed); i++) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(seed[i]);
-    }
-    std::string hexString = ss.str();
-
-    Serial.println("SEED:  ");
-    Serial.println(hexString.c_str());
     generateRandomSequence();
     bootloader_random_disable();
 }
