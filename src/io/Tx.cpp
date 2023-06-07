@@ -2,8 +2,7 @@
 #include <sstream>
 #include "Tx.h"
 #include "Contract.h"
-
-#define SIGNATURE_LENGTH 64
+#include "/Users/tomasz/CLionProjects/wallet-poc/.pio/libdeps/esp32dev/Web3E/src/Util.h"
 
 Tx::Tx() {}
 
@@ -25,10 +24,10 @@ Tx::Tx(std::string &receiverValue) {
 void Tx::sign(char *&buffer) {
     JsonObject &obj = jb.createObject();
 
-    uint8_t signature[SIGNATURE_LENGTH];
-    memset(signature, 0, SIGNATURE_LENGTH);
+    uint8_t signature[ETHERS_SIGNATURE_LENGTH];
+    memset(signature, 0, ETHERS_SIGNATURE_LENGTH);
     int recid[1] = {0};
-    auto web3 = new Web3(RINKEBY_ID);
+    auto web3 = new Web3(GOERLI_ID);
     Contract contract(web3, "");
     contract.SetPrivateKey("0x6d304a7dfcdbc740c38f4102e47135d73ef1347f1316bfe608e73f8151062821");
 
@@ -38,17 +37,16 @@ void Tx::sign(char *&buffer) {
     string nonceStr = std::to_string(nonce);
     string gasPriceStr = std::to_string(gasPrice);
     string gasLimitStr = std::to_string(gasLimit);
-    string destinationAddressStr = destinationAddress;
     string valueStr = value.str();
-    string dataStr = data;
+    string signatureStr = Util::ConvertBytesToHex(signature, ETHERS_SIGNATURE_LENGTH);
 
     obj["nonce"] = nonceStr.c_str();
     obj["gasPrice"] = gasPriceStr.c_str();
     obj["gasLimit"] = gasLimitStr.c_str();;
-    obj["destinationAddress"] = destinationAddressStr.c_str();
+    obj["destinationAddress"] = destinationAddress.c_str();
     obj["value"] = valueStr.c_str();
-    obj["data"] = dataStr.c_str();
-    obj["signature"] = reinterpret_cast<char*>(signature);
+    obj["data"] = data.c_str();
+    obj["signature"] = signatureStr.c_str();
 
     Serial.println(obj["nonce"].as<char *>());
     Serial.println(obj["gasPrice"].as<char *>());
