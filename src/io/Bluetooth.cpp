@@ -9,7 +9,10 @@
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristicSender = NULL;
+BLECharacteristic *pCharacteristicSenderAddress = NULL;
 BLECharacteristic *pCharacteristicReceiver = NULL;
+
+BLE2902 *pBLE2902Address;
 BLE2902 *pBLE2902;
 
 BluetoothCallbacks* bc = new BluetoothCallbacks();
@@ -18,10 +21,6 @@ char *buffer;
 Tx *tx;
 
 unsigned long lastMillis = 0;
-
-#define SERVICE_UUID  "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define SENDER_UUID   "beb5483e-36e1-4688-b7f5-ea07361b26a8"
-#define RECEIVER_UUID "03d2fde6-1615-461d-897b-6b0220bdd335"
 
 void Bluetooth::begin() {
     pinMode(0, INPUT);
@@ -32,32 +31,44 @@ void Bluetooth::begin() {
     pServer = BLEDevice::createServer();
     pServer->setCallbacks(bc);
 
-    // Create the BLE Service
+    // Create the BLE Services
+    BLEService *pServiceAddress = pServer->createService(SERVICE_ADDRESS_UUID);
     BLEService *pService = pServer->createService(SERVICE_UUID);
 
     // Create a BLE Characteristic
-    pCharacteristicSender = pService->createCharacteristic(SENDER_UUID, BLECharacteristic::PROPERTY_NOTIFY);
+    pCharacteristicSenderAddress = pServiceAddress->createCharacteristic(SENDER_ADDRESS_UUID, BLECharacteristic::PROPERTY_NOTIFY);
 
+    pCharacteristicSender = pService->createCharacteristic(SENDER_UUID, BLECharacteristic::PROPERTY_NOTIFY);
     pCharacteristicReceiver = pService->createCharacteristic(RECEIVER_UUID, BLECharacteristic::PROPERTY_WRITE);
+
+    pBLE2902Address = new BLE2902();
+    pBLE2902Address->setNotifications(true);
+    pCharacteristicSenderAddress->addDescriptor(pBLE2902Address);
 
     pBLE2902 = new BLE2902();
     pBLE2902->setNotifications(true);
     pCharacteristicSender->addDescriptor(pBLE2902);
 
     // Start the service
+    pServiceAddress->start();
     pService->start();
 
     // Start advertising
     BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+    pAdvertising->addServiceUUID(SERVICE_ADDRESS_UUID);
     pAdvertising->addServiceUUID(SERVICE_UUID);
-    Serial.println("Waiting a client connection to notify...");
 
     pServer->startAdvertising();
-    Serial.println("start advertising");
 }
 
 void Bluetooth::poll() {
     if (bc->deviceConnected) {
+        if(bc->onConnectCalled) {
+            bc->onConnectCalled = false;
+            delay(2000);
+            pCharacteristicSenderAddress->setValue("0x51c50Fe7392F8D3D570A8068314c4331ECbC8b52");
+            pCharacteristicSenderAddress->notify();
+        }
         auto receiverValue = pCharacteristicReceiver->getValue();
         if (receiverValue.length() > 0) {
             tx = new Tx(receiverValue);
