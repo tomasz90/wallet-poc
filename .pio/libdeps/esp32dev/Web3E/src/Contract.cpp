@@ -163,7 +163,6 @@ Contract::SignTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uin
 void Contract::GenerateSignature(uint8_t *signature, int *recid, uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
                                  string *toStr, uint256_t *valueStr, string *dataStr, uint32_t chainIdVal)
 {
-
     vector<uint8_t> encoded = RlpEncode(nonceVal, gasPriceVal, gasLimitVal, toStr, valueStr, dataStr, chainIdVal);
     // hash
     string t = Util::VectorToString(&encoded);
@@ -319,7 +318,6 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     {
         signature.push_back(sig[i]);
     }
-
     vector<uint8_t> nonce = Util::ConvertNumberToVector(nonceVal);
     vector<uint8_t> gasPrice = Util::ConvertNumberToVector(gasPriceVal);
     vector<uint8_t> gasLimit = Util::ConvertNumberToVector(gasLimitVal);
