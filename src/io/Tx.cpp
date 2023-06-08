@@ -31,14 +31,16 @@ void Tx::sign(char *&buffer) {
     int recid[1] = {0};
     auto web3 = new Web3(GOERLI_ID);
     Contract contract(web3, "");
-    contract.SetPrivateKey("0x4c58c5766b922285e8f50fbd5fbd814cabc0b64fabba5bed5800caad6940b520");
+    contract.SetPrivateKey("0x4646464646464646464646464646464646464646464646464646464646464646");
 
+    auto *chainId = new string("1");
+    auto *zero = new string("0");
     contract.GenerateSignature(signature, recid, nonce, gasPrice, gasLimit,
-                      &destinationAddress, &value, &data);
+                      &destinationAddress, &value, &data, chainId, zero);
 
     vector<uint8_t> param = contract.RlpEncodeForRawTransaction(nonce, gasPrice, gasLimit,
                                                        &destinationAddress, &value, &data,
-                                                       signature, recid[0]);
+                                                       signature, recid[0], chainId, zero);
 
     string encoded = Util::VectorToString(&param);
 
@@ -62,6 +64,8 @@ void Tx::sign(char *&buffer) {
     Serial.println(obj["destinationAddress"].as<char *>());
     Serial.println(obj["value"].as<char *>());
     Serial.println(obj["data"].as<char *>());
+
+    Serial.println(signatureStr.c_str());
     Serial.println(obj["encoded"].as<char *>());
 
     // Get the size of the JSON string
@@ -76,3 +80,7 @@ void Tx::sign(char *&buffer) {
 //    ss << std::hex << std::stoull(decimalStr);
 //    return {ss.str()};
 //}
+
+
+//0xF86F098504A817C800825208943535353535353535353535353535353535353535880DE0B6B3A764000080 018080 25A028EF61340BD939BC2195FE537567866003E1A15D3C71FF63E1590620AA636276A067CBE9D8997F761AECB703304B3800CCF555C9F3DC64214B297FB1966A3B6D83
+//0XF86C098504A817C800825208943535353535353535353535353535353535353535880DE0B6B3A764000080        25A028EF61340BD939BC2195FE537567866003E1A15D3C71FF63E1590620AA636276A067CBE9D8997F761AECB703304B3800CCF555C9F3DC64214B297FB1966A3B6D83
