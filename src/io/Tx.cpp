@@ -34,14 +34,8 @@ void Tx::sign(char *&buffer) {
     contract.SetPrivateKey("0x4c58c5766b922285e8f50fbd5fbd814cabc0b64fabba5bed5800caad6940b520");
 
     uint32_t chainId = 5;
-    contract.GenerateSignature(signature, recid, nonce, gasPrice, gasLimit,
+    string encoded = contract.SignTransaction(nonce, gasPrice, gasLimit,
                       &destinationAddress, &value, &data, chainId);
-
-    vector<uint8_t> param = contract.RlpEncodeForRawTransaction(nonce, gasPrice, gasLimit,
-                                                       &destinationAddress, &value, &data,
-                                                       signature, recid[0], chainId);
-
-    string encoded = Util::VectorToString(&param);
 
     string nonceStr = std::to_string(nonce);
     string gasPriceStr = std::to_string(gasPrice);

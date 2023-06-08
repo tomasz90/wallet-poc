@@ -138,6 +138,24 @@ string Contract::SendTransaction(uint32_t nonceVal, unsigned long long gasPriceV
     return web3->EthSendSignedTransaction(&paramStr, param.size());
 }
 
+string
+Contract::SignTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal, string *toStr,
+                          uint256_t *valueStr, string *dataStr, uint32_t chainIdVal) {
+
+    uint8_t signature[SIGNATURE_LENGTH];
+    memset(signature, 0, SIGNATURE_LENGTH);
+    int recid[1] = {0};
+
+    GenerateSignature(signature, recid, nonceVal, gasPriceVal, gasLimitVal,
+                      toStr, valueStr, dataStr, chainIdVal);
+
+    vector<uint8_t> param = RlpEncodeForRawTransaction(nonceVal, gasPriceVal, gasLimitVal,
+                                                       toStr, valueStr, dataStr,
+                                                       signature, recid[0], chainIdVal);
+
+    return Util::VectorToString(&param);
+}
+
 /**
  * Private functions
  **/
