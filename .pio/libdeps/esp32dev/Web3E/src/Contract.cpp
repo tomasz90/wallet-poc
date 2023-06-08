@@ -152,7 +152,6 @@ Contract::SignTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uin
     vector<uint8_t> param = RlpEncodeForRawTransaction(nonceVal, gasPriceVal, gasLimitVal,
                                                        toStr, valueStr, dataStr,
                                                        signature, recid[0], chainIdVal);
-
     return Util::VectorToString(&param);
 }
 
