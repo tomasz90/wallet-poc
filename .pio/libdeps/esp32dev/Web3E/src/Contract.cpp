@@ -30,6 +30,8 @@ Contract::Contract(Web3* _web3, const char* address) {
     crypto = NULL;
 }
 
+Contract::Contract(long long networkId) : Contract(new Web3(networkId), "") {}
+
 void Contract::SetPrivateKey(const char *key) {
     crypto = new Crypto(web3);
     crypto->SetPrivateKey(key);
@@ -122,17 +124,17 @@ string Contract::Call(const string *param)
 }
 
 string Contract::SendTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-                                 string *toStr, uint256_t *valueStr, string *dataStr, uint32_t chainIdVal)
+                                 string *toStr, uint256_t *valueStr, string *dataStr)
 {
     uint8_t signature[SIGNATURE_LENGTH];
     memset(signature, 0, SIGNATURE_LENGTH);
     int recid[1] = {0};
     GenerateSignature(signature, recid, nonceVal, gasPriceVal, gasLimitVal,
-                      toStr, valueStr, dataStr, chainIdVal);
+                      toStr, valueStr, dataStr);
 
     vector<uint8_t> param = RlpEncodeForRawTransaction(nonceVal, gasPriceVal, gasLimitVal,
                                                        toStr, valueStr, dataStr,
-                                                       signature, recid[0], chainIdVal);
+                                                       signature, recid[0]);
 
     string paramStr = Util::VectorToString(&param);
     return web3->EthSendSignedTransaction(&paramStr, param.size());
@@ -140,18 +142,18 @@ string Contract::SendTransaction(uint32_t nonceVal, unsigned long long gasPriceV
 
 string
 Contract::SignTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal, string *toStr,
-                          uint256_t *valueStr, string *dataStr, uint32_t chainIdVal) {
+                          uint256_t *valueStr, string *dataStr) {
 
     uint8_t signature[SIGNATURE_LENGTH];
     memset(signature, 0, SIGNATURE_LENGTH);
     int recid[1] = {0};
 
     GenerateSignature(signature, recid, nonceVal, gasPriceVal, gasLimitVal,
-                      toStr, valueStr, dataStr, chainIdVal);
+                      toStr, valueStr, dataStr);
 
     vector<uint8_t> param = RlpEncodeForRawTransaction(nonceVal, gasPriceVal, gasLimitVal,
                                                        toStr, valueStr, dataStr,
-                                                       signature, recid[0], chainIdVal);
+                                                       signature, recid[0]);
     return Util::VectorToString(&param);
 }
 
@@ -160,9 +162,9 @@ Contract::SignTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uin
  **/
 
 void Contract::GenerateSignature(uint8_t *signature, int *recid, uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-                                 string *toStr, uint256_t *valueStr, string *dataStr, uint32_t chainIdVal)
+                                 string *toStr, uint256_t *valueStr, string *dataStr)
 {
-    vector<uint8_t> encoded = RlpEncode(nonceVal, gasPriceVal, gasLimitVal, toStr, valueStr, dataStr, chainIdVal);
+    vector<uint8_t> encoded = RlpEncode(nonceVal, gasPriceVal, gasLimitVal, toStr, valueStr, dataStr);
     // hash
     string t = Util::VectorToString(&encoded);
 
@@ -251,7 +253,7 @@ string Contract::GenerateBytesForBytes(const char *value, const int len)
 
 vector<uint8_t> Contract::RlpEncode(
     uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-    string *toStr, uint256_t *val, string *dataStr, uint32_t chainIdVal)
+    string *toStr, uint256_t *val, string *dataStr)
 {
     vector<uint8_t> nonce = Util::ConvertNumberToVector(nonceVal);
     vector<uint8_t> gasPrice = Util::ConvertNumberToVector(gasPriceVal);
@@ -259,7 +261,7 @@ vector<uint8_t> Contract::RlpEncode(
     vector<uint8_t> to = Util::ConvertHexToVector(toStr);
     vector<uint8_t> value = val->export_bits_truncate();
     vector<uint8_t> data = Util::ConvertHexToVector(dataStr);
-    vector<uint8_t> chainId = Util::ConvertNumberToVector(chainIdVal);
+    vector<uint8_t> chainId = Util::ConvertNumberToVector(uint32_t(web3->getChainId()));
 
     auto *zeroStr = new string("0");
     vector<uint8_t> zero = Util::ConvertHexToVector(zeroStr);
@@ -309,7 +311,7 @@ void Contract::Sign(uint8_t *hash, uint8_t *sig, int *recid)
 
 vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-    string *toStr, uint256_t *val, string *dataStr, uint8_t *sig, uint8_t recid, uint32_t chainIdVal)
+    string *toStr, uint256_t *val, string *dataStr, uint8_t *sig, uint8_t recid)
 {
 
     vector<uint8_t> signature;
@@ -336,7 +338,7 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     vector<uint8_t> S;
     S.insert(S.end(), signature.begin()+(SIGNATURE_LENGTH/2), signature.end());
     vector<uint8_t> V;
-    V.push_back((uint8_t)(recid + chainIdVal * 2 + 35)); // according to EIP-155
+    V.push_back((uint8_t)(recid + web3->getChainId() * 2 + 35)); // according to EIP-155
     vector<uint8_t> outputR = Util::RlpEncodeItemWithVector(R);
     vector<uint8_t> outputS = Util::RlpEncodeItemWithVector(S);
     vector<uint8_t> outputV = Util::RlpEncodeItemWithVector(V);

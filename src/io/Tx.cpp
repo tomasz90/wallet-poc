@@ -26,16 +26,11 @@ Tx::Tx(std::string &receiverValue) {
 void Tx::sign(char *&buffer) {
     JsonObject &obj = jb.createObject();
 
-    uint8_t signature[SIGNATURE_LENGTH];
-    memset(signature, 0, SIGNATURE_LENGTH);
-    int recid[1] = {0};
-    auto web3 = new Web3(GOERLI_ID);
-    Contract contract(web3, "");
+    Contract contract(GOERLI_ID);
     contract.SetPrivateKey("0x4c58c5766b922285e8f50fbd5fbd814cabc0b64fabba5bed5800caad6940b520");
 
-    uint32_t chainId = 5;
     string encoded = contract.SignTransaction(nonce, gasPrice, gasLimit,
-                      &destinationAddress, &value, &data, chainId);
+                      &destinationAddress, &value, &data);
 
     string nonceStr = std::to_string(nonce);
     string gasPriceStr = std::to_string(gasPrice);

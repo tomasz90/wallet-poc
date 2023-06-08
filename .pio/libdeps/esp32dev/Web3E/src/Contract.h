@@ -31,14 +31,15 @@ public:
 
 public:
     Contract(Web3* _web3, const char* address);
+    explicit Contract(long long int networkId);
     void SetPrivateKey(const char *key);
     string SetupContractData(const char* func, ...);
     string Call(const string* param);
     string ViewCall(const string *param);
     string SendTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-                           string *toStr, uint256_t *valueStr, string *dataStr, uint32_t chainIdVal);
+                           string *toStr, uint256_t *valueStr, string *dataStr);
     string SignTransaction(uint32_t nonceVal, unsigned long long int gasPriceVal, uint32_t gasLimitVal, string *toStr,
-                           uint256_t *valueStr, string *dataStr, uint32_t chainIdVal);
+                           uint256_t *valueStr, string *dataStr);
 private:
     Web3* web3;
     const char * contractAddress;
@@ -55,13 +56,13 @@ private:
     string GenerateBytesForHexBytes(const string *value);
 
     void GenerateSignature(uint8_t* signature, int* recid, uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t  gasLimitVal,
-                           string* toStr, uint256_t* valueStr, string* dataStr, uint32_t chainIdVal);
+                           string* toStr, uint256_t* valueStr, string* dataStr);
     vector<uint8_t> RlpEncode(
             uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t  gasLimitVal,
-            string* toStr, uint256_t* valueStr, string* dataStr, uint32_t chainIdVal);
+            string* toStr, uint256_t* valueStr, string* dataStr);
     vector<uint8_t> RlpEncodeForRawTransaction(
             uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t  gasLimitVal,
-            string* toStr, uint256_t* valueStr, string* dataStr, uint8_t* sig, uint8_t recid, uint32_t chainIdVal);
+            string* toStr, uint256_t* valueStr, string* dataStr, uint8_t* sig, uint8_t recid);
     void Sign(uint8_t* hash, uint8_t* sig, int* recid);
 };
 
