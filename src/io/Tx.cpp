@@ -18,7 +18,7 @@ Tx::Tx(std::string &receiverValue) {
     gasPrice = std::stoull(obj["gasPrice"].as<char *>());
     gasLimit = obj["gasLimit"].as<uint32_t>();
     destinationAddress = obj["destinationAddress"].as<char *>();
-    value = toUint256(obj["value"].as<char *>());
+    value = uint256_t(obj["value"].as<char *>());
     data = obj["data"].as<char *>();
 
 }
@@ -54,7 +54,6 @@ void Tx::sign(char *&buffer) {
     obj["destinationAddress"] = destinationAddress.c_str();
     obj["value"] = valueStr.c_str();
     obj["data"] = data.c_str();
-    obj["signature"] = signatureStr.c_str();
     obj["encoded"] = encoded.c_str();
 
     Serial.println(obj["nonce"].as<char *>());
@@ -63,7 +62,6 @@ void Tx::sign(char *&buffer) {
     Serial.println(obj["destinationAddress"].as<char *>());
     Serial.println(obj["value"].as<char *>());
     Serial.println(obj["data"].as<char *>());
-    Serial.println(obj["signature"].as<char *>());
     Serial.println(obj["encoded"].as<char *>());
 
     // Get the size of the JSON string
@@ -73,8 +71,8 @@ void Tx::sign(char *&buffer) {
     obj.printTo(buffer, bufferSize);
 }
 
-uint256_t Tx::toUint256(const char *decimalStr) {
-    std::stringstream ss;
-    ss << std::hex << std::stoul(decimalStr);
-    return {ss.str()};
-}
+//uint256_t Tx::toUint256(const char *decimalStr) {
+//    std::stringstream ss;
+//    ss << std::hex << std::stoull(decimalStr);
+//    return {ss.str()};
+//}
