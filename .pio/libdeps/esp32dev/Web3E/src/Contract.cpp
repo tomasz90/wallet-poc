@@ -13,6 +13,7 @@
 #include "Util.h"
 #include "cJSON/cJSON.h"
 #include <vector>
+#include <iomanip>
 
 #define SIGNATURE_LENGTH 64
 
@@ -299,6 +300,15 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     {
         signature.push_back(sig[i]);
     }
+    std::stringstream ss;
+    ss << std::hex << std::setfill('0');
+
+    for (uint8_t byte : signature) {
+        ss << std::setw(2) << static_cast<int>(byte);
+    }
+
+    Serial.println(ss.str().c_str());
+
     vector<uint8_t> nonce = Util::ConvertNumberToVector(nonceVal);
     vector<uint8_t> gasPrice = Util::ConvertNumberToVector(gasPriceVal);
     vector<uint8_t> gasLimit = Util::ConvertNumberToVector(gasLimitVal);
@@ -316,8 +326,8 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     vector<uint8_t> outputValue = Util::RlpEncodeItemWithVector(value);
     vector<uint8_t> outputData = Util::RlpEncodeItemWithVector(data);
 
-    vector<uint8_t> outputChainId = Util::RlpEncodeItemWithVector(chainId);
-    vector<uint8_t> outputZero = Util::RlpEncodeItemWithVector(zero);
+//    vector<uint8_t> outputChainId = Util::RlpEncodeItemWithVector(chainId);
+//    vector<uint8_t> outputZero = Util::RlpEncodeItemWithVector(zero);
 
     vector<uint8_t> R;
     R.insert(R.end(), signature.begin(), signature.begin()+(SIGNATURE_LENGTH/2));
@@ -336,9 +346,9 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
         outputValue.size() +
         outputData.size() +
 
-        outputChainId.size() +
-        outputZero.size() +
-        outputZero.size() +
+//        outputChainId.size() +
+//        outputZero.size() +
+//        outputZero.size() +
 
         outputR.size() +
         outputS.size() +
@@ -350,10 +360,6 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     encoded.insert(encoded.end(), outputTo.begin(), outputTo.end());
     encoded.insert(encoded.end(), outputValue.begin(), outputValue.end());
     encoded.insert(encoded.end(), outputData.begin(), outputData.end());
-
-    encoded.insert(encoded.end(), outputChainId.begin(), outputChainId.end());
-    encoded.insert(encoded.end(), outputZero.begin(), outputZero.end());
-    encoded.insert(encoded.end(), outputZero.begin(), outputZero.end());
 
     encoded.insert(encoded.end(), outputV.begin(), outputV.end());
     encoded.insert(encoded.end(), outputR.begin(), outputR.end());
