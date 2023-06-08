@@ -76,8 +76,9 @@ void Bluetooth::poll() {
             pCharacteristicReceiver->setValue("");
         }
 
-        bool pressed = !digitalRead(0);
+        bool pressed = digitalRead(2);
         if (pressed && millis() - lastMillis > 1000) {
+            Serial.println("Sending transaction");
             tx->sign(buffer);
             pCharacteristicSender->setValue(buffer);
             pCharacteristicSender->notify();
