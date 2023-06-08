@@ -11,6 +11,7 @@ class Tx {
 
 public:
     uint32_t nonce;
+    unsigned long long chainId;
     unsigned long long gasPrice;
     uint32_t gasLimit;
     std::string destinationAddress;
