@@ -123,17 +123,17 @@ string Contract::Call(const string *param)
 }
 
 string Contract::SendTransaction(uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-                                 string *toStr, uint256_t *valueStr, string *dataStr)
+                                 string *toStr, uint256_t *valueStr, string *dataStr, uint32_t chainIdVal)
 {
     uint8_t signature[SIGNATURE_LENGTH];
     memset(signature, 0, SIGNATURE_LENGTH);
     int recid[1] = {0};
     GenerateSignature(signature, recid, nonceVal, gasPriceVal, gasLimitVal,
-                      toStr, valueStr, dataStr, dataStr, dataStr);
+                      toStr, valueStr, dataStr, chainIdVal);
 
     vector<uint8_t> param = RlpEncodeForRawTransaction(nonceVal, gasPriceVal, gasLimitVal,
                                                        toStr, valueStr, dataStr,
-                                                       signature, recid[0], dataStr, dataStr);
+                                                       signature, recid[0], chainIdVal);
 
     string paramStr = Util::VectorToString(&param);
     return web3->EthSendSignedTransaction(&paramStr, param.size());
@@ -144,9 +144,10 @@ string Contract::SendTransaction(uint32_t nonceVal, unsigned long long gasPriceV
  **/
 
 void Contract::GenerateSignature(uint8_t *signature, int *recid, uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-                                 string *toStr, uint256_t *valueStr, string *dataStr, string* chainId, string* zero)
+                                 string *toStr, uint256_t *valueStr, string *dataStr, uint32_t chainIdVal)
 {
-    vector<uint8_t> encoded = RlpEncode(nonceVal, gasPriceVal, gasLimitVal, toStr, valueStr, dataStr, chainId, zero);
+
+    vector<uint8_t> encoded = RlpEncode(nonceVal, gasPriceVal, gasLimitVal, toStr, valueStr, dataStr, chainIdVal);
     // hash
     string t = Util::VectorToString(&encoded);
 
@@ -235,7 +236,7 @@ string Contract::GenerateBytesForBytes(const char *value, const int len)
 
 vector<uint8_t> Contract::RlpEncode(
     uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-    string *toStr, uint256_t *val, string *dataStr, string *chainIdStr,string *zeroStr)
+    string *toStr, uint256_t *val, string *dataStr, uint32_t chainIdVal)
 {
     vector<uint8_t> nonce = Util::ConvertNumberToVector(nonceVal);
     vector<uint8_t> gasPrice = Util::ConvertNumberToVector(gasPriceVal);
@@ -243,8 +244,9 @@ vector<uint8_t> Contract::RlpEncode(
     vector<uint8_t> to = Util::ConvertHexToVector(toStr);
     vector<uint8_t> value = val->export_bits_truncate();
     vector<uint8_t> data = Util::ConvertHexToVector(dataStr);
+    vector<uint8_t> chainId = Util::ConvertNumberToVector(chainIdVal);
 
-    vector<uint8_t> chainId = Util::ConvertHexToVector(chainIdStr);
+    auto *zeroStr = new string("0");
     vector<uint8_t> zero = Util::ConvertHexToVector(zeroStr);
 
     vector<uint8_t> outputNonce = Util::RlpEncodeItemWithVector(nonce);
@@ -292,7 +294,7 @@ void Contract::Sign(uint8_t *hash, uint8_t *sig, int *recid)
 
 vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t gasLimitVal,
-    string *toStr, uint256_t *val, string *dataStr, uint8_t *sig, uint8_t recid, string* chainIdStr, string* zeroStr)
+    string *toStr, uint256_t *val, string *dataStr, uint8_t *sig, uint8_t recid, uint32_t chainIdVal)
 {
 
     vector<uint8_t> signature;
@@ -316,9 +318,6 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     vector<uint8_t> value = val->export_bits_truncate();
     vector<uint8_t> data = Util::ConvertHexToVector(dataStr);
 
-    vector<uint8_t> chainId = Util::ConvertHexToVector(chainIdStr);
-    vector<uint8_t> zero = Util::ConvertHexToVector(zeroStr);
-
     vector<uint8_t> outputNonce = Util::RlpEncodeItemWithVector(nonce);
     vector<uint8_t> outputGasPrice = Util::RlpEncodeItemWithVector(gasPrice);
     vector<uint8_t> outputGasLimit = Util::RlpEncodeItemWithVector(gasLimit);
@@ -326,15 +325,12 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     vector<uint8_t> outputValue = Util::RlpEncodeItemWithVector(value);
     vector<uint8_t> outputData = Util::RlpEncodeItemWithVector(data);
 
-//    vector<uint8_t> outputChainId = Util::RlpEncodeItemWithVector(chainId);
-//    vector<uint8_t> outputZero = Util::RlpEncodeItemWithVector(zero);
-
     vector<uint8_t> R;
     R.insert(R.end(), signature.begin(), signature.begin()+(SIGNATURE_LENGTH/2));
     vector<uint8_t> S;
     S.insert(S.end(), signature.begin()+(SIGNATURE_LENGTH/2), signature.end());
     vector<uint8_t> V;
-    V.push_back((uint8_t)(recid+37)); // chainId*2+35 - to implement later
+    V.push_back((uint8_t)(recid + chainIdVal * 2 + 35)); // according to EIP-155
     vector<uint8_t> outputR = Util::RlpEncodeItemWithVector(R);
     vector<uint8_t> outputS = Util::RlpEncodeItemWithVector(S);
     vector<uint8_t> outputV = Util::RlpEncodeItemWithVector(V);
@@ -345,11 +341,6 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
         outputTo.size() +
         outputValue.size() +
         outputData.size() +
-
-//        outputChainId.size() +
-//        outputZero.size() +
-//        outputZero.size() +
-
         outputR.size() +
         outputS.size() +
         outputV.size());
