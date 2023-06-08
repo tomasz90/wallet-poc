@@ -29,10 +29,6 @@ public:
     } Options;
     Options options;
 
-    vector<uint8_t> RlpEncodeForRawTransaction(
-            uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t  gasLimitVal,
-            string* toStr, uint256_t* valueStr, string* dataStr, uint8_t* sig, uint8_t recid, uint32_t chainIdVal);
-
 public:
     Contract(Web3* _web3, const char* address);
     void SetPrivateKey(const char *key);
@@ -43,6 +39,9 @@ public:
                            string *toStr, uint256_t *valueStr, string *dataStr, uint32_t chainIdVal);
     void GenerateSignature(uint8_t* signature, int* recid, uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t  gasLimitVal,
                            string* toStr, uint256_t* valueStr, string* dataStr, uint32_t chainIdVal);
+    vector<uint8_t> RlpEncodeForRawTransaction(
+            uint32_t nonceVal, unsigned long long gasPriceVal, uint32_t  gasLimitVal,
+            string* toStr, uint256_t* valueStr, string* dataStr, uint8_t* sig, uint8_t recid, uint32_t chainIdVal);
 private:
     Web3* web3;
     const char * contractAddress;

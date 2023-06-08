@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   nodes.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tomasz <tomasz@student.1337.ma>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 05:09:59 by tomasz            #+#    #+#             */
-/*   Updated: 2023/06/07 23:22:02 by tomasz           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "chainIds.h"
 
 #ifndef WEB3E_NODES_H
@@ -18,7 +6,7 @@
 #define MAINNET_INF_RPC_URL "mainnet.infura.io/v3/"
 #define RINKEBY_INF_RPC_URL "rinkeby.infura.io/v3/"
 #define KOVAN_INF_RPC_URL "kovan.infura.io/v3/"
-#define GOERLI_INF_RPC_URL "rpc.ankr.com/eth_goerli/"
+#define GOERLI_INF_RPC_URL "goerli.infura.io/v3/"
 #define POLYGON_INF_RPC_URL "polygon-mainnet.infura.io/v3/"
 #define ARBITRUM_INF_RPC_URL "arbitrum-mainnet.infura.io/v3/"
 #define MUMBAI_INF_RPC_URL "polygon-mumbai.infura.io/v3/"

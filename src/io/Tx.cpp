@@ -31,9 +31,9 @@ void Tx::sign(char *&buffer) {
     int recid[1] = {0};
     auto web3 = new Web3(GOERLI_ID);
     Contract contract(web3, "");
-    contract.SetPrivateKey("0x4646464646464646464646464646464646464646464646464646464646464646");
+    contract.SetPrivateKey("0x4c58c5766b922285e8f50fbd5fbd814cabc0b64fabba5bed5800caad6940b520");
 
-    uint32_t chainId = 1;
+    uint32_t chainId = 5;
     contract.GenerateSignature(signature, recid, nonce, gasPrice, gasLimit,
                       &destinationAddress, &value, &data, chainId);
 

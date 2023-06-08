@@ -13,7 +13,6 @@
 #include "Util.h"
 #include "cJSON/cJSON.h"
 #include <vector>
-#include <iomanip>
 
 #define SIGNATURE_LENGTH 64
 
@@ -302,14 +301,6 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     {
         signature.push_back(sig[i]);
     }
-    std::stringstream ss;
-    ss << std::hex << std::setfill('0');
-
-    for (uint8_t byte : signature) {
-        ss << std::setw(2) << static_cast<int>(byte);
-    }
-
-    Serial.println(ss.str().c_str());
 
     vector<uint8_t> nonce = Util::ConvertNumberToVector(nonceVal);
     vector<uint8_t> gasPrice = Util::ConvertNumberToVector(gasPriceVal);
@@ -351,7 +342,6 @@ vector<uint8_t> Contract::RlpEncodeForRawTransaction(
     encoded.insert(encoded.end(), outputTo.begin(), outputTo.end());
     encoded.insert(encoded.end(), outputValue.begin(), outputValue.end());
     encoded.insert(encoded.end(), outputData.begin(), outputData.end());
-
     encoded.insert(encoded.end(), outputV.begin(), outputV.end());
     encoded.insert(encoded.end(), outputR.begin(), outputR.end());
     encoded.insert(encoded.end(), outputS.begin(), outputS.end());
