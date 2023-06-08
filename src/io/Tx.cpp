@@ -48,7 +48,6 @@ void Tx::sign(char *&buffer) {
     string gasPriceStr = std::to_string(gasPrice);
     string gasLimitStr = std::to_string(gasLimit);
     string valueStr = value.str();
-    string signatureStr = Util::ConvertBytesToHex(signature, ETHERS_SIGNATURE_LENGTH);
 
     obj["nonce"] = nonceStr.c_str();
     obj["gasPrice"] = gasPriceStr.c_str();
@@ -64,8 +63,6 @@ void Tx::sign(char *&buffer) {
     Serial.println(obj["destinationAddress"].as<char *>());
     Serial.println(obj["value"].as<char *>());
     Serial.println(obj["data"].as<char *>());
-
-    Serial.println(signatureStr.c_str());
     Serial.println(obj["encoded"].as<char *>());
 
     // Get the size of the JSON string
