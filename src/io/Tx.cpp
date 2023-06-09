@@ -19,7 +19,7 @@ Tx::Tx(std::string &receiverValue) {
     gasPrice = std::stoull(obj["gasPrice"].as<char *>());
     gasLimit = obj["gasLimit"].as<uint32_t>();
     destinationAddress = obj["destinationAddress"].as<char *>();
-    value = uint256_t(obj["value"].as<char *>());
+    value = uint256_t(obj["valueHex"].as<char *>());
     data = obj["data"].as<char *>();
 
 }
