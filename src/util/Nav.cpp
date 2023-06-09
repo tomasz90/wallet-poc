@@ -4,6 +4,7 @@
 #include "interface/Disp.h"
 #include "ButtonsHandler.h"
 #include "SeedGenerator.h"
+#include "io/Bluetooth.h"
 
 bool Flag::check() {
     bool temp = flag;
@@ -30,6 +31,10 @@ Flag Nav::previousSeedScreenCalled;
 Flag Nav::nextSeedScreenCalled;
 Flag Nav::confirmSeedScreenCalled;
 Flag Nav::isValidWordCalled;
+
+Flag Nav::btConnectedCalled;
+Flag Nav::btDisconnectedCalled;
+Flag Nav::receivedTxCalled;
 
 Led *Nav::led = nullptr;
 
@@ -150,5 +155,20 @@ void Nav::readSeedWordFromSerial() {
         } else {
             Disp::blinkTextWarningAtCenter("Invalid word!");
         }
+    }
+}
+
+void Nav::onBtConnected() {
+    btConnectedCalled.set();
+}
+
+void Nav::onBtDisconnected() {
+    Bluetooth::declineTx();
+    btDisconnectedCalled.set();
+}
+
+void Nav::listenTx() {
+    if(Bluetooth::receivedTx()) {
+        receivedTxCalled.set();
     }
 }

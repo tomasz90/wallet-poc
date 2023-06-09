@@ -20,6 +20,7 @@ public:
 
     explicit EthTx(std::string &receiverValue);
     void sign(char *&buffer);
+    std::string getEthValue() const;
 private:
     DynamicJsonBuffer jb;
 };

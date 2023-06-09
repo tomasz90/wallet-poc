@@ -13,10 +13,10 @@
 class Bluetooth {
 public:
     static void begin();
-    static void poll();
     static void sendAddressIfOnConnectedCalled();
-    static void createTxIfReceived();
-    static void signTxIfConfirmed();
+    static bool receivedTx();
+    static void signTx();
+    static void declineTx();
 };
 
 #endif //WALLET_POC_BLUETOOTH_H

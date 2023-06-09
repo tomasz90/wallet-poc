@@ -15,8 +15,6 @@ BluetoothCallbacks *bc = new BluetoothCallbacks();
 
 EthTx *tx;
 
-unsigned long lastMillis = 0;
-
 void Bluetooth::begin() {
     // Create the BLE Device
     BLEDevice::init("ESP32");
@@ -56,40 +54,44 @@ void Bluetooth::begin() {
     pServer->startAdvertising();
 }
 
-void Bluetooth::poll() {
-    if (bc->deviceConnected) {
-        sendAddressIfOnConnectedCalled();
-        createTxIfReceived();
-        signTxIfConfirmed();
-    }
-}
-
 void Bluetooth::sendAddressIfOnConnectedCalled() {
-    if (bc->onConnectCalled) {
-        bc->onConnectCalled = false;
-        delay(2000);
-        pCharacteristicSenderAddress->setValue("0x51c50Fe7392F8D3D570A8068314c4331ECbC8b52");
-        pCharacteristicSenderAddress->notify();
+    if (bc->deviceConnected) {
+        if (bc->onConnectCalled) {
+            bc->onConnectCalled = false;
+            delay(2000);
+            pCharacteristicSenderAddress->setValue("0x51c50Fe7392F8D3D570A8068314c4331ECbC8b52");
+            pCharacteristicSenderAddress->notify();
+        }
     }
 }
 
-void Bluetooth::createTxIfReceived() {
-    auto receiverValue = pCharacteristicReceiver->getValue();
-    if (receiverValue.length() > 0) {
-        tx = new EthTx(receiverValue);
-        // received, so reset value for now
-        pCharacteristicReceiver->setValue("");
+bool Bluetooth::receivedTx() {
+    bool received = false;
+    if (bc->deviceConnected) {
+        auto receiverValue = pCharacteristicReceiver->getValue();
+        if (receiverValue.length() > 0) {
+            tx = new EthTx(receiverValue);
+            // received, so reset value for now
+            pCharacteristicReceiver->setValue("");
+            received = true;
+        }
     }
+    return received;
 }
 
-void Bluetooth::signTxIfConfirmed() {
-    bool pressed = digitalRead(2);
-    if (pressed && millis() - lastMillis > 1000) {
+void Bluetooth::signTx() {
+    if (bc->deviceConnected) {
         Serial.println("Sending transaction");
         char *buffer;
         tx->sign(buffer);
+        delete tx;
         pCharacteristicSender->setValue(buffer);
         pCharacteristicSender->notify();
-        lastMillis = millis();
+    } else {
+        Serial.println("Not connected");
     }
+}
+
+void Bluetooth::declineTx() {
+    delete tx;
 }

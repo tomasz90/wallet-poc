@@ -12,7 +12,6 @@ unsigned long Disp::lastTextBlinked;
 #define BOX_HEIGHT 20
 
 #define BOX_Y_START 43
-#define SCREEN_TEXT_MENU_BORDER_POSITION 40
 #define BOX_Y_CURSOR 49
 #define TEXT_SIZE 1
 #define PIN_SIZE 2
@@ -45,6 +44,22 @@ void Disp::setText(const std::string &text, uint8_t toLine) {
     display.setCursor(5, 5);
     display.println(text.c_str());
     display.display();
+}
+
+void Disp::drawTransaction() {
+//    clearTextCenter();
+//    display.setTextSize(TEXT_SIZE);
+//    display.setTextColor(WHITE);
+//
+//    display.setCursor(5, 15);
+//    display.println("chainId: " + std::to_string(Bluetooth::tx->chainId).c_str());
+//
+//    display.setCursor(5, 25);
+//    display.println("to: " + Bluetooth::tx->destinationAddress.c_str());
+//
+//    display.setCursor(5, 35);
+//    display.println("val: " + Bluetooth::tx->getValStr().c_str());
+//    display.display();
 }
 
 void Disp::setTextAtCenter(const std::string &text, uint8_t y) {

@@ -60,3 +60,24 @@ void EthTx::sign(char *&buffer) {
 
     obj.printTo(buffer, bufferSize);
 }
+
+std::string EthTx::getEthValue() const {
+    std::string valueStr = value.str();
+    uint8_t length = valueStr.length();
+    if (length < 19) {
+        uint8_t countZeros = 18 - length;
+        valueStr.insert(0, "0.");
+        for (uint8_t i = 0; i < countZeros; i++) {
+            valueStr.insert(2, "0");
+        }
+    } else {
+        valueStr.insert(length - 18, ".");
+    }
+
+    uint8_t index = valueStr.length() - 1;
+    while (valueStr[index] == '0') {
+        valueStr.erase(index, 1);
+        index--;
+    }
+    return valueStr + " ETH";
+}

@@ -26,6 +26,10 @@ public:
     static Flag confirmSeedScreenCalled;
     static Flag isValidWordCalled;
 
+    static Flag btConnectedCalled;
+    static Flag btDisconnectedCalled;
+    static Flag receivedTxCalled;
+
     static void begin(Led *_led, ButtonsHandler &buttonHandler);
     static void onPrevious();
     static void onNext();
@@ -34,6 +38,9 @@ public:
     static void navigateSeed(bool nextHighlighted);
     static void readSeedWordFromSerial();
 
+    static void onBtConnected();
+    static void onBtDisconnected();
+    static void listenTx();
 private:
 
     static Led* led;

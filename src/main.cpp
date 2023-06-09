@@ -29,6 +29,5 @@ void setup() {
 
 void loop() {
     Menu::run();
-    Bluetooth::poll();
     buttonHandler.poll();
 }

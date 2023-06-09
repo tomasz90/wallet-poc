@@ -5,6 +5,8 @@
 
 #endif //WALLET_POC_DISPLAY_H
 
+#define SCREEN_TEXT_MENU_BORDER_POSITION 40
+
 class Disp {
 public:
     static unsigned long lastTextBlinked;
@@ -23,6 +25,8 @@ public:
     static void clearMenu();
     static void blinkTextWithSign(const std::string &text);
     static void disp();
+    static void drawTransaction();
+
 private:
     static bool blink;
     static void setCursorRelativeToCenter(const std::string &text, uint8_t textCenter, uint8_t y);
