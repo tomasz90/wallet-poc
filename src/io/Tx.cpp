@@ -2,7 +2,6 @@
 #include <sstream>
 #include "Tx.h"
 #include "Contract.h"
-#include "/Users/tomasz/CLionProjects/wallet-poc/.pio/libdeps/esp32dev/Web3E/src/Util.h"
 
 #define SIGNATURE_LENGTH 64
 
