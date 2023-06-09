@@ -52,14 +52,14 @@ void Disp::drawTransaction() {
     display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
 
-    display.setCursor(5, 5);
-    display.println(("chainId: " + std::to_string(Bluetooth::tx->chainId)).c_str());
+    display.setCursor(3, 3);
+    display.println(("chainId: " + Bluetooth::tx->formatChainId()).c_str());
 
-    display.setCursor(5, 15);
-    display.println(("to: 0xabcd...09ef01"));//Bluetooth::tx->destinationAddress).c_str());
+    display.setCursor(3, 13);
+    display.println(("to: " + Bluetooth::tx->formatAddress()).c_str());
 
-    display.setCursor(5, 25);
-    display.println(("val: " + Bluetooth::tx->getEthValue()).c_str());
+    display.setCursor(3, 23);
+    display.println(("val: " + Bluetooth::tx->formatEthValue()).c_str());
     display.display();
 }
 

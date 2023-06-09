@@ -61,15 +61,23 @@ void EthTx::sign(char *&buffer) {
     obj.printTo(buffer, bufferSize);
 }
 
-std::string EthTx::getEthValue() const {
+std::string EthTx::formatChainId() const {
+    return std::to_string(chainId);
+}
+
+std::string EthTx::formatAddress() const {
+    std::string address = destinationAddress;
+    address.replace(6, 30, "...");
+    return address;
+}
+
+std::string EthTx::formatEthValue() const {
     std::string valueStr = value.str();
     uint8_t length = valueStr.length();
     if (length < 19) {
         uint8_t countZeros = 18 - length;
         valueStr.insert(0, "0.");
-        for (uint8_t i = 0; i < countZeros; i++) {
-            valueStr.insert(2, "0");
-        }
+        valueStr.insert(2, countZeros, '0');
     } else {
         valueStr.insert(length - 18, ".");
     }
@@ -80,8 +88,8 @@ std::string EthTx::getEthValue() const {
         index--;
     }
 
-    if (valueStr[valueStr.length() - 1] == '.') {
-        valueStr.erase(valueStr.length() - 1, 1);
+    if (valueStr.back() == '.') {
+        valueStr.pop_back();
     }
     return valueStr;
 }

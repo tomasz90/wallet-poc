@@ -224,7 +224,7 @@ void Menu::s9_2() {
 void Menu::s9_3() {
     doOnce([]() {
         Disp::drawTwoBoxes("DECLINE", "ACCEPT", true);
-        //Disp::drawTransaction();
+        Disp::drawTransaction();
     });
 }
 

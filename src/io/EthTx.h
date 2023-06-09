@@ -10,6 +10,15 @@
 class EthTx {
 
 public:
+    explicit EthTx(std::string &receiverValue);
+
+    void sign(char *&buffer);
+    std::string formatChainId() const;
+    std::string formatAddress() const;
+    std::string formatEthValue() const;
+private:
+    DynamicJsonBuffer jb;
+
     uint32_t nonce;
     unsigned long long chainId;
     unsigned long long gasPrice;
@@ -17,12 +26,6 @@ public:
     std::string destinationAddress;
     uint256_t value;
     std::string data;
-
-    explicit EthTx(std::string &receiverValue);
-    void sign(char *&buffer);
-    std::string getEthValue() const;
-private:
-    DynamicJsonBuffer jb;
 };
 
 
