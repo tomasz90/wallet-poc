@@ -28,7 +28,7 @@ void EthTx::sign(char *&buffer) {
     contract.SetPrivateKey("0x4c58c5766b922285e8f50fbd5fbd814cabc0b64fabba5bed5800caad6940b520");
 
     string encoded = contract.SignTransaction(nonce, gasPrice, gasLimit,
-                      &destinationAddress, &value, &data);
+                                              &destinationAddress, &value, &data);
 
     string nonceStr = std::to_string(nonce);
     string chainIdStr = std::to_string(chainId);
@@ -79,5 +79,9 @@ std::string EthTx::getEthValue() const {
         valueStr.erase(index, 1);
         index--;
     }
-    return valueStr + " ETH";
+
+    if (valueStr[valueStr.length() - 1] == '.') {
+        valueStr.erase(valueStr.length() - 1, 1);
+    }
+    return valueStr;
 }
