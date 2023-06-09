@@ -1,6 +1,5 @@
 #include "Pin.h"
 #include "Wmath.cpp"
-#include "Nav.h"
 
 PinMode Pin::mode;
 int Pin::currentIndex = 0;
