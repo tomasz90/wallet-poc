@@ -14,6 +14,9 @@ class Bluetooth {
 public:
     static void begin();
     static void poll();
+    static void sendAddressIfOnConnectedCalled();
+    static void createTxIfReceived();
+    static void signTxIfConfirmed();
 };
 
 #endif //WALLET_POC_BLUETOOTH_H
