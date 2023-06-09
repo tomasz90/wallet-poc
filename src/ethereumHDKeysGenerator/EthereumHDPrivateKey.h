@@ -12,7 +12,7 @@ public:
     explicit EthereumHDPrivateKey(const String &mnemonic);
     EthereumHDPrivateKey(const String &mnemonic, const String &password);
 
-    EthereumHDPrivateKey derive(const String &path) const;
+    EthereumHDPrivateKey *derive(const String &path) const;
     String xprv() const;
     String xpub() const;
     String pub() const;

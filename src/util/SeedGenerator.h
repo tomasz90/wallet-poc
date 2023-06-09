@@ -1,5 +1,6 @@
 #include <array>
 #include "bip39/word_list.h"
+#include "ethereumHDKeysGenerator/EthereumHDPrivateKey.h"
 
 #ifndef SEED_GENERATOR_H
 #define SEED_GENERATOR_H
@@ -14,6 +15,7 @@ public:
     static std::array<int, MNEMONIC_LENGTH> randomSequence;
     static BIP39::word_list mnemonic;
     static SeedGeneratorMode mode;
+    static EthereumHDPrivateKey *account;
 
     static void createMnemonic();
     static void setMode(SeedGeneratorMode mode);

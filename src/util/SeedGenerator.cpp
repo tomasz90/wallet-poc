@@ -10,18 +10,19 @@ BIP39::word_list SeedGenerator::mnemonic;
 uint8_t SeedGenerator::currentIndex = 0;
 std::array<int, MNEMONIC_LENGTH> SeedGenerator::randomSequence;
 SeedGeneratorMode SeedGenerator::mode;
+EthereumHDPrivateKey *SeedGenerator::account = nullptr;
 
 void SeedGenerator::createMnemonic() {
     // GENERATE RANDOMNESS
     bootloader_random_enable();
-    std::vector<uint8_t> entropy = generateEntropy();
+    std::vector<uint8_t> entropy = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};//generateEntropy();
     generateRandomSequence();
     bootloader_random_disable();
 
     mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
     Serial.println(mnemonic.to_string().c_str());
     EthereumHDPrivateKey hd(String(mnemonic.to_string().c_str()));
-    EthereumHDPrivateKey account = hd.derive("m/44'/60'/0'/0/0");
+    account = hd.derive("m/44'/60'/0'/0/0");
 }
 
 void SeedGenerator::setMode(SeedGeneratorMode _mode) {

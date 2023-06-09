@@ -10,9 +10,9 @@ EthereumHDPrivateKey::EthereumHDPrivateKey(const String &mnemonic, const String 
 
 EthereumHDPrivateKey::EthereumHDPrivateKey(const HDPrivateKey &hd) : HDPrivateKey(hd) {}
 
-EthereumHDPrivateKey EthereumHDPrivateKey::derive(const String &path) const {
+EthereumHDPrivateKey *EthereumHDPrivateKey::derive(const String &path) const {
     HDPrivateKey hd = HDPrivateKey::derive(path);
-    return EthereumHDPrivateKey(hd);
+    return new EthereumHDPrivateKey(hd);
 }
 
 String EthereumHDPrivateKey::xprv() const {
