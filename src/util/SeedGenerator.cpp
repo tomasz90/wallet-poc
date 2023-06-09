@@ -12,14 +12,16 @@ std::array<int, MNEMONIC_LENGTH> SeedGenerator::randomSequence;
 SeedGeneratorMode SeedGenerator::mode;
 
 void SeedGenerator::createMnemonic() {
+    // GENERATE RANDOMNESS
     bootloader_random_enable();
     std::vector<uint8_t> entropy = generateEntropy();
+    generateRandomSequence();
+    bootloader_random_disable();
+
     mnemonic = BIP39::create_mnemonic(entropy, BIP39::language::en);
     Serial.println(mnemonic.to_string().c_str());
     EthereumHDPrivateKey hd(String(mnemonic.to_string().c_str()));
     EthereumHDPrivateKey account = hd.derive("m/44'/60'/0'/0/0");
-    generateRandomSequence();
-    bootloader_random_disable();
 }
 
 void SeedGenerator::setMode(SeedGeneratorMode _mode) {
