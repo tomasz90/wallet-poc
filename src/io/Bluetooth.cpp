@@ -2,8 +2,7 @@
 #include <BLEServer.h>
 #include <BLE2902.h>
 #include <Arduino.h>
-#include <ArduinoJson.h>
-#include "Tx.h"
+#include "EthTx.h"
 #include "BluetoothCallbacks.h"
 #include "Bluetooth.h"
 
@@ -12,18 +11,13 @@ BLECharacteristic *pCharacteristicSender = NULL;
 BLECharacteristic *pCharacteristicSenderAddress = NULL;
 BLECharacteristic *pCharacteristicReceiver = NULL;
 
-BLE2902 *pBLE2902Address;
-BLE2902 *pBLE2902;
-
 BluetoothCallbacks* bc = new BluetoothCallbacks();
 
-char *buffer;
-Tx *tx;
+EthTx *tx;
 
 unsigned long lastMillis = 0;
 
 void Bluetooth::begin() {
-    pinMode(0, INPUT);
     // Create the BLE Device
     BLEDevice::init("ESP32");
 
@@ -41,11 +35,11 @@ void Bluetooth::begin() {
     pCharacteristicSender = pService->createCharacteristic(SENDER_UUID, BLECharacteristic::PROPERTY_NOTIFY);
     pCharacteristicReceiver = pService->createCharacteristic(RECEIVER_UUID, BLECharacteristic::PROPERTY_WRITE);
 
-    pBLE2902Address = new BLE2902();
+    auto pBLE2902Address = new BLE2902();
     pBLE2902Address->setNotifications(true);
     pCharacteristicSenderAddress->addDescriptor(pBLE2902Address);
 
-    pBLE2902 = new BLE2902();
+    auto pBLE2902 = new BLE2902();
     pBLE2902->setNotifications(true);
     pCharacteristicSender->addDescriptor(pBLE2902);
 
@@ -71,7 +65,7 @@ void Bluetooth::poll() {
         }
         auto receiverValue = pCharacteristicReceiver->getValue();
         if (receiverValue.length() > 0) {
-            tx = new Tx(receiverValue);
+            tx = new EthTx(receiverValue);
             // received, so reset value for now
             pCharacteristicReceiver->setValue("");
         }
@@ -79,6 +73,7 @@ void Bluetooth::poll() {
         bool pressed = digitalRead(2);
         if (pressed && millis() - lastMillis > 1000) {
             Serial.println("Sending transaction");
+            char *buffer;
             tx->sign(buffer);
             pCharacteristicSender->setValue(buffer);
             pCharacteristicSender->notify();

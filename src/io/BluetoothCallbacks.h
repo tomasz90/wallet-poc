@@ -1,10 +1,5 @@
-//
-// Created by Tomasz Kulig on 07/06/2023.
-//
-
 #ifndef WALLET_POC_BLUETOOTHCALLBACKS_H
 #define WALLET_POC_BLUETOOTHCALLBACKS_H
-
 
 #include <BLEServer.h>
 

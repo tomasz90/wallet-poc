@@ -1,13 +1,11 @@
 #include <Arduino.h>
 #include <sstream>
-#include "Tx.h"
+#include "EthTx.h"
 #include "Contract.h"
 
 #define SIGNATURE_LENGTH 64
 
-Tx::Tx() {}
-
-Tx::Tx(std::string &receiverValue) {
+EthTx::EthTx(std::string &receiverValue) {
     JsonObject &obj = jb.parseObject(receiverValue.c_str());
     if (!obj.success()) {
         Serial.println("parseObject() failed");
@@ -23,7 +21,7 @@ Tx::Tx(std::string &receiverValue) {
 
 }
 
-void Tx::sign(char *&buffer) {
+void EthTx::sign(char *&buffer) {
     JsonObject &obj = jb.createObject();
 
     Contract contract(chainId);

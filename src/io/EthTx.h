@@ -7,7 +7,7 @@
 #include <ArduinoJson.h>
 #include "uint256/uint256_t.h"
 
-class Tx {
+class EthTx {
 
 public:
     uint32_t nonce;
@@ -18,15 +18,10 @@ public:
     uint256_t value;
     std::string data;
 
-    DynamicJsonBuffer jb;
-
-    Tx();
-
-    explicit Tx(std::string &receiverValue);
-
+    explicit EthTx(std::string &receiverValue);
     void sign(char *&buffer);
-
-    static uint256_t toUint256(const char *decimalStr);
+private:
+    DynamicJsonBuffer jb;
 };
 
 
