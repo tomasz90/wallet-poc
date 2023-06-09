@@ -1,6 +1,7 @@
 #include "Disp.h"
 #include "Adafruit_SSD1306.h"
 #include "util/Pin.h"
+#include "io/Bluetooth.h"
 
 bool Disp::blink;
 unsigned long Disp::lastTextBlinked;
@@ -47,19 +48,19 @@ void Disp::setText(const std::string &text, uint8_t toLine) {
 }
 
 void Disp::drawTransaction() {
-//    clearTextCenter();
-//    display.setTextSize(TEXT_SIZE);
-//    display.setTextColor(WHITE);
-//
-//    display.setCursor(5, 15);
-//    display.println("chainId: " + std::to_string(Bluetooth::tx->chainId).c_str());
-//
-//    display.setCursor(5, 25);
-//    display.println("to: " + Bluetooth::tx->destinationAddress.c_str());
-//
-//    display.setCursor(5, 35);
-//    display.println("val: " + Bluetooth::tx->getValStr().c_str());
-//    display.display();
+    clearTextCenter();
+    display.setTextSize(TEXT_SIZE);
+    display.setTextColor(WHITE);
+
+    display.setCursor(5, 5);
+    display.println(("chainId: " + std::to_string(Bluetooth::tx->chainId)).c_str());
+
+    display.setCursor(5, 15);
+    display.println(("to: 0xabcd...09ef01"));//Bluetooth::tx->destinationAddress).c_str());
+
+    display.setCursor(5, 25);
+    display.println(("val: " + Bluetooth::tx->getEthValue()).c_str());
+    display.display();
 }
 
 void Disp::setTextAtCenter(const std::string &text, uint8_t y) {

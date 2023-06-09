@@ -2,7 +2,6 @@
 #include <BLEServer.h>
 #include <BLE2902.h>
 #include <Arduino.h>
-#include "EthTx.h"
 #include "BluetoothCallbacks.h"
 #include "Bluetooth.h"
 
@@ -13,7 +12,7 @@ BLECharacteristic *pCharacteristicReceiver = NULL;
 
 BluetoothCallbacks *bc = new BluetoothCallbacks();
 
-EthTx *tx;
+EthTx *Bluetooth::tx = nullptr;
 
 void Bluetooth::begin() {
     // Create the BLE Device
