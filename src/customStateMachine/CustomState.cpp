@@ -14,20 +14,22 @@ void CustomState::addTransition(
     transitions->add(t);
 }
 
-int CustomState::evalTransitions() const {
+int CustomState::evalTransitions(bool &executeOnce) const {
     if (transitions->size() == 0) return index;
+    executeOnce = false;
     for (int i = 0; i < transitions->size(); i++) {
         CustomTransition *t = transitions->get(i);
         if (t->isTrans.check()) {
+            executeOnce = true;
             return transitions->get(i)->stateNumber;
         }
     }
     return index;
 }
 
-int CustomState::execute() {
+int CustomState::execute(bool &executeOnce) {
     stateLogic();
-    return evalTransitions();
+    return evalTransitions(executeOnce);
 }
 
 int CustomState::setTransition(int index, int stateNo) {

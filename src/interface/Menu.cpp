@@ -90,9 +90,10 @@ void Menu::run() {
 }
 
 void Menu::doOnce(const std::function<void()>& _doOnce) {
-    if (machine.executeOnce) {
+    if (machine.isNextState) {
         Serial.println("did once");
         disp->lastTextBlinked = 0;
+        nav->resetFlags();
         _doOnce();
     }
 }

@@ -39,6 +39,7 @@ public:
 
     Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin);
     void setBt(Bluetooth *_bt);
+    void resetFlags();
     void onPrevious();
     void onNext();
     void onBoth();

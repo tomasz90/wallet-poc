@@ -32,6 +32,24 @@ void Nav::setBt(Bluetooth *_bt) {
     bt = _bt;
 }
 
+//todo: check why this is needed
+void Nav::resetFlags() {
+    previousCalled.unset();
+    nextCalled.unset();
+    bothCalled.unset();
+    confirmPinCalled.unset();
+    dropPinCalled.unset();
+    pinMismatchCalled.unset();
+    firstSeedScreenCalled.unset();
+    previousSeedScreenCalled.unset();
+    nextSeedScreenCalled.unset();
+    confirmSeedScreenCalled.unset();
+    isValidWordCalled.unset();
+    btConnectedCalled.unset();
+    btDisconnectedCalled.unset();
+    receivedTxCalled.unset();
+}
+
 void Nav::onPrevious() {
     led->flash();
     previousCalled.set();
@@ -56,30 +74,30 @@ void Nav::enterPin() {
         pin->incrementCurrentDigit();
         disp->drawPin(pin->getPinString());
     }
-        // DECREMENT DIGIT
+    // DECREMENT DIGIT
     else if (previousCalled.check()) {
         pin->decrementCurrentDigit();
         disp->drawPin(pin->getPinString());
     }
-        // TRY SET PIN
+    // TRY SET PIN
     else if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
         bool saved = pin->savePin();
         if (saved) { confirmPinCalled.set(); } else { pinMismatchCalled.set(); }
         pin->clearValues();
     }
-        // DROP PIN
+    // DROP PIN
     else if (_bothCalled && pin->isArrow() && pin->isFirstDigit()) {
         dropPinCalled.set();
         pin->clearValues();
     }
-        // SET DIGIT
+    // SET DIGIT
     else if (_bothCalled && !pin->isArrow()) {
         pin->setOneDigit();
         disp->drawPin(pin->getPinString());
     }
 
-        // UNSET DIGIT
+    // UNSET DIGIT
     else if (_bothCalled && pin->isArrow()) {
         pin->unsetOneDigit();
         disp->drawPin(pin->getPinString());

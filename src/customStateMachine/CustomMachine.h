@@ -6,7 +6,7 @@
 
 class CustomMachine {
 public:
-    bool executeOnce = true; 	//Indicates that a transition to a different state has occurred
+    bool isNextState = true; 	//Indicates that a transition to a different state has occurred
 
     CustomMachine();
     CustomState* addState(std::function<void()> functionPointer) const;
