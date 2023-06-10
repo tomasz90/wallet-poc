@@ -36,7 +36,7 @@ void Disp::begin() {
     display.clearDisplay();
 }
 
-void Disp::setText(const std::string &text, uint8_t toLine) {
+void Disp::setText(const string &text, uint8_t toLine) {
     clearText(toLine);
     display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
@@ -45,7 +45,7 @@ void Disp::setText(const std::string &text, uint8_t toLine) {
     display.display();
 }
 
-void Disp::drawTransaction(const std::string &chainId, const std::string &to, const std::string &value) {
+void Disp::drawTransaction(const string &chainId, const string &to, const string &value) {
     clearTextCenter();
     display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
@@ -61,14 +61,14 @@ void Disp::drawTransaction(const std::string &chainId, const std::string &to, co
     display.display();
 }
 
-void Disp::setTextAtCenter(const std::string &text, uint8_t y) {
+void Disp::setTextAtCenter(const string &text, uint8_t y) {
     display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
     setCursorRelativeToCenter(text, SCREEN_CENTER, y);
     display.println(text.c_str());
 }
 
-void Disp::blinkTextWarningAtCenter(const std::string &text) {
+void Disp::blinkTextWarningAtCenter(const string &text) {
     clearTextCenter();
     uint16_t _delay = 300;
     setTextAtCenter(text, SEED_WORD_Y_POSITION);
@@ -92,37 +92,37 @@ void Disp::blinkTextWarningAtCenter(const std::string &text) {
     disp();
 }
 
-void Disp::blinkTextWithSign(const std::string &text, uint8_t toLine) {
-    std::string text2;
+void Disp::blinkTextWithSign(const string &text, uint8_t toLine) {
+    string text2;
     text2.assign(text);
     text2.append(" >");
     animateText(text, text2, toLine);
 }
 
-void Disp::blinkTextWithSign(const std::string &text) {
+void Disp::blinkTextWithSign(const string &text) {
     blinkTextWithSign(text, SCREEN_TEXT_MENU_BORDER_POSITION);
 }
 
-void Disp::drawTwoBoxes(const std::string &text1, const std::string &text2, bool rightHighlighted) {
+void Disp::drawTwoBoxes(const string &text1, const string &text2, bool rightHighlighted) {
     clearMenu();
     drawLeftBox(text1, !rightHighlighted);
     drawRightBox(text2, rightHighlighted);
     display.display();
 }
 
-void Disp::drawOnlyLeftBox(const std::string &text) {
+void Disp::drawOnlyLeftBox(const string &text) {
     clearMenu();
     drawLeftBox(text, true);
     display.display();
 }
 
-void Disp::drawOnlyRightBox(const std::string &text) {
+void Disp::drawOnlyRightBox(const string &text) {
     clearMenu();
     drawRightBox(text, true);
     display.display();
 }
 
-void Disp::drawLeftBox(const std::string &text, bool highlighted) {
+void Disp::drawLeftBox(const string &text, bool highlighted) {
     if (highlighted) {
         display.fillRect(BOX_X_1_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
         display.drawRect(BOX_X_1_START + 1, BOX_Y_START + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2, BLACK);
@@ -138,7 +138,7 @@ void Disp::drawLeftBox(const std::string &text, bool highlighted) {
     display.println(text.c_str());
 }
 
-void Disp::drawRightBox(const std::string &text, bool highlighted) {
+void Disp::drawRightBox(const string &text, bool highlighted) {
     if (highlighted) {
         display.fillRect(BOX_X_2_START, BOX_Y_START, BOX_WIDTH, BOX_HEIGHT, WHITE);
         display.drawRect(BOX_X_2_START + 1, BOX_Y_START + 1, BOX_WIDTH - 2, BOX_HEIGHT - 2, BLACK);
@@ -153,7 +153,7 @@ void Disp::drawRightBox(const std::string &text, bool highlighted) {
     display.println(text.c_str());
 }
 
-void Disp::drawOneBox(const std::string &text, uint8_t width) {
+void Disp::drawOneBox(const string &text, uint8_t width) {
     clearMenu();
     uint8_t begin = SCREEN_CENTER - (width / 2);
     display.fillRect(begin, BOX_Y_START, width, BOX_HEIGHT, WHITE);
@@ -166,12 +166,12 @@ void Disp::drawOneBox(const std::string &text, uint8_t width) {
     display.display();
 }
 
-void Disp::setCursorRelativeToCenter(const std::string &text, uint8_t textCenter, uint8_t y) {
+void Disp::setCursorRelativeToCenter(const string &text, uint8_t textCenter, uint8_t y) {
     uint8_t halfTextWidth = ((text.length() * 6)) / 2;
     display.setCursor(textCenter - halfTextWidth, y);
 }
 
-void Disp::drawPin(const std::string &pin) {
+void Disp::drawPin(const string &pin) {
     clearMenu();
     display.setCursor(23, 40);
     display.setTextColor(WHITE);
@@ -180,10 +180,10 @@ void Disp::drawPin(const std::string &pin) {
     display.display();
 }
 
-void Disp::animateText(const std::string &text1, const std::string &text2, uint8_t toLine) {
+void Disp::animateText(const string &text1, const string &text2, uint8_t toLine) {
     unsigned long currentMillis = millis();
     if (currentMillis - lastTextBlinked < 500) return;
-    std::string text = blink ? text1 : text2;
+    string text = blink ? text1 : text2;
     setText(text, toLine);
     lastTextBlinked = currentMillis;
     blink = !blink;

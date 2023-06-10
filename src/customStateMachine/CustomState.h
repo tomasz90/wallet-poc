@@ -2,6 +2,7 @@
 #define CUSTOMSTATE_H
 
 #include <functional>
+#include <LinkedList.h>
 #include "util/Nav.h"
 
 struct CustomTransition {

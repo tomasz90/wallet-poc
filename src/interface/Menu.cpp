@@ -219,7 +219,7 @@ void Menu::s9_1() {
     doOnce([]() {
         Disp::clearMenu();
     });
-    Disp::blinkTextWithSign("Device connected! Listening for transactions...");
+    Disp::blinkTextWithSign("Device connected!   Listening for txs..");
     Bluetooth::sendAddressIfOnConnectedCalled();
     nav->listenTx();
 }

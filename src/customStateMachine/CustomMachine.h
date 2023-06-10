@@ -1,7 +1,8 @@
-#include "CustomState.h"
-
 #ifndef CUSTOMMACHINE_H
 #define CUSTOMMACHINE_H
+
+#include "LinkedList.h"
+#include "CustomState.h"
 
 class CustomMachine {
 public:
@@ -21,4 +22,4 @@ private:
     int lastState = 0;
 };
 
-#endif CUSTOMMACHINE_H
+#endif //CUSTOMMACHINE_H
