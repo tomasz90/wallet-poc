@@ -5,13 +5,21 @@
 
 #endif //WALLET_POC_CUSTOMMACHINE_H
 
-class CustomMachine: public StateMachine {
+class CustomMachine {
 public:
-    CustomMachine() = default;
-    CustomState* addState(void (*functionPointer)()) override;
-    CustomState* getLastState();
-    void run() override;
+    CustomMachine();
+    CustomState* addState(void (*functionPointer)()) const;
+    CustomState* getLastState() const;
+    void run();
+
+    CustomState* transitionTo(CustomState* s);
+    int transitionTo(int i);
+
+
 private:
-    int lastState = -1;
+    LinkedList<CustomState*> *stateList;
+    bool executeOnce = true; 	//Indicates that a transition to a different state has occurred
+    int currentState = 0;	//Indicates the current state number
+    int lastState = 0;
 };
 
