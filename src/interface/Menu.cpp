@@ -11,7 +11,8 @@ CustomState *S9_3 = nullptr;
 
 using std::string;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin, DataHolder *_dataHolder){
+Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, DataHolder *_dataHolder,
+           Pin *_pin) {
     nav = _nav;
     disp = _disp;
     seedViewer = _seedViewer;

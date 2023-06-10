@@ -21,11 +21,11 @@ EthTx::EthTx(std::string &receiverValue) {
 
 }
 
-void EthTx::sign(char *&buffer) {
+void EthTx::sign(char *&buffer, const char *key) {
     JsonObject &obj = jb.createObject();
 
     Contract contract(chainId);
-    contract.SetPrivateKey("0x4c58c5766b922285e8f50fbd5fbd814cabc0b64fabba5bed5800caad6940b520");
+    contract.SetPrivateKey(key);
 
     string encoded = contract.SignTransaction(nonce, gasPrice, gasLimit,
                                               &destinationAddress, &value, &data);

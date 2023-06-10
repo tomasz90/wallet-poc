@@ -194,7 +194,7 @@ void Nav::onDisconnect(BLEServer *pServer) {
 
 void Nav::sendAddress() {
     if (deviceConnected && btConnectedCalledPrivate.check()) {
-        delay(2000);
+        delay(2200);
         bt->sendAddress();
     }
 }

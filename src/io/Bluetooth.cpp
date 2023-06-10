@@ -51,7 +51,7 @@ Bluetooth::Bluetooth(BLEServerCallbacks *_nav, DataHolder *_dataHolder) {
 }
 
 void Bluetooth::sendAddress() {
-    pCharacteristicSenderAddress->setValue("0x51c50Fe7392F8D3D570A8068314c4331ECbC8b52");
+    pCharacteristicSenderAddress->setValue(dataHolder->account->addressChecksumed().c_str());
     pCharacteristicSenderAddress->notify();
 }
 
@@ -69,7 +69,7 @@ bool Bluetooth::receivedTx() {
 void Bluetooth::signTx() {
     Serial.println("Sending transaction");
     char *buffer;
-    dataHolder->tx->sign(buffer);
+    dataHolder->tx->sign(buffer, dataHolder->account->prv().c_str());
     pCharacteristicSender->setValue(buffer);
     pCharacteristicSender->notify();
     delete[] buffer;

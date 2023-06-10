@@ -30,7 +30,7 @@ void setup() {
     auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, dataHolder, pin);
     auto bt = new Bluetooth(nav, dataHolder);
     nav->setBt(bt);
-    menu = new Menu(nav, disp, seedViewer, seedVerifier, pin, dataHolder);
+    menu = new Menu(nav, disp, seedViewer, seedVerifier, dataHolder, pin);
 }
 
 void loop() {
