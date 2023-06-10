@@ -181,19 +181,19 @@ void Menu::s8_0() {
         disp->drawOnlyRightBox("NEXT");
     });
     disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
-    nav->navigateSeed(true);
+    nav->navigateSeedConfirm(true);
 }
 
 void Menu::s8_1() {
     doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
     disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
-    nav->navigateSeed(true);
+    nav->navigateSeedConfirm(true);
 }
 
 void Menu::s8_2() {
     doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
     disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
-    nav->navigateSeed(false);
+    nav->navigateSeedConfirm(false);
 }
 
 void Menu::s9_0() {
