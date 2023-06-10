@@ -17,7 +17,7 @@ struct CustomTransition {
 class CustomState {
 public:
     int index;
-    void (*stateLogic)();
+    std::function<void()> stateLogic;
 
     CustomState();
     void addTransition(CustomState *s, Flag &isTrans) const;

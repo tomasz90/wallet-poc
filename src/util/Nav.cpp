@@ -21,6 +21,7 @@ Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_
     led = _led;
     disp = _disp;
     seedGenerator = _seedGenerator;
+    buttonHandler.setDebounceTime(10);
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
             [this]() { onNext(); },

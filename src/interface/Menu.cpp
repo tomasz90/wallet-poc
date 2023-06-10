@@ -14,36 +14,33 @@ CustomState *S9_2 = nullptr;
 CustomState *S9_3 = nullptr;
 CustomState *S9_4 = nullptr;
 
-Nav *Menu::nav;
-Disp *Menu::disp;
-SeedGenerator *Menu::seedGenerator;
 using std::string;
 
-void Menu::begin(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator) {
+Menu::Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator) {
     nav = _nav;
     disp = _disp;
     seedGenerator = _seedGenerator;
     // STATES
-//    CustomState *S0 =   machine.addState(&s0);
-//    CustomState *S1_0 = machine.addState(&s1_0);
-//    CustomState *S1_1 = machine.addState(&s1_1);
-//    CustomState *S2 =   machine.addState(&s2);
-//    CustomState *S3 =   machine.addState(&s3);
-//    CustomState *S4_0 = machine.addState(&s4_0);
-//    CustomState *S4_1 = machine.addState(&s4_1);
-//    CustomState *S5 =   machine.addState(&s5);
-//    CustomState *S6_0 = machine.addState(&s6_0);
-//    CustomState *S6_1 = machine.addState(&s6_1);
-//    CustomState *S6_2 = machine.addState(&s6_2);
-//    CustomState *S7 = machine.addState(&s7);
-//    CustomState *S8_0 = machine.addState(&s8_0);
-//    CustomState *S8_1 = machine.addState(&s8_1);
-//    CustomState *S8_2 = machine.addState(&s8_2);
-    S9_0 = machine.addState(&s9_0);
-    S9_1 = machine.addState(&s9_1);
-    S9_2 = machine.addState(&s9_2);
-    S9_3 = machine.addState(&s9_3);
-    S9_4 = machine.addState(&s9_4);
+//    CustomState *S0 =   machine.addState([this]() { s0();});
+//    CustomState *S1_0 = machine.addState([this]() { s1_0();});
+//    CustomState *S1_1 = machine.addState([this]() { s1_1();});
+//    CustomState *S2 =   machine.addState([this]() { s2();});
+//    CustomState *S3 =   machine.addState([this]() { s3();});
+//    CustomState *S4_0 = machine.addState([this]() { s4_0();});
+//    CustomState *S4_1 = machine.addState([this]() { s4_1();});
+//    CustomState *S5 =   machine.addState([this]() { s5();});
+//    CustomState *S6_0 = machine.addState([this]() { s6_0();});
+//    CustomState *S6_1 = machine.addState([this]() { s6_1();});
+//    CustomState *S6_2 = machine.addState([this]() { s6_2();});
+//    CustomState *S7 = machine.addState([this]() { s7();});
+//    CustomState *S8_0 = machine.addState([this]() { s8_0();});
+//    CustomState *S8_1 = machine.addState([this]() { s8_1();});
+//    CustomState *S8_2 = machine.addState([this]() { s8_2();});
+    S9_0 = machine.addState([this]() { s9_0();});
+    S9_1 = machine.addState([this]() { s9_1();});
+    S9_2 = machine.addState([this]() { s9_2();});
+    S9_3 = machine.addState([this]() { s9_3();});
+    S9_4 = machine.addState([this]() { s9_4();});
 
     // NEXT
 //    S0->addTransition(S1_0,  nav->bothCalled);
@@ -95,7 +92,7 @@ void Menu::run() {
     machine.run();
 }
 
-void Menu::doOnce(void (*_doOnce)()) {
+void Menu::doOnce(const std::function<void()>& _doOnce) {
     if (machine.executeOnce) {
         Serial.println("did once");
         disp->lastTextBlinked = 0;
@@ -104,22 +101,22 @@ void Menu::doOnce(void (*_doOnce)()) {
 }
 
 void Menu::s0() {
-    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Hello!");
 }
 
 void Menu::s1_0() {
-    doOnce([]() { disp->drawTwoBoxes("NO", "YES", false); });
+    doOnce([this]() { disp->drawTwoBoxes("NO", "YES", false); });
     disp->blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s1_1() {
-    doOnce([]() { disp->drawTwoBoxes("NO", "YES", true); });
+    doOnce([this]() { disp->drawTwoBoxes("NO", "YES", true); });
     disp->blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s2() {
-    doOnce([]() {
+    doOnce([this]() {
         Pin::setMode(PinMode::SET);
         disp->drawPin(Pin::getPinString());
     });
@@ -129,7 +126,7 @@ void Menu::s2() {
 }
 
 void Menu::s3() {
-    doOnce([]() {
+    doOnce([this]() {
         Pin::setMode(PinMode::CONFIRM);
         disp->drawPin(Pin::getPinString());
     });
@@ -138,22 +135,22 @@ void Menu::s3() {
 }
 
 void Menu::s4_0() {
-    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Pin confirmed!");
 }
 
 void Menu::s4_1() {
-    doOnce([]() { disp->drawOnlyLeftBox("BACK"); });
+    doOnce([this]() { disp->drawOnlyLeftBox("BACK"); });
     disp->blinkTextWithSign("Pin not matching ;(  try again...");
 }
 
 void Menu::s5() {
-    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Now please save your seed phrase!");
 }
 
 void Menu::s6_0() {
-    doOnce([]() {
+    doOnce([this]() {
         seedGenerator->setMode(SeedGeneratorMode::SET);
         disp->clearMenu();
         disp->drawOnlyRightBox("NEXT");
@@ -165,7 +162,7 @@ void Menu::s6_0() {
 }
 
 void Menu::s6_1() {
-    doOnce([]() {
+    doOnce([this]() {
         disp->drawTwoBoxes("BACK", "NEXT", true);
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
@@ -175,7 +172,7 @@ void Menu::s6_1() {
 }
 
 void Menu::s6_2() {
-    doOnce([]() {
+    doOnce([this]() {
         disp->drawTwoBoxes("BACK", "NEXT", false);
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
@@ -185,12 +182,12 @@ void Menu::s6_2() {
 }
 
 void Menu::s7() {
-    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Now please confirm your seed.");
 }
 
 void Menu::s8_0() {
-    doOnce([]() {
+    doOnce([this]() {
         seedGenerator->setMode(SeedGeneratorMode::CONFIRM);
         disp->drawOnlyRightBox("NEXT");
     });
@@ -199,24 +196,24 @@ void Menu::s8_0() {
 }
 
 void Menu::s8_1() {
-    doOnce([]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
+    doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
     disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s8_2() {
-    doOnce([]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
+    doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
     disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(false);
 }
 
 void Menu::s9_0() {
-    doOnce([]() {});
+    doOnce([this]() {});
     disp->blinkTextWithSign("Waiting for bluetooth connection...");
 }
 
 void Menu::s9_1() {
-    doOnce([]() {
+    doOnce([this]() {
         disp->clearMenu();
     });
     disp->blinkTextWithSign("Device connected!   Listening for txs..");
@@ -225,7 +222,7 @@ void Menu::s9_1() {
 }
 
 void Menu::s9_2() {
-    doOnce([]() {
+    doOnce([this]() {
         if(machine.getLastState() != S9_3) {
             disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         }
@@ -240,13 +237,13 @@ void Menu::s9_2() {
 }
 
 void Menu::s9_3() {
-    doOnce([]() {
+    doOnce([this]() {
         disp->drawTwoBoxes("DECLINE", "ACCEPT", true);
     });
 }
 
 void Menu::s9_4() {
-    doOnce([]() {
+    doOnce([this]() {
         nav->signTx();
         disp->drawOnlyLeftBox("BACK");
     });

@@ -16,18 +16,17 @@ Button previous(PREVIOUS_BUTTON, IN_PULLDOWN);
 Button next(NEXT_BUTTON, IN_PULLDOWN);
 
 ButtonsHandler buttonHandler(previous, next);
-
+Menu *menu;
 void setup() {
     Serial.begin(115200);
     auto disp = new Disp();
     auto seedGenerator = new SeedGenerator();
     auto nav = new Nav(led, buttonHandler, disp, seedGenerator);
+    menu = new Menu(nav, disp, seedGenerator);
     Bluetooth::begin(nav);
-    Menu::begin(nav, disp, seedGenerator);
-    buttonHandler.setDebounceTime(10);
 }
 
 void loop() {
-    Menu::run();
+    menu->run();
     buttonHandler.poll();
 }

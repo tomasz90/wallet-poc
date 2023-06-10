@@ -1,13 +1,15 @@
 #include "StateMachine.h"
 #include "CustomMachine.h"
 
+#include <utility>
+
 CustomMachine::CustomMachine() {
     stateList = new LinkedList<CustomState*>();
 };
 
-CustomState *CustomMachine::addState(void (*functionPointer)()) const {
+CustomState *CustomMachine::addState(std::function<void()> functionPointer) const {
     auto *s = new CustomState();
-    s->stateLogic = functionPointer;
+    s->stateLogic = std::move(functionPointer);
     stateList->add(s);
     s->index = stateList->size() - 1;
     return s;

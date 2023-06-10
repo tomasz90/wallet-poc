@@ -9,7 +9,7 @@ public:
     bool executeOnce = true; 	//Indicates that a transition to a different state has occurred
 
     CustomMachine();
-    CustomState* addState(void (*functionPointer)()) const;
+    CustomState* addState(std::function<void()> functionPointer) const;
     CustomState* getLastState() const;
     void run();
     CustomState* transitionTo(CustomState* s);
