@@ -26,10 +26,10 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin, Bluet
 //    CustomState *S4_0 = machine.addState([this]() { s4_0();});
 //    CustomState *S4_1 = machine.addState([this]() { s4_1();});
 //    CustomState *S5 =   machine.addState([this]() { s5();});
-    CustomState *S6_0 = machine.addState([this]() { s6_0();});
-    CustomState *S6_1 = machine.addState([this]() { s6_1();});
-    CustomState *S6_2 = machine.addState([this]() { s6_2();});
-    CustomState *S7 =   machine.addState([this]() { s7();});
+//    CustomState *S6_0 = machine.addState([this]() { s6_0();});
+//    CustomState *S6_1 = machine.addState([this]() { s6_1();});
+//    CustomState *S6_2 = machine.addState([this]() { s6_2();});
+//    CustomState *S7 =   machine.addState([this]() { s7();});
     CustomState *S8_0 = machine.addState([this]() { s8_0();});
     CustomState *S8_1 = machine.addState([this]() { s8_1();});
     CustomState *S8_2 = machine.addState([this]() { s8_2();});
@@ -60,12 +60,12 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin, Bluet
 //    S3->addTransition(S2,    nav->dropPinCalled);
 
 //    S5->addTransition(S6_0,    nav->bothCalled);
-    S6_0->addTransition(S6_1,nav->nextSeedScreenCalled);
-    S6_1->addTransition(S6_2,nav->previousCalled);
-    S6_2->addTransition(S6_1,nav->nextCalled);
-    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
-    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
-    S7->addTransition(S8_0,  nav->bothCalled);
+//    S6_0->addTransition(S6_1,nav->nextSeedScreenCalled);
+//    S6_1->addTransition(S6_2,nav->previousCalled);
+//    S6_2->addTransition(S6_1,nav->nextCalled);
+//    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
+//    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
+//    S7->addTransition(S8_0,  nav->bothCalled);
     S8_0->addTransition(S8_1,nav->nextSeedScreenCalled);
     S8_1->addTransition(S8_2,nav->previousCalled);
     S8_2->addTransition(S8_1,nav->nextCalled);

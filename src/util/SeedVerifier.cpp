@@ -42,6 +42,10 @@ string SeedVerifier::getCurrentWord() const {
     return mnemonic.getWordAt(currentIndex);
 }
 
+string SeedVerifier::getCurrentRandomWord() {
+    return mnemonic.getWordAt(randomSequence[currentIndex]);
+}
+
 bool SeedVerifier::validateWord(const string &word) {
-    return mnemonic.getWordAt(randomSequence[currentIndex]) == word;
+    return getCurrentRandomWord() == word;
 }

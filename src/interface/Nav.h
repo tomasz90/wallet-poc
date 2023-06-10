@@ -10,7 +10,7 @@
 #include "util/Pin.h"
 #include "Flag.h"
 
-enum class IncomingDataType {
+enum class DataType {
     NONE,
     VALID,
     INVALID
@@ -46,7 +46,7 @@ public:
     void enterPin();
     void navigateSeed(bool nextHighlighted);
     void navigateSeedConfirm(bool nextHighlighted);
-    IncomingDataType checkSerialData();
+    DataType checkSerialData();
     void onConnect(BLEServer *pServer) override;
     void onDisconnect(BLEServer *pServer) override;
     void listenTx();

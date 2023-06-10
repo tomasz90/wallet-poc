@@ -19,6 +19,7 @@ ButtonsHandler buttonHandler(previous, next);
 Menu *menu;
 void setup() {
     Serial.begin(115200);
+    Serial.println('\n');
     auto disp = new Disp();
     auto dataHolder = new DataHolder();
     SeedGenerator::generate(dataHolder);

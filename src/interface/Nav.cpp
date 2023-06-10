@@ -122,22 +122,23 @@ void Nav::navigateSeed(bool nextHighlighted) {
 }
 
 void Nav::navigateSeedConfirm(bool nextHighlighted) {
-    IncomingDataType type = checkSerialData();
+    DataType type = checkSerialData();
 
     if (bothCalled.check()) {
+        Serial.println(("type: " + std::to_string(static_cast<int>(type))).c_str());
         // CONFIRM SEED PHRASE
-        if (nextHighlighted && type == IncomingDataType::VALID && seedVerifier->isLast()) {
+        if (nextHighlighted && type == DataType::VALID && seedVerifier->isLast()) {
             confirmSeedScreenCalled.set();
             seedVerifier->resetIndex();
         }
         // INCREMENT WORD GO NEXT SCREEN
-        else if (nextHighlighted && type == IncomingDataType::VALID) {
+        else if (nextHighlighted && type == DataType::VALID) {
             nextSeedScreenCalled.set();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), 24);
             seedVerifier->increment();
         }
         // SCREEN INVALID WORD
-        else if (nextHighlighted && type == IncomingDataType::INVALID) {
+        else if (nextHighlighted && type == DataType::INVALID) {
             disp->blinkTextWarningAtCenter("Invalid word!");
         }
         // SCREEN NO WORD RECEIVED
@@ -147,19 +148,19 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         // DECREMENT WORD GO FIRST SCREEN
         else if (seedVerifier->isSecond()) {
             firstSeedScreenCalled.set();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
             seedVerifier->decrement();
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), 24);
         }
         // DECREMENT WORD GO PREVIOUS SCREEN
         else {
             previousSeedScreenCalled.set();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
             seedVerifier->decrement();
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), 24);
         }
     }
 }
 
-IncomingDataType Nav::checkSerialData() {
+DataType Nav::checkSerialData() {
     string s;
     while (Serial.available() > 0) {
         char incomingByte = Serial.read();
@@ -167,11 +168,11 @@ IncomingDataType Nav::checkSerialData() {
         s += incomingByte;
     }
     if (s.length() > 0 && seedVerifier->validateWord(s)) {
-        return IncomingDataType::VALID;
+        return DataType::VALID;
     } else if (s.length() > 0) {
-        return IncomingDataType::INVALID;
+        return DataType::INVALID;
     } else {
-        return IncomingDataType::NONE;
+        return DataType::NONE;
     }
 }
 

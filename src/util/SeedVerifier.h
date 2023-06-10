@@ -26,6 +26,7 @@ public:
     void resetIndex();
     int getCurrentRandom();
     string getCurrentWord() const;
+    string getCurrentRandomWord();
     bool validateWord(const string &word);
 
 private:
