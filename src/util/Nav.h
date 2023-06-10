@@ -45,6 +45,7 @@ public:
     void onConnect(BLEServer *pServer);
     void onDisconnect(BLEServer *pServer);
     void listenTx();
+    void sendAddress();
 
 private:
     Led* led;

@@ -220,7 +220,7 @@ void Menu::s9_1() {
         disp->clearMenu();
     });
     disp->blinkTextWithSign("Device connected!   Listening for txs..");
-    Bluetooth::sendAddressIfOnConnectedCalled();
+    nav->sendAddress();
     nav->listenTx();
 }
 

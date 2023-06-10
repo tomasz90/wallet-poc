@@ -147,7 +147,17 @@ void Nav::onConnect(BLEServer *pServer) {
     btConnectedCalled.set();
     deviceConnected = true;
     onConnectCalled = true;
-};
+}
+
+void Nav::sendAddress() {
+    if (deviceConnected) {
+        if (onConnectCalled) {
+            onConnectCalled = false;
+            delay(2000);
+            Bluetooth::sendAddress();
+        }
+    }
+}
 
 void Nav::onDisconnect(BLEServer *pServer) {
     Serial.println("disconnected");
@@ -159,7 +169,9 @@ void Nav::onDisconnect(BLEServer *pServer) {
 }
 
 void Nav::listenTx() {
-    if (Bluetooth::receivedTx()) {
-        receivedTxCalled.set();
+    if (deviceConnected) {
+        if (Bluetooth::receivedTx()) {
+            receivedTxCalled.set();
+        }
     }
 }

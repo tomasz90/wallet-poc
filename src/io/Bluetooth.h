@@ -18,7 +18,7 @@ public:
     static EthTx* tx;
     static Nav *nav;
     static void begin(Nav *nav);
-    static void sendAddressIfOnConnectedCalled();
+    static void sendAddress();
     static bool receivedTx();
     static void signTx();
     static void declineTx();

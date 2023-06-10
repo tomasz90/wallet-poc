@@ -54,29 +54,20 @@ void Bluetooth::begin(Nav *_nav) {
     pServer->startAdvertising();
 }
 
-void Bluetooth::sendAddressIfOnConnectedCalled() {
-    if (nav->deviceConnected) {
-        if (nav->onConnectCalled) {
-            nav->onConnectCalled = false;
-            delay(2000);
-            pCharacteristicSenderAddress->setValue("0x51c50Fe7392F8D3D570A8068314c4331ECbC8b52");
-            pCharacteristicSenderAddress->notify();
-        }
-    }
+void Bluetooth::sendAddress() {
+    pCharacteristicSenderAddress->setValue("0x51c50Fe7392F8D3D570A8068314c4331ECbC8b52");
+    pCharacteristicSenderAddress->notify();
 }
 
 bool Bluetooth::receivedTx() {
-    bool received = false;
-    if (nav->deviceConnected) {
-        auto receiverValue = pCharacteristicReceiver->getValue();
-        if (receiverValue.length() > 0) {
-            tx = new EthTx(receiverValue);
-            // received, so reset value for now
-            pCharacteristicReceiver->setValue("");
-            received = true;
-        }
+    auto receiverValue = pCharacteristicReceiver->getValue();
+    if (receiverValue.length() > 0) {
+        tx = new EthTx(receiverValue);
+        // received, so reset value for now
+        pCharacteristicReceiver->setValue("");
+        return true;
     }
-    return received;
+    return false;
 }
 
 void Bluetooth::signTx() {
