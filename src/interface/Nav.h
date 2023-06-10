@@ -8,13 +8,7 @@
 #include "interface/Disp.h"
 #include "util/SeedGenerator.h"
 #include "util/Pin.h"
-
-struct Flag {
-    bool flag = false;
-    bool check();
-    void set();
-    void unset();
-};
+#include "Flag.h"
 
 class Nav : public BLEServerCallbacks {
 public:

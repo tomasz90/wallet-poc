@@ -3,18 +3,6 @@
 #include "ButtonsHandler.h"
 #include "util/SeedGenerator.h"
 
-bool Flag::check() {
-    bool temp = flag;
-    if (flag) {
-        flag = false;
-    }
-    return temp;
-}
-
-void Flag::set() { flag = true; }
-
-void Flag::unset() { flag = false; }
-
 Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin) {
     led = _led;
     disp = _disp;
