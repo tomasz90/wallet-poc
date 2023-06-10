@@ -12,7 +12,7 @@ class Menu {
 
 public:
 
-    Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin, Bluetooth *_bt);
+    Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin, DataHolder *_dataHolder);
     void run();
     void doOnce(const std::function<void()>& _doOnce);
 private:
@@ -21,7 +21,7 @@ private:
     SeedViewer *seedViewer;
     SeedVerifier *seedVerifier;
     Pin *pin;
-    Bluetooth *bt;
+    DataHolder *dataHolder;
 
     void s0();
     void s1_0();

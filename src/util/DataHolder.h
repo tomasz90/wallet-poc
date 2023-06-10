@@ -5,6 +5,7 @@
 #include <string>
 #include "bip39/word_list.h"
 #include "ethereumHDKeysGenerator/EthereumHDPrivateKey.h"
+#include "io/EthTx.h"
 
 #define MNEMONIC_LENGTH 12
 
@@ -18,7 +19,7 @@ public:
     word_list mnemonic;
     array<int, MNEMONIC_LENGTH> randomSequence;
     EthereumHDPrivateKey *account;
-
+    EthTx* tx;
     DataHolder() = default;
 
 };

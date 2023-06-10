@@ -11,12 +11,6 @@
 #include "seed/SeedViewer.h"
 #include "seed/SeedVerifier.h"
 
-enum class DataType {
-    NONE,
-    VALID,
-    INVALID
-};
-
 class Nav : public BLEServerCallbacks {
 public:
     Flag previousCalled;
@@ -38,7 +32,14 @@ public:
 
     bool deviceConnected = false;
 
-    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin);
+    Nav(Led *_led,
+        ButtonsHandler &buttonHandler,
+        Disp *_disp,
+        SeedViewer *_seedViewer,
+        SeedVerifier *_seedVerifier,
+        DataHolder *_dataHolder,
+        Pin *_pin);
+
     void setBt(Bluetooth *_bt);
     void resetFlags();
     void onPrevious();
@@ -61,7 +62,7 @@ private:
     SeedVerifier *seedVerifier;
     Pin *pin;
     Bluetooth *bt;
-
+    DataHolder *dataHolder;
     // this is for Nav purposes only
     Flag btConnectedCalledPrivate;
 };

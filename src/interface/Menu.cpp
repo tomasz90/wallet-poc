@@ -11,13 +11,13 @@ CustomState *S9_3 = nullptr;
 
 using std::string;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin, Bluetooth *_bt) {
+Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin, DataHolder *_dataHolder){
     nav = _nav;
     disp = _disp;
     seedViewer = _seedViewer;
     seedVerifier = _seedVerifier;
     pin = _pin;
-    bt = _bt;
+    dataHolder = _dataHolder;
     // STATES
 //    CustomState *S0 =   machine.addState([this]() { s0();});
 //    CustomState *S1_0 = machine.addState([this]() { s1_0();});
@@ -31,9 +31,9 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
 //    CustomState *S6_1 = machine.addState([this]() { s6_1();});
 //    CustomState *S6_2 = machine.addState([this]() { s6_2();});
 //    CustomState *S7 =   machine.addState([this]() { s7();});
-    CustomState *S8_0 = machine.addState([this]() { s8_0(); });
-    CustomState *S8_1 = machine.addState([this]() { s8_1(); });
-    CustomState *S8_2 = machine.addState([this]() { s8_2(); });
+//    CustomState *S8_0 = machine.addState([this]() { s8_0(); });
+//    CustomState *S8_1 = machine.addState([this]() { s8_1(); });
+//    CustomState *S8_2 = machine.addState([this]() { s8_2(); });
     CustomState *S9_0 = machine.addState([this]() { s9_0(); });
     CustomState *S9_1 = machine.addState([this]() { s9_1(); });
     CustomState *S9_2 = machine.addState([this]() { s9_2(); });
@@ -67,11 +67,11 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
 //    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
 //    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
 //    S7->addTransition(S8_0,  nav->bothCalled);
-    S8_0->addTransition(S8_1, nav->nextSeedScreenCalled); //todo: change to generic wrapper of next and previous
-    S8_1->addTransition(S8_2, nav->previousCalled);
-    S8_1->addTransition(S9_0, nav->confirmSeedScreenCalled);
-    S8_2->addTransition(S8_1, nav->nextCalled);
-    S8_2->addTransition(S8_0, nav->firstSeedScreenCalled);
+//    S8_0->addTransition(S8_1, nav->nextSeedScreenCalled); //todo: change to generic wrapper of next and previous
+//    S8_1->addTransition(S8_2, nav->previousCalled);
+//    S8_1->addTransition(S9_0, nav->confirmSeedScreenCalled);
+//    S8_2->addTransition(S8_1, nav->nextCalled);
+//    S8_2->addTransition(S8_0, nav->firstSeedScreenCalled);
 
     S9_1->addTransition(S9_0, nav->btDisconnectedCalled);
     S9_2->addTransition(S9_0, nav->btDisconnectedCalled);
@@ -216,9 +216,9 @@ void Menu::s9_2() {
             disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         }
 
-        string chainId = bt->tx->formatChainId();
-        string address = bt->tx->formatAddress();
-        string value = bt->tx->formatEthValue();
+        string chainId = dataHolder->tx->formatChainId();
+        string address = dataHolder->tx->formatAddress();
+        string value = dataHolder->tx->formatEthValue();
 
         disp->drawTransaction(chainId, address, value);
         disp->drawTwoBoxes("DECLINE", "ACCEPT", false);

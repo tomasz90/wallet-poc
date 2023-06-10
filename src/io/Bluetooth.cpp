@@ -3,13 +3,15 @@
 #include <BLE2902.h>
 #include <Arduino.h>
 #include "Bluetooth.h"
+#include "util/DataHolder.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristicSender = NULL;
 BLECharacteristic *pCharacteristicSenderAddress = NULL;
 BLECharacteristic *pCharacteristicReceiver = NULL;
 
-Bluetooth::Bluetooth(BLEServerCallbacks *_nav) {
+Bluetooth::Bluetooth(BLEServerCallbacks *_nav, DataHolder *_dataHolder) {
+    dataHolder = _dataHolder;
     // Create the BLE Device
     BLEDevice::init("ESP32");
 
@@ -56,7 +58,7 @@ void Bluetooth::sendAddress() {
 bool Bluetooth::receivedTx() {
     auto receiverValue = pCharacteristicReceiver->getValue();
     if (receiverValue.length() > 0) {
-        tx = new EthTx(receiverValue);
+        dataHolder->tx = new EthTx(receiverValue);
         // received, so reset value for now
         pCharacteristicReceiver->setValue("");
         return true;
@@ -67,12 +69,13 @@ bool Bluetooth::receivedTx() {
 void Bluetooth::signTx() {
     Serial.println("Sending transaction");
     char *buffer;
-    tx->sign(buffer);
-    delete tx;
+    dataHolder->tx->sign(buffer);
     pCharacteristicSender->setValue(buffer);
     pCharacteristicSender->notify();
+    delete[] buffer;
+    delete dataHolder->tx;
 }
 
 void Bluetooth::declineTx() {
-    delete tx;
+    delete dataHolder->tx;
 }

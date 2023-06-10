@@ -5,7 +5,13 @@
 
 using std::string;
 
-Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin) {
+Nav::Nav(Led *_led,
+         ButtonsHandler &buttonHandler,
+         Disp *_disp,
+         SeedViewer *_seedViewer,
+         SeedVerifier *_seedVerifier,
+         DataHolder *_dataHolder,
+         Pin *_pin) {
     led = _led;
     disp = _disp;
     seedViewer = _seedViewer;
@@ -101,19 +107,19 @@ void Nav::navigateSeed(bool nextHighlighted) {
             confirmSeedScreenCalled.set();
             seedViewer->resetIndex();
         }
-        // INCREMENT WORD GO NEXT SCREEN
+            // INCREMENT WORD GO NEXT SCREEN
         else if (nextHighlighted) {
             nextSeedScreenCalled.set();
             seedViewer->increment();
             disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
-        // DECREMENT WORD GO FIRST SCREEN
+            // DECREMENT WORD GO FIRST SCREEN
         else if (seedViewer->isSecond()) {
             firstSeedScreenCalled.set();
             seedViewer->decrement();
             disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
-        // DECREMENT WORD GO PREVIOUS SCREEN
+            // DECREMENT WORD GO PREVIOUS SCREEN
         else {
             previousSeedScreenCalled.set();
             seedViewer->decrement();
@@ -130,23 +136,23 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
             confirmSeedScreenCalled.set();
             seedVerifier->resetIndex();
         }
-        // INCREMENT WORD GO NEXT SCREEN
+            // INCREMENT WORD GO NEXT SCREEN
         else if (nextHighlighted && seedVerifier->isCurrentWordValid()) {
             nextSeedScreenCalled.set();
             seedVerifier->increment();
             disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
-        // SCREEN NO WORD RECEIVED
+            // SCREEN NO WORD RECEIVED
         else if (nextHighlighted) {
             disp->blinkTextWarningAtCenter("Need valid word!");
         }
-        // DECREMENT WORD GO FIRST SCREEN
+            // DECREMENT WORD GO FIRST SCREEN
         else if (seedVerifier->isSecond()) {
             firstSeedScreenCalled.set();
             seedVerifier->decrement();
             disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
-        // DECREMENT WORD GO PREVIOUS SCREEN
+            // DECREMENT WORD GO PREVIOUS SCREEN
         else {
             previousSeedScreenCalled.set();
             seedVerifier->decrement();
