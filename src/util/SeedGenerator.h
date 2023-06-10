@@ -9,11 +9,17 @@
 
 enum class SeedGeneratorMode { SET, CONFIRM };
 
+using namespace BIP39;
+using std::string;
+using std::vector;
+using std::array;
+using std::find;
+
 class SeedGenerator {
 public:
     uint8_t currentIndex;
-    std::array<int, MNEMONIC_LENGTH> randomSequence;
-    BIP39::word_list mnemonic;
+    array<int, MNEMONIC_LENGTH> randomSequence;
+    word_list mnemonic;
     SeedGeneratorMode mode;
     EthereumHDPrivateKey *account;
 
@@ -25,12 +31,12 @@ public:
     void decrement();
     void resetIndex();
     int getCurrentRandom();
-    std::string getCurrentWord() const;
+    string getCurrentWord() const;
 
-    bool validateWord(const std::string &word);
+    bool validateWord(const string &word);
 private:
     void generateRandomSequence();
-    std::vector<uint8_t> generateEntropy();
+    vector<uint8_t> generateEntropy();
 
 };
 
