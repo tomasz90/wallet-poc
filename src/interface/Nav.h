@@ -10,6 +10,12 @@
 #include "util/Pin.h"
 #include "Flag.h"
 
+enum class IncomingDataType {
+    NONE,
+    VALID,
+    INVALID
+};
+
 class Nav : public BLEServerCallbacks {
 public:
     Flag previousCalled;
@@ -40,7 +46,7 @@ public:
     void enterPin();
     void navigateSeed(bool nextHighlighted);
     void navigateSeedConfirm(bool nextHighlighted);
-    void readSeedWordFromSerial();
+    IncomingDataType checkSerialData();
     void onConnect(BLEServer *pServer) override;
     void onDisconnect(BLEServer *pServer) override;
     void listenTx();

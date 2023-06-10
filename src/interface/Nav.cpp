@@ -94,91 +94,84 @@ void Nav::enterPin() {
 }
 
 void Nav::navigateSeed(bool nextHighlighted) {
-    // bothCalled.check() needs to be called only once here
-    bool _bothCalled = bothCalled.check();
-
-    // CONFIRM SEED PHRASE
-    if (_bothCalled && nextHighlighted && seedVerifier->isLast()) {
-        confirmSeedScreenCalled.set();
-        seedVerifier->resetIndex();
-    }
-    // INCREMENT WORD GO NEXT SCREEN
-    else if (_bothCalled && nextHighlighted) {
-        nextSeedScreenCalled.set();
-        seedVerifier->increment();
-        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
-    }
-    // DECREMENT WORD GO FIRST SCREEN
-    else if (_bothCalled && seedVerifier->isSecond()) {
-        firstSeedScreenCalled.set();
-        seedVerifier->decrement();
-        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
-    }
-    // DECREMENT WORD GO PREVIOUS SCREEN
-    else if (_bothCalled) {
-        previousSeedScreenCalled.set();
-        seedVerifier->decrement();
-        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+    if (bothCalled.check()) {
+        // CONFIRM SEED PHRASE
+        if (nextHighlighted && seedVerifier->isLast()) {
+            confirmSeedScreenCalled.set();
+            seedVerifier->resetIndex();
+        }
+        // INCREMENT WORD GO NEXT SCREEN
+        else if (nextHighlighted) {
+            nextSeedScreenCalled.set();
+            seedVerifier->increment();
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+        }
+        // DECREMENT WORD GO FIRST SCREEN
+        else if (seedVerifier->isSecond()) {
+            firstSeedScreenCalled.set();
+            seedVerifier->decrement();
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+        }
+        // DECREMENT WORD GO PREVIOUS SCREEN
+        else  {
+            previousSeedScreenCalled.set();
+            seedVerifier->decrement();
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+        }
     }
 }
 
 void Nav::navigateSeedConfirm(bool nextHighlighted) {
-    // bothCalled.check() needs to be called only once here
-    bool _bothCalled = bothCalled.check();
-    bool isValid;
+    IncomingDataType type = checkSerialData();
 
-    // isValidWordCalled needs to be checked only when both buttons are pressed
-    if (_bothCalled) {
-        isValid = isValidWordCalled.check();
-    } else {
-        readSeedWordFromSerial();
-    }
-
-    // CONFIRM SEED PHRASE
-    if (_bothCalled && nextHighlighted && seedVerifier->isLast()) {
-        confirmSeedScreenCalled.set();
-        seedVerifier->resetIndex();
-    }
-    // INCREMENT WORD GO NEXT SCREEN
-    else if (_bothCalled && nextHighlighted && isValid) {
-        nextSeedScreenCalled.set();
-        seedVerifier->increment();
-        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
-    }
-    // SCREEN INVALID WORD
-    else if (_bothCalled && nextHighlighted) {
-        disp->blinkTextWarningAtCenter("Need valid word!");
-    }
-    // DECREMENT WORD GO FIRST SCREEN
-    else if (_bothCalled && seedVerifier->isSecond()) {
-        firstSeedScreenCalled.set();
-        seedVerifier->decrement();
-        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
-    }
-    // DECREMENT WORD GO PREVIOUS SCREEN
-    else if (_bothCalled) {
-        previousSeedScreenCalled.set();
-        seedVerifier->decrement();
-        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+    if (bothCalled.check()) {
+        // CONFIRM SEED PHRASE
+        if (nextHighlighted && type == IncomingDataType::VALID && seedVerifier->isLast()) {
+            confirmSeedScreenCalled.set();
+            seedVerifier->resetIndex();
+        }
+        // INCREMENT WORD GO NEXT SCREEN
+        else if (nextHighlighted && type == IncomingDataType::VALID) {
+            nextSeedScreenCalled.set();
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+            seedVerifier->increment();
+        }
+        // SCREEN INVALID WORD
+        else if (nextHighlighted && type == IncomingDataType::INVALID) {
+            disp->blinkTextWarningAtCenter("Invalid word!");
+        }
+        // SCREEN NO WORD RECEIVED
+        else if (nextHighlighted) {
+            disp->blinkTextWarningAtCenter("Need valid word!");
+        }
+        // DECREMENT WORD GO FIRST SCREEN
+        else if (seedVerifier->isSecond()) {
+            firstSeedScreenCalled.set();
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+            seedVerifier->decrement();
+        }
+        // DECREMENT WORD GO PREVIOUS SCREEN
+        else {
+            previousSeedScreenCalled.set();
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+            seedVerifier->decrement();
+        }
     }
 }
 
-void Nav::readSeedWordFromSerial() {
+IncomingDataType Nav::checkSerialData() {
     string s;
     while (Serial.available() > 0) {
         char incomingByte = Serial.read();
         if (incomingByte == '\n') { break; }
         s += incomingByte;
     }
-    if (s.length() > 0) {
-        bool isValid = seedVerifier->validateWord(s);
-        if (isValid) {
-            Nav::isValidWordCalled.set();
-            disp->setTextAtCenter(s, 24);
-            disp->disp();
-        } else {
-            disp->blinkTextWarningAtCenter("Invalid word!");
-        }
+    if (s.length() > 0 && seedVerifier->validateWord(s)) {
+        return IncomingDataType::VALID;
+    } else if (s.length() > 0) {
+        return IncomingDataType::INVALID;
+    } else {
+        return IncomingDataType::NONE;
     }
 }
 
