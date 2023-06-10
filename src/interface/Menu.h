@@ -10,14 +10,15 @@
 class Menu {
 
 public:
-    static bool firstTime;
     static Nav *nav;
     static Disp *disp;
     Menu();
-    static void begin(Nav *_nav, Disp *_disp);
+    static void begin(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator);
     static void run();
     static void doOnce(void (*_doOnce)());
 private:
+    static SeedGenerator *seedGenerator;
+
     static void s0();
     static void s1_0();
     static void s1_1();
@@ -35,11 +36,8 @@ private:
     static void s8_2();
     static void s9_1();
     static void s9_2();
-
     static void s9_3();
-
     static void s9_0();
-
     static void s9_4();
 };
 

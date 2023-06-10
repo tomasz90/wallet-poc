@@ -7,7 +7,6 @@
 #include "io/Bluetooth.h"
 
 CustomMachine machine = CustomMachine();
-bool Menu::firstTime = true;
 
 CustomState *S9_0 = nullptr;
 CustomState *S9_1 = nullptr;
@@ -17,12 +16,13 @@ CustomState *S9_4 = nullptr;
 
 Nav *Menu::nav;
 Disp *Menu::disp;
-
+SeedGenerator *Menu::seedGenerator;
 using std::string;
 
-void Menu::begin(Nav *_nav, Disp *_disp) {
+void Menu::begin(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator) {
     nav = _nav;
     disp = _disp;
+    seedGenerator = _seedGenerator;
     // STATES
 //    CustomState *S0 =   machine.addState(&s0);
 //    CustomState *S1_0 = machine.addState(&s1_0);
@@ -154,13 +154,13 @@ void Menu::s5() {
 
 void Menu::s6_0() {
     doOnce([]() {
-        SeedGenerator::setMode(SeedGeneratorMode::SET);
+        seedGenerator->setMode(SeedGeneratorMode::SET);
         disp->clearMenu();
         disp->drawOnlyRightBox("NEXT");
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        disp->setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
+        disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     });
-    disp->blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedGenerator->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
@@ -168,9 +168,9 @@ void Menu::s6_1() {
     doOnce([]() {
         disp->drawTwoBoxes("BACK", "NEXT", true);
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        disp->setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
+        disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     });
-    disp->blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedGenerator->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
@@ -178,9 +178,9 @@ void Menu::s6_2() {
     doOnce([]() {
         disp->drawTwoBoxes("BACK", "NEXT", false);
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        disp->setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
+        disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     });
-    disp->blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedGenerator->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(false);
 }
 
@@ -191,22 +191,22 @@ void Menu::s7() {
 
 void Menu::s8_0() {
     doOnce([]() {
-        SeedGenerator::setMode(SeedGeneratorMode::CONFIRM);
+        seedGenerator->setMode(SeedGeneratorMode::CONFIRM);
         disp->drawOnlyRightBox("NEXT");
     });
-    disp->blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s8_1() {
     doOnce([]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
-    disp->blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s8_2() {
     doOnce([]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
-    disp->blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(false);
 }
 

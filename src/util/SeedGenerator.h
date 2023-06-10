@@ -11,27 +11,26 @@ enum class SeedGeneratorMode { SET, CONFIRM };
 
 class SeedGenerator {
 public:
-    static uint8_t currentIndex;
-    static std::array<int, MNEMONIC_LENGTH> randomSequence;
-    static BIP39::word_list mnemonic;
-    static SeedGeneratorMode mode;
-    static EthereumHDPrivateKey *account;
+    uint8_t currentIndex;
+    std::array<int, MNEMONIC_LENGTH> randomSequence;
+    BIP39::word_list mnemonic;
+    SeedGeneratorMode mode;
+    EthereumHDPrivateKey *account;
 
-    static void createMnemonic();
-    static void setMode(SeedGeneratorMode mode);
-    static bool isSecond();
-    static bool isLast();
-    static void increment();
-    static void decrement();
-    static void resetIndex();
-    static int getCurrentRandom();
-    static std::string getCurrentWord();
-    static bool validateWord(const std::string &word);
+    SeedGenerator();
+    void setMode(SeedGeneratorMode mode);
+    bool isSecond() const;
+    bool isLast() const;
+    void increment();
+    void decrement();
+    void resetIndex();
+    int getCurrentRandom();
+    std::string getCurrentWord() const;
 
+    bool validateWord(const std::string &word);
 private:
-    SeedGenerator() = default;
-    static void generateRandomSequence();
-    static std::vector<uint8_t> generateEntropy();
+    void generateRandomSequence();
+    std::vector<uint8_t> generateEntropy();
 
 };
 

@@ -17,9 +17,10 @@ void Flag::set() { flag = true; }
 
 void Flag::unset() { flag = false; }
 
-Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp) {
+Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator) {
     led = _led;
     disp = _disp;
+    seedGenerator = _seedGenerator;
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
             [this]() { onNext(); },
@@ -87,21 +88,21 @@ void Nav::navigateSeed(bool nextHighlighted) {
     bool isValid = true;
 
     // isValidWordCalled needs to be checked only when both buttons are pressed
-    if (SeedGenerator::mode == SeedGeneratorMode::CONFIRM && _bothCalled) {
+    if (seedGenerator->mode == SeedGeneratorMode::CONFIRM && _bothCalled) {
         isValid = isValidWordCalled.check();
-    } else if (SeedGenerator::mode == SeedGeneratorMode::CONFIRM) {
+    } else if (seedGenerator->mode == SeedGeneratorMode::CONFIRM) {
         readSeedWordFromSerial();
     }
 
     // CONFIRM SEED PHRASE
-    if (_bothCalled && nextHighlighted && SeedGenerator::isLast()) {
+    if (_bothCalled && nextHighlighted && seedGenerator->isLast()) {
         confirmSeedScreenCalled.set();
-        SeedGenerator::resetIndex();
+        seedGenerator->resetIndex();
     }
     // INCREMENT WORD GO NEXT SCREEN
     else if (_bothCalled && nextHighlighted && isValid) {
         nextSeedScreenCalled.set();
-        SeedGenerator::increment();
+        seedGenerator->increment();
         disp->clearTextCenter();
     }
     // INCREMENT WORD GO NEXT SCREEN
@@ -109,15 +110,15 @@ void Nav::navigateSeed(bool nextHighlighted) {
         disp->blinkTextWarningAtCenter("Need valid word!");
     }
     // DECREMENT WORD GO FIRST SCREEN
-    else if (_bothCalled && SeedGenerator::isSecond()) {
+    else if (_bothCalled && seedGenerator->isSecond()) {
         firstSeedScreenCalled.set();
-        SeedGenerator::decrement();
+        seedGenerator->decrement();
         disp->clearTextCenter();
     }
     // DECREMENT WORD GO PREVIOUS SCREEN
     else if (_bothCalled) {
         previousSeedScreenCalled.set();
-        SeedGenerator::decrement();
+        seedGenerator->decrement();
         disp->clearTextCenter();
     }
 }
@@ -130,7 +131,7 @@ void Nav::readSeedWordFromSerial() {
         incomingString += incomingByte;
     }
     if (incomingString.length() > 0) {
-        bool isValid = SeedGenerator::validateWord(incomingString);
+        bool isValid = seedGenerator->validateWord(incomingString);
         if (isValid) {
             Nav::isValidWordCalled.set();
             disp->clearTextCenter();

@@ -6,13 +6,8 @@
 #include "bip39/bip39.h"
 #include "ethereumHDKeysGenerator/EthereumHDPrivateKey.h"
 
-BIP39::word_list SeedGenerator::mnemonic;
-uint8_t SeedGenerator::currentIndex = 0;
-std::array<int, MNEMONIC_LENGTH> SeedGenerator::randomSequence;
-SeedGeneratorMode SeedGenerator::mode;
-EthereumHDPrivateKey *SeedGenerator::account = nullptr;
-
-void SeedGenerator::createMnemonic() {
+SeedGenerator::SeedGenerator() {
+    currentIndex = 0;
     // GENERATE RANDOMNESS
     bootloader_random_enable();
     std::vector<uint8_t> entropy = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};//generateEntropy();
@@ -29,11 +24,11 @@ void SeedGenerator::setMode(SeedGeneratorMode _mode) {
     mode = _mode;
 }
 
-bool SeedGenerator::isSecond() {
+bool SeedGenerator::isSecond() const {
     return currentIndex == 1;
 }
 
-bool SeedGenerator::isLast() {
+bool SeedGenerator::isLast() const {
     return currentIndex == MNEMONIC_LENGTH - 1;
 }
 
@@ -57,7 +52,7 @@ int SeedGenerator::getCurrentRandom() {
     return randomSequence[currentIndex];
 }
 
-std::string SeedGenerator::getCurrentWord() {
+std::string SeedGenerator::getCurrentWord() const {
     return mnemonic.getWordAt(currentIndex);
 }
 
