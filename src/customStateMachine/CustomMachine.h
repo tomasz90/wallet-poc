@@ -9,7 +9,9 @@ class CustomMachine: public StateMachine {
 public:
     CustomMachine() = default;
     CustomState* addState(void (*functionPointer)()) override;
-
+    CustomState* getLastState();
+    void run() override;
 private:
+    int lastState = -1;
 };
 

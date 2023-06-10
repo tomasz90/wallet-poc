@@ -11,6 +11,12 @@
 CustomMachine machine = CustomMachine();
 bool Menu::firstTime = true;
 
+CustomState *S9_0 = nullptr;
+CustomState *S9_1 = nullptr;
+CustomState *S9_2 = nullptr;
+CustomState *S9_3 = nullptr;
+CustomState *S9_4 = nullptr;
+
 void Menu::begin() {
 
     // STATES
@@ -29,11 +35,11 @@ void Menu::begin() {
 //    CustomState *S8_0 = machine.addState(&s8_0);
 //    CustomState *S8_1 = machine.addState(&s8_1);
 //    CustomState *S8_2 = machine.addState(&s8_2);
-    CustomState *S9_0 = machine.addState(&s9_0);
-    CustomState *S9_1 = machine.addState(&s9_1);
-    CustomState *S9_2 = machine.addState(&s9_2);
-    CustomState *S9_3 = machine.addState(&s9_3);
-    CustomState *S9_4 = machine.addState(&s9_4);
+    S9_0 = machine.addState(&s9_0);
+    S9_1 = machine.addState(&s9_1);
+    S9_2 = machine.addState(&s9_2);
+    S9_3 = machine.addState(&s9_3);
+    S9_4 = machine.addState(&s9_4);
 
     // NEXT
 //    S0->addTransition(S1_0,  Nav::bothCalled);
@@ -215,7 +221,9 @@ void Menu::s9_1() {
 
 void Menu::s9_2() {
     doOnce([]() {
-        Disp::clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
+        if(machine.getLastState() != S9_3) {
+            Disp::clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
+        }
         Disp::drawTwoBoxes("DECLINE", "ACCEPT", false);
         Disp::drawTransaction();
     });

@@ -12,7 +12,7 @@ class StateMachine
     StateMachine();
     ~StateMachine();
     void init();
-    void run();
+    virtual void run();
 
     // When a stated is added we pass the function that represents 
     // that state logic
