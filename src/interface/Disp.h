@@ -4,6 +4,7 @@
 #define DISPLAY_H
 
 #define SCREEN_TEXT_MENU_BORDER_POSITION 40
+#define SEED_WORD_Y_POSITION 24
 
 using std::string;
 

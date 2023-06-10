@@ -104,42 +104,36 @@ void Nav::navigateSeed(bool nextHighlighted) {
         else if (nextHighlighted) {
             nextSeedScreenCalled.set();
             seedVerifier->increment();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
         // DECREMENT WORD GO FIRST SCREEN
         else if (seedVerifier->isSecond()) {
             firstSeedScreenCalled.set();
             seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
         // DECREMENT WORD GO PREVIOUS SCREEN
-        else  {
+        else {
             previousSeedScreenCalled.set();
             seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+            disp->setTextAtCenter(seedVerifier->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
     }
 }
 
 void Nav::navigateSeedConfirm(bool nextHighlighted) {
-    DataType type = checkSerialData();
-
+    checkSerialData();
     if (bothCalled.check()) {
-        Serial.println(("type: " + std::to_string(static_cast<int>(type))).c_str());
         // CONFIRM SEED PHRASE
-        if (nextHighlighted && type == DataType::VALID && seedVerifier->isLast()) {
+        if (nextHighlighted && seedVerifier->isCurrentWordValid() && seedVerifier->isLast()) {
             confirmSeedScreenCalled.set();
             seedVerifier->resetIndex();
         }
         // INCREMENT WORD GO NEXT SCREEN
-        else if (nextHighlighted && type == DataType::VALID) {
+        else if (nextHighlighted && seedVerifier->isCurrentWordValid()) {
             nextSeedScreenCalled.set();
-            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), 24);
             seedVerifier->increment();
-        }
-        // SCREEN INVALID WORD
-        else if (nextHighlighted && type == DataType::INVALID) {
-            disp->blinkTextWarningAtCenter("Invalid word!");
+            disp->clearTextCenter();
         }
         // SCREEN NO WORD RECEIVED
         else if (nextHighlighted) {
@@ -149,30 +143,30 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         else if (seedVerifier->isSecond()) {
             firstSeedScreenCalled.set();
             seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), 24);
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
         // DECREMENT WORD GO PREVIOUS SCREEN
         else {
             previousSeedScreenCalled.set();
             seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), 24);
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
     }
 }
 
-DataType Nav::checkSerialData() {
+void Nav::checkSerialData() {
     string s;
     while (Serial.available() > 0) {
         char incomingByte = Serial.read();
         if (incomingByte == '\n') { break; }
         s += incomingByte;
     }
-    if (s.length() > 0 && seedVerifier->validateWord(s)) {
-        return DataType::VALID;
-    } else if (s.length() > 0) {
-        return DataType::INVALID;
-    } else {
-        return DataType::NONE;
+    if (s.length() > 0 && !seedVerifier->isCurrentWordValid()) {
+        if (seedVerifier->validateWord(s)) {
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
+        } else {
+            disp->blinkTextWarningAtCenter("Invalid word!");
+        }
     }
 }
 

@@ -46,7 +46,7 @@ public:
     void enterPin();
     void navigateSeed(bool nextHighlighted);
     void navigateSeedConfirm(bool nextHighlighted);
-    DataType checkSerialData();
+    void checkSerialData();
     void onConnect(BLEServer *pServer) override;
     void onDisconnect(BLEServer *pServer) override;
     void listenTx();

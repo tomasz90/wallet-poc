@@ -29,9 +29,13 @@ public:
     string getCurrentRandomWord();
     bool validateWord(const string &word);
 
+    bool isCurrentWordValid();
+
 private:
     word_list mnemonic;
     array<int, MNEMONIC_LENGTH> randomSequence;
+    array<string, MNEMONIC_LENGTH> verifiedWords;
+
 };
 
 #endif //SEED_VERIFIER_H

@@ -4,6 +4,7 @@ SeedVerifier::SeedVerifier(DataHolder *dataHolder) {
     currentIndex = 0;
     this->mnemonic = dataHolder->mnemonic;
     this->randomSequence = dataHolder->randomSequence;
+    this->verifiedWords.fill("");
 }
 
 void SeedVerifier::setMode(SeedVerifierMode _mode) {
@@ -43,9 +44,20 @@ string SeedVerifier::getCurrentWord() const {
 }
 
 string SeedVerifier::getCurrentRandomWord() {
-    return mnemonic.getWordAt(randomSequence[currentIndex]);
+    return verifiedWords[getCurrentRandom()];
+}
+
+bool SeedVerifier::isCurrentWordValid() {
+    return !getCurrentRandomWord().empty();
 }
 
 bool SeedVerifier::validateWord(const string &word) {
-    return getCurrentRandomWord() == word;
+    Serial.println(mnemonic.getWordAt(getCurrentRandom()).c_str());
+    Serial.println(word.c_str());
+    if (mnemonic.getWordAt(getCurrentRandom()) == word) {
+        verifiedWords[getCurrentRandom()] = word;
+        return true;
+    } else {
+        return false;
+    }
 }
