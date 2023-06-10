@@ -8,11 +8,9 @@
 struct CustomTransition {
     int stateNumber;
     Flag &isTrans;
-    void (*doOnTransition)();
 
-    CustomTransition(int stateNumber, Flag &isTrans, void (*doOnTransition)()) : isTrans(isTrans) {
+    CustomTransition(int stateNumber, Flag &isTrans) : isTrans(isTrans) {
         this->stateNumber = stateNumber;
-        this->doOnTransition = doOnTransition;
     }
 };
 
@@ -24,7 +22,6 @@ public:
     CustomState();
     void addTransition(CustomState *s, Flag &isTrans) const;
     int evalTransitions() const;
-    static void doOnAnyTransition(); //todo remove static?
     int execute();
     int setTransition(int index, int stateNumber);
 

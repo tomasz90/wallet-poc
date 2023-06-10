@@ -96,8 +96,9 @@ void Menu::run() {
 }
 
 void Menu::doOnce(void (*_doOnce)()) {
-    if (firstTime) {
-        firstTime = false;
+    if (machine.executeOnce) {
+        Serial.println("did once");
+        disp->lastTextBlinked = 0;
         _doOnce();
     }
 }

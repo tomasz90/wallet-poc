@@ -9,7 +9,7 @@ using std::string;
 
 class Disp {
 public:
-    static unsigned long lastTextBlinked;
+    unsigned long lastTextBlinked;
     Disp();
     void setText(const string &text, uint8_t toLine);
     void setTextAtCenter(const string &text, uint8_t y);
