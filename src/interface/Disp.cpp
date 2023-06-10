@@ -1,9 +1,6 @@
 #include "Disp.h"
 #include "Adafruit_SSD1306.h"
 
-bool Disp::blink;
-unsigned long Disp::lastTextBlinked;
-
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
@@ -25,9 +22,13 @@ const int SCREEN_RIGHT_HALF_CENTER = SCREEN_CENTER + (SCREEN_WIDTH / 4);
 const int BOX_X_1_START = SCREEN_LEFT_HALF_CENTER - (BOX_WIDTH / 2);
 const int BOX_X_2_START = SCREEN_RIGHT_HALF_CENTER - (BOX_WIDTH / 2);
 
+unsigned long Disp::lastTextBlinked;
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
-void Disp::begin() {
+Disp::Disp() {
+    lastTextBlinked = 0;
+    blink = false;
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
         Serial.println(F("SSD1306 allocation failed"));
         while (true);

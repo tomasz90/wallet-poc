@@ -4,6 +4,7 @@
 #include <BLEServer.h>
 #include "Led.h"
 #include "ButtonsHandler.h"
+#include "interface/Disp.h"
 
 struct Flag {
     bool flag = false;
@@ -14,11 +15,6 @@ struct Flag {
 
 class Nav : public BLEServerCallbacks {
 public:
-    bool deviceConnected = false;
-    bool onConnectCalled = false;
-    void onConnect(BLEServer *pServer);
-    void onDisconnect(BLEServer *pServer);
-
     Flag previousCalled;
     Flag nextCalled;
     Flag bothCalled;
@@ -36,20 +32,23 @@ public:
     Flag btDisconnectedCalled;
     Flag receivedTxCalled;
 
-    Nav(Led *_led, ButtonsHandler &buttonHandler);
+    bool deviceConnected = false;
+    bool onConnectCalled = false;
+
+    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp);
     void onPrevious();
     void onNext();
     void onBoth();
     void enterPin();
     void navigateSeed(bool nextHighlighted);
     void readSeedWordFromSerial();
-
-    void onBtConnected();
-    void onBtDisconnected();
+    void onConnect(BLEServer *pServer);
+    void onDisconnect(BLEServer *pServer);
     void listenTx();
-private:
 
+private:
     Led* led;
+    Disp *disp;
 };
 
 #endif //WALLET_POC_NAV_H

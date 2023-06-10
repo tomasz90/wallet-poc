@@ -1,6 +1,4 @@
 #include "Menu.h"
-#include "StateMachine.h"
-#include "Disp.h"
 #include "customStateMachine/CustomMachine.h"
 #include "util/Pin.h"
 #include "ButtonsHandler.h"
@@ -18,12 +16,13 @@ CustomState *S9_3 = nullptr;
 CustomState *S9_4 = nullptr;
 
 Nav *Menu::nav;
+Disp *Menu::disp;
 
 using std::string;
 
-void Menu::begin(Nav *_nav) {
-
+void Menu::begin(Nav *_nav, Disp *_disp) {
     nav = _nav;
+    disp = _disp;
     // STATES
 //    CustomState *S0 =   machine.addState(&s0);
 //    CustomState *S1_0 = machine.addState(&s1_0);
@@ -104,122 +103,122 @@ void Menu::doOnce(void (*_doOnce)()) {
 }
 
 void Menu::s0() {
-    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
-    Disp::blinkTextWithSign("Hello!");
+    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    disp->blinkTextWithSign("Hello!");
 }
 
 void Menu::s1_0() {
-    doOnce([]() { Disp::drawTwoBoxes("NO", "YES", false); });
-    Disp::blinkTextWithSign("Do you want to set as new device?");
+    doOnce([]() { disp->drawTwoBoxes("NO", "YES", false); });
+    disp->blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s1_1() {
-    doOnce([]() { Disp::drawTwoBoxes("NO", "YES", true); });
-    Disp::blinkTextWithSign("Do you want to set as new device?");
+    doOnce([]() { disp->drawTwoBoxes("NO", "YES", true); });
+    disp->blinkTextWithSign("Do you want to set as new device?");
 }
 
 void Menu::s2() {
     doOnce([]() {
         Pin::setMode(PinMode::SET);
-        Disp::drawPin(Pin::getPinString());
+        disp->drawPin(Pin::getPinString());
     });
 
-    Disp::blinkTextWithSign("Set pin:");
+    disp->blinkTextWithSign("Set pin:");
     nav->enterPin();
 }
 
 void Menu::s3() {
     doOnce([]() {
         Pin::setMode(PinMode::CONFIRM);
-        Disp::drawPin(Pin::getPinString());
+        disp->drawPin(Pin::getPinString());
     });
-    Disp::blinkTextWithSign("Confirm pin:");
+    disp->blinkTextWithSign("Confirm pin:");
     nav->enterPin();
 }
 
 void Menu::s4_0() {
-    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
-    Disp::blinkTextWithSign("Pin confirmed!");
+    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    disp->blinkTextWithSign("Pin confirmed!");
 }
 
 void Menu::s4_1() {
-    doOnce([]() { Disp::drawOnlyLeftBox("BACK"); });
-    Disp::blinkTextWithSign("Pin not matching ;(  try again...");
+    doOnce([]() { disp->drawOnlyLeftBox("BACK"); });
+    disp->blinkTextWithSign("Pin not matching ;(  try again...");
 }
 
 void Menu::s5() {
-    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
-    Disp::blinkTextWithSign("Now please save your seed phrase!");
+    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    disp->blinkTextWithSign("Now please save your seed phrase!");
 }
 
 void Menu::s6_0() {
     doOnce([]() {
         SeedGenerator::setMode(SeedGeneratorMode::SET);
-        Disp::clearMenu();
-        Disp::drawOnlyRightBox("NEXT");
-        Disp::clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        Disp::setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
+        disp->clearMenu();
+        disp->drawOnlyRightBox("NEXT");
+        disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
+        disp->setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
     });
-    Disp::blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s6_1() {
     doOnce([]() {
-        Disp::drawTwoBoxes("BACK", "NEXT", true);
-        Disp::clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        Disp::setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
+        disp->drawTwoBoxes("BACK", "NEXT", true);
+        disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
+        disp->setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
     });
-    Disp::blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s6_2() {
     doOnce([]() {
-        Disp::drawTwoBoxes("BACK", "NEXT", false);
-        Disp::clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        Disp::setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
+        disp->drawTwoBoxes("BACK", "NEXT", false);
+        disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
+        disp->setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
     });
-    Disp::blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(false);
 }
 
 void Menu::s7() {
-    doOnce([]() { Disp::drawOnlyRightBox("NEXT"); });
-    Disp::blinkTextWithSign("Now please confirm your seed.");
+    doOnce([]() { disp->drawOnlyRightBox("NEXT"); });
+    disp->blinkTextWithSign("Now please confirm your seed.");
 }
 
 void Menu::s8_0() {
     doOnce([]() {
         SeedGenerator::setMode(SeedGeneratorMode::CONFIRM);
-        Disp::drawOnlyRightBox("NEXT");
+        disp->drawOnlyRightBox("NEXT");
     });
-    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s8_1() {
-    doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", true); });
-    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
+    doOnce([]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
+    disp->blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s8_2() {
-    doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", false); });
-    Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
+    doOnce([]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
+    disp->blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(false);
 }
 
 void Menu::s9_0() {
     doOnce([]() {});
-    Disp::blinkTextWithSign("Waiting for bluetooth connection...");
+    disp->blinkTextWithSign("Waiting for bluetooth connection...");
 }
 
 void Menu::s9_1() {
     doOnce([]() {
-        Disp::clearMenu();
+        disp->clearMenu();
     });
-    Disp::blinkTextWithSign("Device connected!   Listening for txs..");
+    disp->blinkTextWithSign("Device connected!   Listening for txs..");
     Bluetooth::sendAddressIfOnConnectedCalled();
     nav->listenTx();
 }
@@ -227,30 +226,30 @@ void Menu::s9_1() {
 void Menu::s9_2() {
     doOnce([]() {
         if(machine.getLastState() != S9_3) {
-            Disp::clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
+            disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         }
 
         string chainId = Bluetooth::tx->formatChainId();
         string address = Bluetooth::tx->formatAddress();
         string value = Bluetooth::tx->formatEthValue();
 
-        Disp::drawTransaction(chainId, address, value);
-        Disp::drawTwoBoxes("DECLINE", "ACCEPT", false);
+        disp->drawTransaction(chainId, address, value);
+        disp->drawTwoBoxes("DECLINE", "ACCEPT", false);
     });
 }
 
 void Menu::s9_3() {
     doOnce([]() {
-        Disp::drawTwoBoxes("DECLINE", "ACCEPT", true);
+        disp->drawTwoBoxes("DECLINE", "ACCEPT", true);
     });
 }
 
 void Menu::s9_4() {
     doOnce([]() {
         Bluetooth::signTx();
-        Disp::drawOnlyLeftBox("BACK");
+        disp->drawOnlyLeftBox("BACK");
     });
 
-    Disp::blinkTextWithSign("Tx sent!");
+    disp->blinkTextWithSign("Tx sent!");
 }
 

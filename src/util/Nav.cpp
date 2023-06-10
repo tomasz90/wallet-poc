@@ -1,7 +1,6 @@
 #include "Nav.h"
 #include "Pin.h"
 #include "Led.h"
-#include "interface/Disp.h"
 #include "ButtonsHandler.h"
 #include "SeedGenerator.h"
 #include "io/Bluetooth.h"
@@ -18,8 +17,9 @@ void Flag::set() { flag = true; }
 
 void Flag::unset() { flag = false; }
 
-Nav::Nav(Led *_led, ButtonsHandler &buttonHandler) {
+Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp) {
     led = _led;
+    disp = _disp;
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
             [this]() { onNext(); },
@@ -49,12 +49,12 @@ void Nav::enterPin() {
     // INCREMENT DIGIT
     if (nextCalled.check()) {
         Pin::incrementCurrentDigit();
-        Disp::drawPin(Pin::getPinString());
+        disp->drawPin(Pin::getPinString());
     }
     // DECREMENT DIGIT
     else if (previousCalled.check()) {
         Pin::decrementCurrentDigit();
-        Disp::drawPin(Pin::getPinString());
+        disp->drawPin(Pin::getPinString());
     }
     // TRY SET PIN
     else if (_bothCalled && !Pin::isArrow() && Pin::isLastDigit()) {
@@ -71,13 +71,13 @@ void Nav::enterPin() {
     // SET DIGIT
     else if (_bothCalled && !Pin::isArrow()) {
         Pin::setOneDigit();
-        Disp::drawPin(Pin::getPinString());
+        disp->drawPin(Pin::getPinString());
     }
 
     // UNSET DIGIT
     else if (_bothCalled && Pin::isArrow()) {
         Pin::unsetOneDigit();
-        Disp::drawPin(Pin::getPinString());
+        disp->drawPin(Pin::getPinString());
     }
 }
 
@@ -102,23 +102,23 @@ void Nav::navigateSeed(bool nextHighlighted) {
     else if (_bothCalled && nextHighlighted && isValid) {
         nextSeedScreenCalled.set();
         SeedGenerator::increment();
-        Disp::clearTextCenter();
+        disp->clearTextCenter();
     }
     // INCREMENT WORD GO NEXT SCREEN
     else if (_bothCalled && nextHighlighted) {
-        Disp::blinkTextWarningAtCenter("Need valid word!");
+        disp->blinkTextWarningAtCenter("Need valid word!");
     }
     // DECREMENT WORD GO FIRST SCREEN
     else if (_bothCalled && SeedGenerator::isSecond()) {
         firstSeedScreenCalled.set();
         SeedGenerator::decrement();
-        Disp::clearTextCenter();
+        disp->clearTextCenter();
     }
     // DECREMENT WORD GO PREVIOUS SCREEN
     else if (_bothCalled) {
         previousSeedScreenCalled.set();
         SeedGenerator::decrement();
-        Disp::clearTextCenter();
+        disp->clearTextCenter();
     }
 }
 
@@ -133,11 +133,11 @@ void Nav::readSeedWordFromSerial() {
         bool isValid = SeedGenerator::validateWord(incomingString);
         if (isValid) {
             Nav::isValidWordCalled.set();
-            Disp::clearTextCenter();
-            Disp::setTextAtCenter(incomingString, 24);
-            Disp::disp();
+            disp->clearTextCenter();
+            disp->setTextAtCenter(incomingString, 24);
+            disp->disp();
         } else {
-            Disp::blinkTextWarningAtCenter("Invalid word!");
+            disp->blinkTextWarningAtCenter("Invalid word!");
         }
     }
 }

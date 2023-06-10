@@ -19,10 +19,10 @@ ButtonsHandler buttonHandler(previous, next);
 
 void setup() {
     Serial.begin(115200);
-    Disp::begin();
-    auto nav = new Nav(led, buttonHandler);
+    Disp* disp = new Disp();
+    auto nav = new Nav(led, buttonHandler, disp);
     Bluetooth::begin(nav);
-    Menu::begin(nav);
+    Menu::begin(nav, disp);
     SeedGenerator::createMnemonic();
     buttonHandler.setDebounceTime(10);
 }

@@ -2,6 +2,7 @@
 #include "util/Led.h"
 #include "ButtonsHandler.h"
 #include "util/Nav.h"
+#include "Disp.h"
 
 #ifndef WALLET_POC_MENU_H
 #define WALLET_POC_MENU_H
@@ -11,8 +12,9 @@ class Menu {
 public:
     static bool firstTime;
     static Nav *nav;
+    static Disp *disp;
     Menu();
-    static void begin(Nav *nav);
+    static void begin(Nav *_nav, Disp *_disp);
     static void run();
     static void doOnce(void (*_doOnce)());
 private:
