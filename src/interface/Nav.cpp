@@ -124,7 +124,6 @@ void Nav::navigateSeed(bool nextHighlighted) {
     else if (_bothCalled && nextHighlighted && isValid) {
         nextSeedScreenCalled.set();
         seedGenerator->increment();
-        disp->clearTextCenter();
         disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     }
     // SCREEN INVALID WORD
@@ -135,14 +134,12 @@ void Nav::navigateSeed(bool nextHighlighted) {
     else if (_bothCalled && seedGenerator->isSecond()) {
         firstSeedScreenCalled.set();
         seedGenerator->decrement();
-        disp->clearTextCenter();
         disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     }
     // DECREMENT WORD GO PREVIOUS SCREEN
     else if (_bothCalled) {
         previousSeedScreenCalled.set();
         seedGenerator->decrement();
-        disp->clearTextCenter();
         disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     }
 }
@@ -158,7 +155,6 @@ void Nav::readSeedWordFromSerial() {
         bool isValid = seedGenerator->validateWord(incomingString);
         if (isValid) {
             Nav::isValidWordCalled.set();
-            disp->clearTextCenter();
             disp->setTextAtCenter(incomingString, 24);
             disp->disp();
         } else {

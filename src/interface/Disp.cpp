@@ -61,6 +61,9 @@ void Disp::drawTransaction(const string &chainId, const string &to, const string
 }
 
 void Disp::setTextAtCenter(const string &text, uint8_t y) {
+    //todo: have this in mind, it prevents delay from displaying text
+    lastTextBlinked = 0;
+    clearTextCenter();
     display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
     setCursorRelativeToCenter(text, SCREEN_CENTER, y);
@@ -193,6 +196,7 @@ void Disp::clearText(uint8_t toLine) {
 }
 
 void Disp::clearTextCenter() {
+    Serial.println("clearTextCenter");
     uint8_t begin = 20;
     display.fillRect(0, begin, SCREEN_WIDTH, SCREEN_TEXT_MENU_BORDER_POSITION - begin, BLACK);
 }
