@@ -28,6 +28,23 @@ Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_
     );
 }
 
+void Nav::resetFlags() {
+    previousCalled.unset();
+    nextCalled.unset();
+    bothCalled.unset();
+    confirmPinCalled.unset();
+    dropPinCalled.unset();
+    pinMismatchCalled.unset();
+    firstSeedScreenCalled.unset();
+    previousSeedScreenCalled.unset();
+    nextSeedScreenCalled.unset();
+    confirmSeedScreenCalled.unset();
+    isValidWordCalled.unset();
+    btConnectedCalled.unset();
+    btDisconnectedCalled.unset();
+    receivedTxCalled.unset();
+}
+
 void Nav::setBt(Bluetooth *_bt) {
     bt = _bt;
 }
@@ -108,8 +125,9 @@ void Nav::navigateSeed(bool nextHighlighted) {
         nextSeedScreenCalled.set();
         seedGenerator->increment();
         disp->clearTextCenter();
+        disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     }
-    // INCREMENT WORD GO NEXT SCREEN
+    // SCREEN INVALID WORD
     else if (_bothCalled && nextHighlighted) {
         disp->blinkTextWarningAtCenter("Need valid word!");
     }
@@ -118,12 +136,14 @@ void Nav::navigateSeed(bool nextHighlighted) {
         firstSeedScreenCalled.set();
         seedGenerator->decrement();
         disp->clearTextCenter();
+        disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     }
     // DECREMENT WORD GO PREVIOUS SCREEN
     else if (_bothCalled) {
         previousSeedScreenCalled.set();
         seedGenerator->decrement();
         disp->clearTextCenter();
+        disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
     }
 }
 
