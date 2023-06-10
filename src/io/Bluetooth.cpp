@@ -3,7 +3,7 @@
 #include <BLE2902.h>
 #include <Arduino.h>
 #include "Bluetooth.h"
-#include "util/Nav.h"
+#include "interface/Nav.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristicSender = NULL;

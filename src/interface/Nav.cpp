@@ -1,7 +1,7 @@
 #include "Nav.h"
-#include "Led.h"
+#include "io/Led.h"
 #include "ButtonsHandler.h"
-#include "SeedGenerator.h"
+#include "util/SeedGenerator.h"
 #include "io/Bluetooth.h"
 
 bool Flag::check() {

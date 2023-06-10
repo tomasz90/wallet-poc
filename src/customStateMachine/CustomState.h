@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <LinkedList.h>
-#include "util/Nav.h"
+#include "interface/Nav.h"
 
 struct CustomTransition {
     int stateNumber;

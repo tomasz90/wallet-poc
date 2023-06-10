@@ -2,7 +2,7 @@
 #define WALLET_POC_BLUETOOTH_H
 
 #include "EthTx.h"
-#include "util/Nav.h"
+#include "interface/Nav.h"
 
 // SERVICES
 #define SERVICE_ADDRESS_UUID  "b39418c1-5b51-4828-a8a0-7ee0eef01dba"

@@ -2,11 +2,11 @@
 #define WALLET_POC_NAV_H
 
 #include <BLEServer.h>
-#include "Led.h"
+#include "io/Led.h"
 #include "ButtonsHandler.h"
 #include "interface/Disp.h"
-#include "SeedGenerator.h"
-#include "Pin.h"
+#include "util/SeedGenerator.h"
+#include "util/Pin.h"
 
 struct Flag {
     bool flag = false;

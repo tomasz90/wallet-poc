@@ -1,7 +1,7 @@
 #include "Menu.h"
 #include "customStateMachine/CustomMachine.h"
 #include "ButtonsHandler.h"
-#include "util/Nav.h"
+#include "Nav.h"
 #include "util/SeedGenerator.h"
 #include "io/Bluetooth.h"
 

@@ -2,7 +2,7 @@
 #include "util/SeedGenerator.h"
 #include "interface/Disp.h"
 #include "interface/Menu.h"
-#include "util/Nav.h"
+#include "interface/Nav.h"
 #include "io/Bluetooth.h"
 
 #define PREVIOUS_BUTTON 2

@@ -1,7 +1,7 @@
 #include <cstdint>
-#include "util/Led.h"
+#include "io/Led.h"
 #include "ButtonsHandler.h"
-#include "util/Nav.h"
+#include "Nav.h"
 #include "Disp.h"
 
 #ifndef WALLET_POC_MENU_H
