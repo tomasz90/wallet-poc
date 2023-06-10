@@ -133,7 +133,7 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         else if (nextHighlighted && seedVerifier->isCurrentWordValid()) {
             nextSeedScreenCalled.set();
             seedVerifier->increment();
-            disp->clearTextCenter();
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
         // SCREEN NO WORD RECEIVED
         else if (nextHighlighted) {

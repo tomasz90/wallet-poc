@@ -52,8 +52,7 @@ bool SeedVerifier::isCurrentWordValid() {
 }
 
 bool SeedVerifier::validateWord(const string &word) {
-    Serial.println(mnemonic.getWordAt(getCurrentRandom()).c_str());
-    Serial.println(word.c_str());
+    Serial.println(("currentIndex: " + std::to_string(currentIndex)).c_str());
     if (mnemonic.getWordAt(getCurrentRandom()) == word) {
         verifiedWords[getCurrentRandom()] = word;
         return true;

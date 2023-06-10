@@ -66,8 +66,9 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin, Bluet
 //    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
 //    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
 //    S7->addTransition(S8_0,  nav->bothCalled);
-    S8_0->addTransition(S8_1,nav->nextSeedScreenCalled);
+    S8_0->addTransition(S8_1,nav->nextSeedScreenCalled); //todo: change to generic wrapper of next and previous
     S8_1->addTransition(S8_2,nav->previousCalled);
+    S8_1->addTransition(S9_0,nav->confirmSeedScreenCalled);
     S8_2->addTransition(S8_1,nav->nextCalled);
     S8_2->addTransition(S8_0,nav->firstSeedScreenCalled);
 
