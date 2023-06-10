@@ -2,7 +2,7 @@
 #include "customStateMachine/CustomMachine.h"
 #include "ButtonsHandler.h"
 #include "Nav.h"
-#include "util/SeedGenerator.h"
+#include "util/SeedVerifier.h"
 #include "io/Bluetooth.h"
 
 CustomMachine machine = CustomMachine();
@@ -11,7 +11,7 @@ CustomState *S9_3 = nullptr;
 
 using std::string;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin, Bluetooth *_bt) {
+Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin, Bluetooth *_bt) {
     nav = _nav;
     disp = _disp;
     seedGenerator = _seedGenerator;
@@ -145,7 +145,7 @@ void Menu::s5() {
 
 void Menu::s6_0() {
     doOnce([this]() {
-        seedGenerator->setMode(SeedGeneratorMode::SET);
+        seedGenerator->setMode(SeedVerifierMode::SET);
         disp->clearMenu();
         disp->drawOnlyRightBox("NEXT");
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
@@ -178,7 +178,7 @@ void Menu::s7() {
 
 void Menu::s8_0() {
     doOnce([this]() {
-        seedGenerator->setMode(SeedGeneratorMode::CONFIRM);
+        seedGenerator->setMode(SeedVerifierMode::CONFIRM);
         disp->drawOnlyRightBox("NEXT");
     });
     disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);

@@ -7,7 +7,7 @@
 
 #define MNEMONIC_LENGTH 12
 
-enum class SeedGeneratorMode { SET, CONFIRM };
+enum class SeedVerifierMode { SET, CONFIRM };
 
 using namespace BIP39;
 using std::string;
@@ -15,16 +15,16 @@ using std::vector;
 using std::array;
 using std::find;
 
-class SeedGenerator {
+class SeedVerifier {
 public:
     uint8_t currentIndex;
     array<int, MNEMONIC_LENGTH> randomSequence;
     word_list mnemonic;
-    SeedGeneratorMode mode;
+    SeedVerifierMode mode;
     EthereumHDPrivateKey *account;
 
-    SeedGenerator();
-    void setMode(SeedGeneratorMode mode);
+    SeedVerifier();
+    void setMode(SeedVerifierMode mode);
     bool isSecond() const;
     bool isLast() const;
     void increment();

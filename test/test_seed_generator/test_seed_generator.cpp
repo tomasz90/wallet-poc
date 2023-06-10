@@ -1,22 +1,22 @@
 #include <Arduino.h>
 #include <unity.h>
 #include <cstring>
-#include "util/SeedGenerator.h"
+#include "util/SeedVerifier.h"
 
 
 void should_have_12_words() {
 
-    SeedGenerator::createMnemonic();
-    TEST_ASSERT_EQUAL(12, SeedGenerator::mnemonic.size());
+    SeedVerifier::createMnemonic();
+    TEST_ASSERT_EQUAL(12, SeedVerifier::mnemonic.size());
 }
 
 void should_return_different_seeds() {
 
-    SeedGenerator::createMnemonic();
-    std::string wordList1 = SeedGenerator::mnemonic.to_string();
+    SeedVerifier::createMnemonic();
+    std::string wordList1 = SeedVerifier::mnemonic.to_string();
 
-    SeedGenerator::createMnemonic();
-    std::string wordList2 = SeedGenerator::mnemonic.to_string();
+    SeedVerifier::createMnemonic();
+    std::string wordList2 = SeedVerifier::mnemonic.to_string();
 
     bool areDifferent = std::strcmp(wordList1.c_str(), wordList2.c_str()); // wired behavior, strcmp returns 0 if equal
 

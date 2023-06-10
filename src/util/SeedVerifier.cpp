@@ -2,11 +2,11 @@
 #include <HardwareSerial.h>
 #include <bootloader_random.h>
 #include <algorithm>
-#include "SeedGenerator.h"
+#include "SeedVerifier.h"
 #include "bip39/bip39.h"
 #include "ethereumHDKeysGenerator/EthereumHDPrivateKey.h"
 
-SeedGenerator::SeedGenerator() {
+SeedVerifier::SeedVerifier() {
     currentIndex = 0;
     // GENERATE RANDOMNESS
     bootloader_random_enable();
@@ -20,47 +20,47 @@ SeedGenerator::SeedGenerator() {
     account = hd.derive("m/44'/60'/0'/0/0");
 }
 
-void SeedGenerator::setMode(SeedGeneratorMode _mode) {
+void SeedVerifier::setMode(SeedVerifierMode _mode) {
     mode = _mode;
 }
 
-bool SeedGenerator::isSecond() const {
+bool SeedVerifier::isSecond() const {
     return currentIndex == 1;
 }
 
-bool SeedGenerator::isLast() const {
+bool SeedVerifier::isLast() const {
     return currentIndex == MNEMONIC_LENGTH - 1;
 }
 
-void SeedGenerator::increment() {
+void SeedVerifier::increment() {
     if (currentIndex < MNEMONIC_LENGTH - 1) {
         currentIndex++;
     }
 }
 
-void SeedGenerator::decrement() {
+void SeedVerifier::decrement() {
     if (currentIndex > 0) {
         currentIndex--;
     }
 }
 
-void SeedGenerator::resetIndex() {
+void SeedVerifier::resetIndex() {
     currentIndex = 0;
 }
 
-int SeedGenerator::getCurrentRandom() {
+int SeedVerifier::getCurrentRandom() {
     return randomSequence[currentIndex];
 }
 
-string SeedGenerator::getCurrentWord() const {
+string SeedVerifier::getCurrentWord() const {
     return mnemonic.getWordAt(currentIndex);
 }
 
-bool SeedGenerator::validateWord(const string &word) {
+bool SeedVerifier::validateWord(const string &word) {
     return mnemonic.getWordAt(randomSequence[currentIndex]) == word;
 }
 
-void SeedGenerator::generateRandomSequence() {
+void SeedVerifier::generateRandomSequence() {
     string s;
     randomSequence.fill(-1);
     for (int &i: randomSequence) {
@@ -72,7 +72,7 @@ void SeedGenerator::generateRandomSequence() {
     }
 }
 
-vector<uint8_t> SeedGenerator::generateEntropy() {
+vector<uint8_t> SeedVerifier::generateEntropy() {
 
     // Resize the vector to accommodate the desired number of bytes
     size_t numBytes = 16;

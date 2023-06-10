@@ -1,9 +1,9 @@
 #include "Nav.h"
 #include "io/Led.h"
 #include "ButtonsHandler.h"
-#include "util/SeedGenerator.h"
+#include "util/SeedVerifier.h"
 
-Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin) {
+Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin) {
     led = _led;
     disp = _disp;
     seedGenerator = _seedGenerator;
@@ -97,9 +97,9 @@ void Nav::navigateSeed(bool nextHighlighted) {
     bool isValid = true;
 
     // isValidWordCalled needs to be checked only when both buttons are pressed
-    if (seedGenerator->mode == SeedGeneratorMode::CONFIRM && _bothCalled) {
+    if (seedGenerator->mode == SeedVerifierMode::CONFIRM && _bothCalled) {
         isValid = isValidWordCalled.check();
-    } else if (seedGenerator->mode == SeedGeneratorMode::CONFIRM) {
+    } else if (seedGenerator->mode == SeedVerifierMode::CONFIRM) {
         readSeedWordFromSerial();
     }
 

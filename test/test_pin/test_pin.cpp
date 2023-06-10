@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <unity.h>
 #include <cstring>
-#include "util/SeedGenerator.h"
+#include "util/SeedVerifier.h"
 #include "util/Pin.h"
 
 int getDigitAt(uint8_t index) {

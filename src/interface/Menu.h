@@ -11,13 +11,13 @@ class Menu {
 
 public:
 
-    Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin, Bluetooth *_bt);
+    Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin, Bluetooth *_bt);
     void run();
     void doOnce(const std::function<void()>& _doOnce);
 private:
     Disp *disp;
     Nav *nav;
-    SeedGenerator *seedGenerator;
+    SeedVerifier *seedGenerator;
     Pin *pin;
     Bluetooth *bt;
 

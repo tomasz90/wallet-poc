@@ -6,7 +6,7 @@
 #include "io/Led.h"
 #include "ButtonsHandler.h"
 #include "interface/Disp.h"
-#include "util/SeedGenerator.h"
+#include "util/SeedVerifier.h"
 #include "util/Pin.h"
 #include "Flag.h"
 
@@ -31,7 +31,7 @@ public:
 
     bool deviceConnected = false;
 
-    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin);
+    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin);
     void setBt(Bluetooth *_bt);
     void resetFlags();
     void onPrevious();
@@ -49,7 +49,7 @@ public:
 private:
     Led* led;
     Disp *disp;
-    SeedGenerator *seedGenerator;
+    SeedVerifier *seedGenerator;
     Pin *pin;
     Bluetooth *bt;
 
