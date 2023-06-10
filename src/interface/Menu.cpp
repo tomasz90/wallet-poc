@@ -247,7 +247,7 @@ void Menu::s9_3() {
 
 void Menu::s9_4() {
     doOnce([]() {
-        Bluetooth::signTx();
+        nav->signTx();
         disp->drawOnlyLeftBox("BACK");
     });
 

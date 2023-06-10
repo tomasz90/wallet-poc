@@ -33,7 +33,6 @@ public:
     Flag receivedTxCalled;
 
     bool deviceConnected = false;
-    bool onConnectCalled = false;
 
     Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp);
     void onPrevious();
@@ -42,14 +41,18 @@ public:
     void enterPin();
     void navigateSeed(bool nextHighlighted);
     void readSeedWordFromSerial();
-    void onConnect(BLEServer *pServer);
-    void onDisconnect(BLEServer *pServer);
+    void onConnect(BLEServer *pServer) override;
+    void onDisconnect(BLEServer *pServer) override;
     void listenTx();
     void sendAddress();
+    void signTx() const;
 
 private:
     Led* led;
     Disp *disp;
+
+    // this is for Nav purposes only
+    Flag btConnectedCalledPrivate;
 };
 
 #endif //WALLET_POC_NAV_H

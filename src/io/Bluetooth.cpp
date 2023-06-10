@@ -71,16 +71,12 @@ bool Bluetooth::receivedTx() {
 }
 
 void Bluetooth::signTx() {
-    if (nav->deviceConnected) {
-        Serial.println("Sending transaction");
-        char *buffer;
-        tx->sign(buffer);
-        delete tx;
-        pCharacteristicSender->setValue(buffer);
-        pCharacteristicSender->notify();
-    } else {
-        Serial.println("Not connected");
-    }
+    Serial.println("Sending transaction");
+    char *buffer;
+    tx->sign(buffer);
+    delete tx;
+    pCharacteristicSender->setValue(buffer);
+    pCharacteristicSender->notify();
 }
 
 void Bluetooth::declineTx() {

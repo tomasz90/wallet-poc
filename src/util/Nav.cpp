@@ -23,7 +23,7 @@ Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp) {
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
             [this]() { onNext(); },
-              [this]() { onBoth(); }
+            [this]() { onBoth(); }
     );
 }
 
@@ -51,30 +51,30 @@ void Nav::enterPin() {
         Pin::incrementCurrentDigit();
         disp->drawPin(Pin::getPinString());
     }
-    // DECREMENT DIGIT
+        // DECREMENT DIGIT
     else if (previousCalled.check()) {
         Pin::decrementCurrentDigit();
         disp->drawPin(Pin::getPinString());
     }
-    // TRY SET PIN
+        // TRY SET PIN
     else if (_bothCalled && !Pin::isArrow() && Pin::isLastDigit()) {
         Pin::setOneDigit();
         bool saved = Pin::savePin();
         if (saved) { confirmPinCalled.set(); } else { pinMismatchCalled.set(); }
         Pin::clearValues();
     }
-    // DROP PIN
+        // DROP PIN
     else if (_bothCalled && Pin::isArrow() && Pin::isFirstDigit()) {
         dropPinCalled.set();
         Pin::clearValues();
     }
-    // SET DIGIT
+        // SET DIGIT
     else if (_bothCalled && !Pin::isArrow()) {
         Pin::setOneDigit();
         disp->drawPin(Pin::getPinString());
     }
 
-    // UNSET DIGIT
+        // UNSET DIGIT
     else if (_bothCalled && Pin::isArrow()) {
         Pin::unsetOneDigit();
         disp->drawPin(Pin::getPinString());
@@ -145,18 +145,8 @@ void Nav::readSeedWordFromSerial() {
 void Nav::onConnect(BLEServer *pServer) {
     Serial.println("connected");
     btConnectedCalled.set();
+    btConnectedCalledPrivate.set();
     deviceConnected = true;
-    onConnectCalled = true;
-}
-
-void Nav::sendAddress() {
-    if (deviceConnected) {
-        if (onConnectCalled) {
-            onConnectCalled = false;
-            delay(2000);
-            Bluetooth::sendAddress();
-        }
-    }
 }
 
 void Nav::onDisconnect(BLEServer *pServer) {
@@ -165,7 +155,13 @@ void Nav::onDisconnect(BLEServer *pServer) {
     pServer->startAdvertising(); // restart advertising
     btDisconnectedCalled.set();
     deviceConnected = false;
-    onConnectCalled = false;
+}
+
+void Nav::sendAddress() {
+    if (deviceConnected && btConnectedCalledPrivate.check()) {
+        delay(2000);
+        Bluetooth::sendAddress();
+    }
 }
 
 void Nav::listenTx() {
@@ -173,5 +169,13 @@ void Nav::listenTx() {
         if (Bluetooth::receivedTx()) {
             receivedTxCalled.set();
         }
+    }
+}
+
+void Nav::signTx() const {
+    if (deviceConnected) {
+        Bluetooth::signTx();
+    } else {
+        Serial.println("Cant sign, device not connected");
     }
 }
