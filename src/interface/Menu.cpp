@@ -16,6 +16,7 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin) {
     disp = _disp;
     seedGenerator = _seedGenerator;
     pin = _pin;
+
     // STATES
     CustomState *S0 =   machine.addState([this]() { s0();});
     CustomState *S1_0 = machine.addState([this]() { s1_0();});
