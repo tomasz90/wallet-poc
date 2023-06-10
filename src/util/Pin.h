@@ -1,9 +1,7 @@
 #include <string>
 
-#ifndef WALLET_POC_PIN_H
-#define WALLET_POC_PIN_H
-
-#endif //WALLET_POC_PIN_H
+#ifndef PIN_H
+#define PIN_H
 
 enum class DigitState { UN_INIT, INIT, SET };
 
@@ -34,3 +32,5 @@ private:
     int _random(int with);
     char getCharAt(int index);
 };
+
+#endif //PIN_H

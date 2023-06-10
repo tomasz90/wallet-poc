@@ -1,5 +1,5 @@
-#ifndef WALLET_POC_LED_H
-#define WALLET_POC_LED_H
+#ifndef LED_H
+#define LED_H
 
 #include <cstdint>
 
@@ -13,4 +13,4 @@ private:
     uint32_t brightness;
 };
 
-#endif //WALLET_POC_LED_H
+#endif //LED_H

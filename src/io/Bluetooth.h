@@ -1,5 +1,5 @@
-#ifndef WALLET_POC_BLUETOOTH_H
-#define WALLET_POC_BLUETOOTH_H
+#ifndef BLUETOOTH_H
+#define BLUETOOTH_H
 
 #include "EthTx.h"
 
@@ -22,4 +22,4 @@ public:
     void declineTx();
 };
 
-#endif //WALLET_POC_BLUETOOTH_H
+#endif //BLUETOOTH_H

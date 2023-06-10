@@ -1,5 +1,5 @@
-#ifndef WALLET_POC_NAV_H
-#define WALLET_POC_NAV_H
+#ifndef NAV_H
+#define NAV_H
 
 #include <BLEServer.h>
 #include "io/Bluetooth.h"
@@ -57,4 +57,4 @@ private:
     Flag btConnectedCalledPrivate;
 };
 
-#endif //WALLET_POC_NAV_H
+#endif //NAV_H

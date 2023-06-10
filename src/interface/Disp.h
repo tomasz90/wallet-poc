@@ -1,7 +1,7 @@
 #include "Adafruit_SSD1306.h"
 
-#ifndef WALLET_POC_DISPLAY_H
-#define WALLET_POC_DISPLAY_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
 #define SCREEN_TEXT_MENU_BORDER_POSITION 40
 
@@ -35,4 +35,4 @@ private:
     void drawRightBox(const string &text, bool highlighted);
 };
 
-#endif //WALLET_POC_DISPLAY_H
+#endif //DISPLAY_H

@@ -1,5 +1,5 @@
-#ifndef WALLET_POC_FLAG_H
-#define WALLET_POC_FLAG_H
+#ifndef FLAG_H
+#define FLAG_H
 
 struct Flag {
     bool flag = false;
@@ -9,4 +9,4 @@ struct Flag {
 };
 
 
-#endif //WALLET_POC_FLAG_H
+#endif //FLAG_H

@@ -4,8 +4,8 @@
 #include "Nav.h"
 #include "Disp.h"
 
-#ifndef WALLET_POC_MENU_H
-#define WALLET_POC_MENU_H
+#ifndef MENU_H
+#define MENU_H
 
 class Menu {
 
@@ -43,4 +43,4 @@ private:
     void s9_4();
 };
 
-#endif //WALLET_POC_MENU_H
+#endif //MENU_H
