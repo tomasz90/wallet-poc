@@ -4,6 +4,7 @@
 #include "interface/Menu.h"
 #include "interface/Nav.h"
 #include "io/Bluetooth.h"
+#include "util/SeedGenerator.h"
 
 #define PREVIOUS_BUTTON 2
 #define NEXT_BUTTON 25
@@ -19,12 +20,13 @@ Menu *menu;
 void setup() {
     Serial.begin(115200);
     auto disp = new Disp();
-    auto seedGenerator = new SeedVerifier();
+    auto seedGenerator = new SeedGenerator();
+    auto seedVerifier = new SeedVerifier(seedGenerator->mnemonic, seedGenerator->randomSequence);
     auto pin = new Pin();
-    auto nav = new Nav(led, buttonHandler, disp, seedGenerator, pin);
+    auto nav = new Nav(led, buttonHandler, disp, seedVerifier, pin);
     auto bt = new Bluetooth(nav);
     nav->setBt(bt);
-    menu = new Menu(nav, disp, seedGenerator, pin, bt);
+    menu = new Menu(nav, disp, seedVerifier, pin, bt);
 }
 
 void loop() {
