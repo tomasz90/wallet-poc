@@ -3,6 +3,8 @@
 #include "ButtonsHandler.h"
 #include "util/SeedVerifier.h"
 
+using std::string;
+
 Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin) {
     led = _led;
     disp = _disp;
@@ -94,12 +96,41 @@ void Nav::enterPin() {
 void Nav::navigateSeed(bool nextHighlighted) {
     // bothCalled.check() needs to be called only once here
     bool _bothCalled = bothCalled.check();
-    bool isValid = true;
+
+    // CONFIRM SEED PHRASE
+    if (_bothCalled && nextHighlighted && seedVerifier->isLast()) {
+        confirmSeedScreenCalled.set();
+        seedVerifier->resetIndex();
+    }
+    // INCREMENT WORD GO NEXT SCREEN
+    else if (_bothCalled && nextHighlighted) {
+        nextSeedScreenCalled.set();
+        seedVerifier->increment();
+        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+    }
+    // DECREMENT WORD GO FIRST SCREEN
+    else if (_bothCalled && seedVerifier->isSecond()) {
+        firstSeedScreenCalled.set();
+        seedVerifier->decrement();
+        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+    }
+    // DECREMENT WORD GO PREVIOUS SCREEN
+    else if (_bothCalled) {
+        previousSeedScreenCalled.set();
+        seedVerifier->decrement();
+        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+    }
+}
+
+void Nav::navigateSeedConfirm(bool nextHighlighted) {
+    // bothCalled.check() needs to be called only once here
+    bool _bothCalled = bothCalled.check();
+    bool isValid;
 
     // isValidWordCalled needs to be checked only when both buttons are pressed
-    if (seedVerifier->mode == SeedVerifierMode::CONFIRM && _bothCalled) {
+    if (_bothCalled) {
         isValid = isValidWordCalled.check();
-    } else if (seedVerifier->mode == SeedVerifierMode::CONFIRM) {
+    } else {
         readSeedWordFromSerial();
     }
 
@@ -133,17 +164,17 @@ void Nav::navigateSeed(bool nextHighlighted) {
 }
 
 void Nav::readSeedWordFromSerial() {
-    std::string incomingString;
+    string s;
     while (Serial.available() > 0) {
         char incomingByte = Serial.read();
         if (incomingByte == '\n') { break; }
-        incomingString += incomingByte;
+        s += incomingByte;
     }
-    if (incomingString.length() > 0) {
-        bool isValid = seedVerifier->validateWord(incomingString);
+    if (s.length() > 0) {
+        bool isValid = seedVerifier->validateWord(s);
         if (isValid) {
             Nav::isValidWordCalled.set();
-            disp->setTextAtCenter(incomingString, 24);
+            disp->setTextAtCenter(s, 24);
             disp->disp();
         } else {
             disp->blinkTextWarningAtCenter("Invalid word!");

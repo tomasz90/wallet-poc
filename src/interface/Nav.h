@@ -39,6 +39,7 @@ public:
     void onBoth();
     void enterPin();
     void navigateSeed(bool nextHighlighted);
+    void navigateSeedConfirm(bool nextHighlighted);
     void readSeedWordFromSerial();
     void onConnect(BLEServer *pServer) override;
     void onDisconnect(BLEServer *pServer) override;
