@@ -1,9 +1,7 @@
 #include "CustomState.h"
 
-#ifndef WALLET_POC_CUSTOMMACHINE_H
-#define WALLET_POC_CUSTOMMACHINE_H
-
-#endif //WALLET_POC_CUSTOMMACHINE_H
+#ifndef CUSTOMMACHINE_H
+#define CUSTOMMACHINE_H
 
 class CustomMachine {
 public:
@@ -23,3 +21,4 @@ private:
     int lastState = 0;
 };
 
+#endif CUSTOMMACHINE_H

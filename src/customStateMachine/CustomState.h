@@ -1,28 +1,34 @@
-#ifndef WALLET_POC_CUSTOMMACHINE_H
-#define WALLET_POC_CUSTOMMACHINE_H
-#endif //WALLET_POC_CUSTOMMACHINE_H
+#ifndef CUSTOMSTATE_H
+#define CUSTOMSTATE_H
 
 #include <functional>
 #include "util/Nav.h"
 
-struct CustomTransition : Transition {
-    void (*doOnTransition)();
+struct CustomTransition {
+    int stateNumber;
     Flag &isTrans;
+    void (*doOnTransition)();
 
-    CustomTransition(int s, Flag &isTrans, void (*doOnTransition)()) : Transition(), isTrans(isTrans) {
-        this->stateNumber = s;
-        // todo: transition to your own solution entirely
-        this->conditionFunction = [] { return false; };
+    CustomTransition(int stateNumber, Flag &isTrans, void (*doOnTransition)()) : isTrans(isTrans) {
+        this->stateNumber = stateNumber;
         this->doOnTransition = doOnTransition;
     }
 };
 
-class CustomState : public State {
+class CustomState {
 public:
-    CustomState() = default;
-    void addTransition(CustomState *s, Flag &isTrans);
-    int evalTransitions() override;
+    int index;
+    void (*stateLogic)();
 
-    static void doOnAnyTransition();
+    CustomState();
+    void addTransition(CustomState *s, Flag &isTrans) const;
+    int evalTransitions() const;
+    static void doOnAnyTransition(); //todo remove static?
+    int execute();
+    int setTransition(int index, int stateNumber);
+
+private:
+    LinkedList<struct CustomTransition*> *transitions;
 };
 
+#endif //CUSTOMSTATE_H
