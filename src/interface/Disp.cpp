@@ -1,7 +1,5 @@
 #include "Disp.h"
 #include "Adafruit_SSD1306.h"
-#include "util/Pin.h"
-#include "io/Bluetooth.h"
 
 bool Disp::blink;
 unsigned long Disp::lastTextBlinked;
@@ -47,19 +45,19 @@ void Disp::setText(const std::string &text, uint8_t toLine) {
     display.display();
 }
 
-void Disp::drawTransaction() {
+void Disp::drawTransaction(const std::string &chainId, const std::string &to, const std::string &value) {
     clearTextCenter();
     display.setTextSize(TEXT_SIZE);
     display.setTextColor(WHITE);
 
     display.setCursor(3, 3);
-    display.println(("chainId: " + Bluetooth::tx->formatChainId()).c_str());
+    display.println(("chainId: " + chainId).c_str());
 
     display.setCursor(3, 13);
-    display.println(("to: " + Bluetooth::tx->formatAddress()).c_str());
+    display.println(("to: " + to).c_str());
 
     display.setCursor(3, 23);
-    display.println(("val: " + Bluetooth::tx->formatEthValue()).c_str());
+    display.println(("val: " + value).c_str());
     display.display();
 }
 
@@ -173,12 +171,12 @@ void Disp::setCursorRelativeToCenter(const std::string &text, uint8_t textCenter
     display.setCursor(textCenter - halfTextWidth, y);
 }
 
-void Disp::drawPin() {
+void Disp::drawPin(const std::string &pin) {
     clearMenu();
     display.setCursor(23, 40);
     display.setTextColor(WHITE);
     display.setTextSize(PIN_SIZE);
-    display.println(Pin::getPinString().c_str());
+    display.println(pin.c_str());
     display.display();
 }
 

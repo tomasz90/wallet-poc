@@ -33,12 +33,12 @@ void CustomState::doOnAnyTransition() {
     Menu::firstTime = true;
     Disp::lastTextBlinked = 0;
     // without this menu is sometimes glitching
-    Nav::nextCalled.unset();
-    Nav::previousCalled.unset();
-    Nav::bothCalled.unset();
-    Nav::confirmPinCalled.unset();
-    Nav::dropPinCalled.unset();
-    Nav::pinMismatchCalled.unset();
+//    Nav::nextCalled.unset();
+//    Nav::previousCalled.unset();
+//    Nav::bothCalled.unset();
+//    Nav::confirmPinCalled.unset();
+//    Nav::dropPinCalled.unset();
+//    Nav::pinMismatchCalled.unset();
 }
 
 int CustomState::execute() {

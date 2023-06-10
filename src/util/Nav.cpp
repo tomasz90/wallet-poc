@@ -49,12 +49,12 @@ void Nav::enterPin() {
     // INCREMENT DIGIT
     if (nextCalled.check()) {
         Pin::incrementCurrentDigit();
-        Disp::drawPin();
+        Disp::drawPin(Pin::getPinString());
     }
     // DECREMENT DIGIT
     else if (previousCalled.check()) {
         Pin::decrementCurrentDigit();
-        Disp::drawPin();
+        Disp::drawPin(Pin::getPinString());
     }
     // TRY SET PIN
     else if (_bothCalled && !Pin::isArrow() && Pin::isLastDigit()) {
@@ -71,13 +71,13 @@ void Nav::enterPin() {
     // SET DIGIT
     else if (_bothCalled && !Pin::isArrow()) {
         Pin::setOneDigit();
-        Disp::drawPin();
+        Disp::drawPin(Pin::getPinString());
     }
 
     // UNSET DIGIT
     else if (_bothCalled && Pin::isArrow()) {
         Pin::unsetOneDigit();
-        Disp::drawPin();
+        Disp::drawPin(Pin::getPinString());
     }
 }
 

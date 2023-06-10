@@ -15,7 +15,7 @@ public:
     static void setTextAtCenter(const std::string &text, uint8_t y);
     static void blinkTextWithSign(const std::string &text, uint8_t toLine);
     static void blinkTextWarningAtCenter(const std::string &text);
-    static void drawPin();
+    static void drawPin(const std::string &pin);
     static void drawTwoBoxes(const std::string &text1, const std::string &text2, bool rightHighlighted);
     static void drawOnlyLeftBox(const std::string &text);
     static void drawOnlyRightBox(const std::string &text);
@@ -25,7 +25,7 @@ public:
     static void clearMenu();
     static void blinkTextWithSign(const std::string &text);
     static void disp();
-    static void drawTransaction();
+    static void drawTransaction(const std::string &chainId, const std::string &to, const std::string &value);
 
 private:
     static bool blink;

@@ -18,6 +18,9 @@ CustomState *S9_3 = nullptr;
 CustomState *S9_4 = nullptr;
 
 Nav *Menu::nav;
+
+using std::string;
+
 void Menu::begin(Nav *_nav) {
 
     nav = _nav;
@@ -118,7 +121,7 @@ void Menu::s1_1() {
 void Menu::s2() {
     doOnce([]() {
         Pin::setMode(PinMode::SET);
-        Disp::drawPin();
+        Disp::drawPin(Pin::getPinString());
     });
 
     Disp::blinkTextWithSign("Set pin:");
@@ -128,7 +131,7 @@ void Menu::s2() {
 void Menu::s3() {
     doOnce([]() {
         Pin::setMode(PinMode::CONFIRM);
-        Disp::drawPin();
+        Disp::drawPin(Pin::getPinString());
     });
     Disp::blinkTextWithSign("Confirm pin:");
     nav->enterPin();
@@ -226,15 +229,19 @@ void Menu::s9_2() {
         if(machine.getLastState() != S9_3) {
             Disp::clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         }
+
+        string chainId = Bluetooth::tx->formatChainId();
+        string address = Bluetooth::tx->formatAddress();
+        string value = Bluetooth::tx->formatEthValue();
+
+        Disp::drawTransaction(chainId, address, value);
         Disp::drawTwoBoxes("DECLINE", "ACCEPT", false);
-        Disp::drawTransaction();
     });
 }
 
 void Menu::s9_3() {
     doOnce([]() {
         Disp::drawTwoBoxes("DECLINE", "ACCEPT", true);
-        Disp::drawTransaction();
     });
 }
 
