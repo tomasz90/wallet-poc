@@ -1,6 +1,5 @@
 #include "Menu.h"
 #include "customStateMachine/CustomMachine.h"
-#include "util/Pin.h"
 #include "ButtonsHandler.h"
 #include "util/Nav.h"
 #include "util/SeedGenerator.h"
@@ -16,10 +15,11 @@ CustomState *S9_4 = nullptr;
 
 using std::string;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator) {
+Menu::Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin) {
     nav = _nav;
     disp = _disp;
     seedGenerator = _seedGenerator;
+    pin = _pin;
     // STATES
 //    CustomState *S0 =   machine.addState([this]() { s0();});
 //    CustomState *S1_0 = machine.addState([this]() { s1_0();});
@@ -117,8 +117,8 @@ void Menu::s1_1() {
 
 void Menu::s2() {
     doOnce([this]() {
-        Pin::setMode(PinMode::SET);
-        disp->drawPin(Pin::getPinString());
+        pin->setMode(PinMode::SET);
+        disp->drawPin(pin->getPinString());
     });
 
     disp->blinkTextWithSign("Set pin:");
@@ -127,8 +127,8 @@ void Menu::s2() {
 
 void Menu::s3() {
     doOnce([this]() {
-        Pin::setMode(PinMode::CONFIRM);
-        disp->drawPin(Pin::getPinString());
+        pin->setMode(PinMode::CONFIRM);
+        disp->drawPin(pin->getPinString());
     });
     disp->blinkTextWithSign("Confirm pin:");
     nav->enterPin();

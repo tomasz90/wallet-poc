@@ -3,7 +3,6 @@
 #include "interface/Disp.h"
 #include "interface/Menu.h"
 #include "util/Nav.h"
-#include "util/Pin.h"
 #include "io/Bluetooth.h"
 
 #define PREVIOUS_BUTTON 2
@@ -21,8 +20,9 @@ void setup() {
     Serial.begin(115200);
     auto disp = new Disp();
     auto seedGenerator = new SeedGenerator();
-    auto nav = new Nav(led, buttonHandler, disp, seedGenerator);
-    menu = new Menu(nav, disp, seedGenerator);
+    auto pin = new Pin();
+    auto nav = new Nav(led, buttonHandler, disp, seedGenerator, pin);
+    menu = new Menu(nav, disp, seedGenerator, pin);
     Bluetooth::begin(nav);
 }
 

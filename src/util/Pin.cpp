@@ -1,11 +1,9 @@
 #include "Pin.h"
 #include "Wmath.cpp"
 
-PinMode Pin::mode;
-int Pin::currentIndex = 0;
-int Pin::rawCombination[4];
-int Pin::savedCombination[4];
-DigitState Pin::stateCombination[4];
+Pin::Pin() {
+    currentIndex = 0;
+}
 
 void Pin::clearValues() {
     currentIndex = 0;

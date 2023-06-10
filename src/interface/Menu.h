@@ -10,13 +10,15 @@
 class Menu {
 
 public:
-    Nav *nav;
-    Disp *disp;
-    Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator);
+
+    Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin);
     void run();
     void doOnce(const std::function<void()>& _doOnce);
 private:
+    Disp *disp;
+    Nav *nav;
     SeedGenerator *seedGenerator;
+    Pin *pin;
 
     void s0();
     void s1_0();

@@ -1,5 +1,4 @@
 #include "Nav.h"
-#include "Pin.h"
 #include "Led.h"
 #include "ButtonsHandler.h"
 #include "SeedGenerator.h"
@@ -17,10 +16,11 @@ void Flag::set() { flag = true; }
 
 void Flag::unset() { flag = false; }
 
-Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator) {
+Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin) {
     led = _led;
     disp = _disp;
     seedGenerator = _seedGenerator;
+    pin = _pin;
     buttonHandler.setDebounceTime(10);
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
@@ -50,36 +50,36 @@ void Nav::enterPin() {
 
     // INCREMENT DIGIT
     if (nextCalled.check()) {
-        Pin::incrementCurrentDigit();
-        disp->drawPin(Pin::getPinString());
+        pin->incrementCurrentDigit();
+        disp->drawPin(pin->getPinString());
     }
         // DECREMENT DIGIT
     else if (previousCalled.check()) {
-        Pin::decrementCurrentDigit();
-        disp->drawPin(Pin::getPinString());
+        pin->decrementCurrentDigit();
+        disp->drawPin(pin->getPinString());
     }
         // TRY SET PIN
-    else if (_bothCalled && !Pin::isArrow() && Pin::isLastDigit()) {
-        Pin::setOneDigit();
-        bool saved = Pin::savePin();
+    else if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
+        pin->setOneDigit();
+        bool saved = pin->savePin();
         if (saved) { confirmPinCalled.set(); } else { pinMismatchCalled.set(); }
-        Pin::clearValues();
+        pin->clearValues();
     }
         // DROP PIN
-    else if (_bothCalled && Pin::isArrow() && Pin::isFirstDigit()) {
+    else if (_bothCalled && pin->isArrow() && pin->isFirstDigit()) {
         dropPinCalled.set();
-        Pin::clearValues();
+        pin->clearValues();
     }
         // SET DIGIT
-    else if (_bothCalled && !Pin::isArrow()) {
-        Pin::setOneDigit();
-        disp->drawPin(Pin::getPinString());
+    else if (_bothCalled && !pin->isArrow()) {
+        pin->setOneDigit();
+        disp->drawPin(pin->getPinString());
     }
 
         // UNSET DIGIT
-    else if (_bothCalled && Pin::isArrow()) {
-        Pin::unsetOneDigit();
-        disp->drawPin(Pin::getPinString());
+    else if (_bothCalled && pin->isArrow()) {
+        pin->unsetOneDigit();
+        disp->drawPin(pin->getPinString());
     }
 }
 

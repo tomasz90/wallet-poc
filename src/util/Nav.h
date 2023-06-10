@@ -6,6 +6,7 @@
 #include "ButtonsHandler.h"
 #include "interface/Disp.h"
 #include "SeedGenerator.h"
+#include "Pin.h"
 
 struct Flag {
     bool flag = false;
@@ -35,7 +36,7 @@ public:
 
     bool deviceConnected = false;
 
-    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator);
+    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin);
     void onPrevious();
     void onNext();
     void onBoth();
@@ -52,6 +53,7 @@ private:
     Led* led;
     Disp *disp;
     SeedGenerator *seedGenerator;
+    Pin *pin;
 
     // this is for Nav purposes only
     Flag btConnectedCalledPrivate;
