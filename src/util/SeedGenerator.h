@@ -4,7 +4,7 @@
 #include <vector>
 #include "ethereumHDKeysGenerator/EthereumHDPrivateKey.h"
 #include "bip39/bip39.h"
-#include "SeedVerifier.h"
+#include "DataHolder.h"
 
 using std::vector;
 using std::string;
@@ -13,13 +13,9 @@ using namespace BIP39;
 
 class SeedGenerator {
 public:
-    word_list mnemonic;
-    array<int, MNEMONIC_LENGTH> randomSequence;
-    EthereumHDPrivateKey *account;
-
-    SeedGenerator();
+    SeedGenerator(DataHolder *dataHolder);
 private:
-    void generateRandomSequence();
+    void generateRandomSequence(DataHolder *dataHolder);
     vector<uint8_t> generateEntropy();
 };
 

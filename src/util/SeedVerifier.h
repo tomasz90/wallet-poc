@@ -1,26 +1,24 @@
 #include <array>
 #include "bip39/word_list.h"
+#include "SeedGenerator.h"
 
-#ifndef SEED_GENERATOR_H
-#define SEED_GENERATOR_H
-
-#define MNEMONIC_LENGTH 12
+#ifndef SEED_VERIFIER_H
+#define SEED_VERIFIER_H
 
 enum class SeedVerifierMode { SET, CONFIRM };
 
 using namespace BIP39;
 using std::string;
 using std::vector;
-using std::array;
 
 class SeedVerifier {
 public:
     uint8_t currentIndex;
     SeedVerifierMode mode;
     word_list mnemonic;
-    array<int, MNEMONIC_LENGTH> randomSequence{};
+    std::array<int, MNEMONIC_LENGTH> randomSequence;
 
-    SeedVerifier(BIP39::word_list &mnemonic, array<int, MNEMONIC_LENGTH> &randomSequence);
+    SeedVerifier(DataHolder *dataHolder);
     void setMode(SeedVerifierMode mode);
     bool isSecond() const;
     bool isLast() const;
@@ -33,4 +31,4 @@ public:
 
 };
 
-#endif //SEED_GENERATOR_H
+#endif //SEED_VERIFIER_H

@@ -20,8 +20,9 @@ Menu *menu;
 void setup() {
     Serial.begin(115200);
     auto disp = new Disp();
-    auto seedGenerator = new SeedGenerator();
-    auto seedVerifier = new SeedVerifier(seedGenerator->mnemonic, seedGenerator->randomSequence);
+    auto dataHolder = new DataHolder();
+    auto seedGenerator = new SeedGenerator(dataHolder);
+    auto seedVerifier = new SeedVerifier(dataHolder);
     auto pin = new Pin();
     auto nav = new Nav(led, buttonHandler, disp, seedVerifier, pin);
     auto bt = new Bluetooth(nav);

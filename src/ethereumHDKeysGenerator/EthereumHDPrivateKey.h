@@ -9,8 +9,8 @@ class EthereumHDPrivateKey : HDPrivateKey {
 
 public:
     explicit EthereumHDPrivateKey(const HDPrivateKey& hd);
-    explicit EthereumHDPrivateKey(const String &mnemonic);
-    EthereumHDPrivateKey(const String &mnemonic, const String &password);
+    explicit EthereumHDPrivateKey(const std::string &mnemonic);
+    EthereumHDPrivateKey(const std::string &mnemonic, const String &password);
 
     EthereumHDPrivateKey *derive(const String &path) const;
     String xprv() const;

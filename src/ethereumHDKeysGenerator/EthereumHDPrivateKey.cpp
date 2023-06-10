@@ -3,10 +3,10 @@
 #include "utility/trezor/memzero.h"
 #include "utility/trezor/sha3.h"
 
-EthereumHDPrivateKey::EthereumHDPrivateKey(const String &mnemonic) : EthereumHDPrivateKey(mnemonic, "") {}
+EthereumHDPrivateKey::EthereumHDPrivateKey(const std::string &mnemonic) : EthereumHDPrivateKey(mnemonic, "") {}
 
-EthereumHDPrivateKey::EthereumHDPrivateKey(const String &mnemonic, const String &password) :
-        HDPrivateKey(mnemonic, password) {}
+EthereumHDPrivateKey::EthereumHDPrivateKey(const std::string &mnemonic, const String &password) :
+        HDPrivateKey(String(mnemonic.c_str()), password) {}
 
 EthereumHDPrivateKey::EthereumHDPrivateKey(const HDPrivateKey &hd) : HDPrivateKey(hd) {}
 

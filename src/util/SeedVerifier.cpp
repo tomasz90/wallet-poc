@@ -1,9 +1,9 @@
 #include "SeedVerifier.h"
 
-SeedVerifier::SeedVerifier(BIP39::word_list &mnemonic, array<int, MNEMONIC_LENGTH> &randomSequence) {
+SeedVerifier::SeedVerifier(DataHolder *dataHolder) {
     currentIndex = 0;
-    this->mnemonic = mnemonic;
-    this->randomSequence = randomSequence;
+    this->mnemonic = dataHolder->mnemonic;
+    this->randomSequence = dataHolder->randomSequence;
 }
 
 void SeedVerifier::setMode(SeedVerifierMode _mode) {

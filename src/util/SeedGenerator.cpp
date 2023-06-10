@@ -1,21 +1,22 @@
 #include <bootloader_random.h>
 #include "SeedGenerator.h"
 
-SeedGenerator::SeedGenerator() {
+SeedGenerator::SeedGenerator(DataHolder *dataHolder) {
     // GENERATE RANDOMNESS
     bootloader_random_enable();
     vector<uint8_t> entropy = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};//generateEntropy();
-    generateRandomSequence();
+    generateRandomSequence(dataHolder);
     bootloader_random_disable();
 
-    mnemonic = create_mnemonic(entropy, language::en);
-    Serial.println(mnemonic.to_string().c_str());
-    EthereumHDPrivateKey hd(String(mnemonic.to_string().c_str()));
-    account = hd.derive("m/44'/60'/0'/0/0");
+    dataHolder->mnemonic = create_mnemonic(entropy, language::en);
+    EthereumHDPrivateKey hd(dataHolder->mnemonic.to_string());
+    dataHolder->account = hd.derive("m/44'/60'/0'/0/0");
+    Serial.println(dataHolder->mnemonic.to_string().c_str());
 }
 
-void SeedGenerator::generateRandomSequence() {
+void SeedGenerator::generateRandomSequence(DataHolder *dataHolder) {
     string s;
+    std::array<int, MNEMONIC_LENGTH> randomSequence = dataHolder->randomSequence;
     randomSequence.fill(-1);
     for (int &i: randomSequence) {
         uint8_t temp = esp_random() % MNEMONIC_LENGTH;
