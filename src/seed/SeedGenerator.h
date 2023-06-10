@@ -4,7 +4,7 @@
 #include <vector>
 #include "ethereumHDKeysGenerator/EthereumHDPrivateKey.h"
 #include "bip39/bip39.h"
-#include "DataHolder.h"
+#include "util/DataHolder.h"
 
 using std::vector;
 using std::array;

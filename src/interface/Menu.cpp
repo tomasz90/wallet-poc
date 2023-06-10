@@ -2,7 +2,7 @@
 #include "customStateMachine/CustomMachine.h"
 #include "ButtonsHandler.h"
 #include "Nav.h"
-#include "util/SeedVerifier.h"
+#include "seed/SeedVerifier.h"
 #include "io/Bluetooth.h"
 
 CustomMachine machine = CustomMachine();
@@ -11,9 +11,10 @@ CustomState *S9_3 = nullptr;
 
 using std::string;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin, Bluetooth *_bt) {
+Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin, Bluetooth *_bt) {
     nav = _nav;
     disp = _disp;
+    seedViewer = _seedViewer;
     seedVerifier = _seedVerifier;
     pin = _pin;
     bt = _bt;
@@ -30,14 +31,14 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin, Bluet
 //    CustomState *S6_1 = machine.addState([this]() { s6_1();});
 //    CustomState *S6_2 = machine.addState([this]() { s6_2();});
 //    CustomState *S7 =   machine.addState([this]() { s7();});
-    CustomState *S8_0 = machine.addState([this]() { s8_0();});
-    CustomState *S8_1 = machine.addState([this]() { s8_1();});
-    CustomState *S8_2 = machine.addState([this]() { s8_2();});
-    CustomState *S9_0 = machine.addState([this]() { s9_0();});
-    CustomState *S9_1 = machine.addState([this]() { s9_1();});
-    CustomState *S9_2 = machine.addState([this]() { s9_2();});
-    S9_3 =              machine.addState([this]() { s9_3();});
-    CustomState *S9_4 = machine.addState([this]() { s9_4();});
+    CustomState *S8_0 = machine.addState([this]() { s8_0(); });
+    CustomState *S8_1 = machine.addState([this]() { s8_1(); });
+    CustomState *S8_2 = machine.addState([this]() { s8_2(); });
+    CustomState *S9_0 = machine.addState([this]() { s9_0(); });
+    CustomState *S9_1 = machine.addState([this]() { s9_1(); });
+    CustomState *S9_2 = machine.addState([this]() { s9_2(); });
+    S9_3 = machine.addState([this]() { s9_3(); });
+    CustomState *S9_4 = machine.addState([this]() { s9_4(); });
 
     // NEXT
 //    S0->addTransition(S1_0,  nav->bothCalled);
@@ -66,11 +67,11 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin, Bluet
 //    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
 //    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
 //    S7->addTransition(S8_0,  nav->bothCalled);
-    S8_0->addTransition(S8_1,nav->nextSeedScreenCalled); //todo: change to generic wrapper of next and previous
-    S8_1->addTransition(S8_2,nav->previousCalled);
-    S8_1->addTransition(S9_0,nav->confirmSeedScreenCalled);
-    S8_2->addTransition(S8_1,nav->nextCalled);
-    S8_2->addTransition(S8_0,nav->firstSeedScreenCalled);
+    S8_0->addTransition(S8_1, nav->nextSeedScreenCalled); //todo: change to generic wrapper of next and previous
+    S8_1->addTransition(S8_2, nav->previousCalled);
+    S8_1->addTransition(S9_0, nav->confirmSeedScreenCalled);
+    S8_2->addTransition(S8_1, nav->nextCalled);
+    S8_2->addTransition(S8_0, nav->firstSeedScreenCalled);
 
     S9_1->addTransition(S9_0, nav->btDisconnectedCalled);
     S9_2->addTransition(S9_0, nav->btDisconnectedCalled);
@@ -86,7 +87,7 @@ void Menu::run() {
     machine.run();
 }
 
-void Menu::doOnce(const std::function<void()>& _doOnce) {
+void Menu::doOnce(const std::function<void()> &_doOnce) {
     if (machine.executeOnce) {
         disp->lastTextBlinked = 0;
         nav->resetFlags();
@@ -145,13 +146,12 @@ void Menu::s5() {
 
 void Menu::s6_0() {
     doOnce([this]() {
-        seedVerifier->setMode(SeedVerifierMode::SET);
         disp->clearMenu();
         disp->drawOnlyRightBox("NEXT");
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
+        disp->setTextAtCenter(seedViewer->getCurrentWord(), 24);
     });
-    disp->blinkTextWithSign(std::to_string(seedVerifier->currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedViewer->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
@@ -159,7 +159,7 @@ void Menu::s6_1() {
     doOnce([this]() {
         disp->drawTwoBoxes("BACK", "NEXT", true);
     });
-    disp->blinkTextWithSign(std::to_string(seedVerifier->currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedViewer->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
@@ -178,7 +178,6 @@ void Menu::s7() {
 
 void Menu::s8_0() {
     doOnce([this]() {
-        seedVerifier->setMode(SeedVerifierMode::CONFIRM);
         disp->drawOnlyRightBox("NEXT");
     });
     disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
@@ -198,7 +197,7 @@ void Menu::s8_2() {
 }
 
 void Menu::s9_0() {
-    doOnce([this]() {});
+    doOnce([this]() { disp->clearMenu(); });
     disp->blinkTextWithSign("Waiting for bluetooth connection...");
 }
 
@@ -213,7 +212,7 @@ void Menu::s9_1() {
 
 void Menu::s9_2() {
     doOnce([this]() {
-        if(machine.getLastState() != S9_3) {
+        if (machine.getLastState() != S9_3) {
             disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         }
 

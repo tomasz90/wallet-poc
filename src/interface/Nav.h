@@ -6,9 +6,10 @@
 #include "io/Led.h"
 #include "ButtonsHandler.h"
 #include "interface/Disp.h"
-#include "util/SeedVerifier.h"
 #include "util/Pin.h"
 #include "Flag.h"
+#include "seed/SeedViewer.h"
+#include "seed/SeedVerifier.h"
 
 enum class DataType {
     NONE,
@@ -37,7 +38,7 @@ public:
 
     bool deviceConnected = false;
 
-    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin);
+    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin);
     void setBt(Bluetooth *_bt);
     void resetFlags();
     void onPrevious();
@@ -56,6 +57,7 @@ public:
 private:
     Led* led;
     Disp *disp;
+    SeedViewer *seedViewer;
     SeedVerifier *seedVerifier;
     Pin *pin;
     Bluetooth *bt;

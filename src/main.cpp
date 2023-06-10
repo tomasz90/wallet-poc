@@ -1,10 +1,11 @@
 #include <Arduino.h>
-#include "util/SeedVerifier.h"
+#include "seed/SeedGenerator.h"
+#include "seed/SeedViewer.h"
+#include "seed/SeedVerifier.h"
 #include "interface/Disp.h"
 #include "interface/Menu.h"
 #include "interface/Nav.h"
 #include "io/Bluetooth.h"
-#include "util/SeedGenerator.h"
 
 #define PREVIOUS_BUTTON 2
 #define NEXT_BUTTON 25
@@ -23,12 +24,13 @@ void setup() {
     auto disp = new Disp();
     auto dataHolder = new DataHolder();
     SeedGenerator::generate(dataHolder);
+    auto seedViewer = new SeedViewer(dataHolder);
     auto seedVerifier = new SeedVerifier(dataHolder);
     auto pin = new Pin();
-    auto nav = new Nav(led, buttonHandler, disp, seedVerifier, pin);
+    auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, pin);
     auto bt = new Bluetooth(nav);
     nav->setBt(bt);
-    menu = new Menu(nav, disp, seedVerifier, pin, bt);
+    menu = new Menu(nav, disp, seedViewer, seedVerifier, pin, bt);
 }
 
 void loop() {

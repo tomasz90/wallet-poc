@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <unity.h>
 #include <cstring>
-#include "util/SeedVerifier.h"
+#include "seed/SeedVerifier.h"
 
 
 void should_have_12_words() {

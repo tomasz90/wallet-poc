@@ -1,13 +1,14 @@
 #include "Nav.h"
 #include "io/Led.h"
 #include "ButtonsHandler.h"
-#include "util/SeedVerifier.h"
+#include "seed/SeedVerifier.h"
 
 using std::string;
 
-Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin) {
+Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Pin *_pin) {
     led = _led;
     disp = _disp;
+    seedViewer = _seedViewer;
     seedVerifier = _seedVerifier;
     pin = _pin;
     buttonHandler.setDebounceTime(10);
@@ -96,27 +97,27 @@ void Nav::enterPin() {
 void Nav::navigateSeed(bool nextHighlighted) {
     if (bothCalled.check()) {
         // CONFIRM SEED PHRASE
-        if (nextHighlighted && seedVerifier->isLast()) {
+        if (nextHighlighted && seedViewer->isLast()) {
             confirmSeedScreenCalled.set();
-            seedVerifier->resetIndex();
+            seedViewer->resetIndex();
         }
         // INCREMENT WORD GO NEXT SCREEN
         else if (nextHighlighted) {
             nextSeedScreenCalled.set();
-            seedVerifier->increment();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), SEED_WORD_Y_POSITION);
+            seedViewer->increment();
+            disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
         // DECREMENT WORD GO FIRST SCREEN
-        else if (seedVerifier->isSecond()) {
+        else if (seedViewer->isSecond()) {
             firstSeedScreenCalled.set();
-            seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), SEED_WORD_Y_POSITION);
+            seedViewer->decrement();
+            disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
         // DECREMENT WORD GO PREVIOUS SCREEN
         else {
             previousSeedScreenCalled.set();
-            seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentWord(), SEED_WORD_Y_POSITION);
+            seedViewer->decrement();
+            disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
     }
 }
