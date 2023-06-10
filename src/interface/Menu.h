@@ -1,6 +1,7 @@
 #include <cstdint>
 #include "util/Led.h"
 #include "ButtonsHandler.h"
+#include "util/Nav.h"
 
 #ifndef WALLET_POC_MENU_H
 #define WALLET_POC_MENU_H
@@ -9,8 +10,9 @@ class Menu {
 
 public:
     static bool firstTime;
+    static Nav *nav;
     Menu();
-    static void begin();
+    static void begin(Nav *nav);
     static void run();
     static void doOnce(void (*_doOnce)());
 private:

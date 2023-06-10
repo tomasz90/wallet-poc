@@ -18,29 +18,13 @@ void Flag::set() { flag = true; }
 
 void Flag::unset() { flag = false; }
 
-Flag Nav::previousCalled;
-Flag Nav::nextCalled;
-Flag Nav::bothCalled;
-
-Flag Nav::confirmPinCalled;
-Flag Nav::dropPinCalled;
-Flag Nav::pinMismatchCalled;
-
-Flag Nav::firstSeedScreenCalled;
-Flag Nav::previousSeedScreenCalled;
-Flag Nav::nextSeedScreenCalled;
-Flag Nav::confirmSeedScreenCalled;
-Flag Nav::isValidWordCalled;
-
-Flag Nav::btConnectedCalled;
-Flag Nav::btDisconnectedCalled;
-Flag Nav::receivedTxCalled;
-
-Led *Nav::led = nullptr;
-
-void Nav::begin(Led *_led, ButtonsHandler &buttonHandler) {
+Nav::Nav(Led *_led, ButtonsHandler &buttonHandler) {
     led = _led;
-    buttonHandler.setCallbacks(onPrevious, onNext, onBoth);
+    buttonHandler.setCallbacks(
+            [this]() { onPrevious(); },
+            [this]() { onNext(); },
+              [this]() { onBoth(); }
+    );
 }
 
 void Nav::onPrevious() {
@@ -158,17 +142,24 @@ void Nav::readSeedWordFromSerial() {
     }
 }
 
-void Nav::onBtConnected() {
+void Nav::onConnect(BLEServer *pServer) {
+    Serial.println("connected");
     btConnectedCalled.set();
-}
+    deviceConnected = true;
+    onConnectCalled = true;
+};
 
-void Nav::onBtDisconnected() {
+void Nav::onDisconnect(BLEServer *pServer) {
+    Serial.println("disconnected");
     Bluetooth::declineTx();
+    pServer->startAdvertising(); // restart advertising
     btDisconnectedCalled.set();
+    deviceConnected = false;
+    onConnectCalled = false;
 }
 
 void Nav::listenTx() {
-    if(Bluetooth::receivedTx()) {
+    if (Bluetooth::receivedTx()) {
         receivedTxCalled.set();
     }
 }

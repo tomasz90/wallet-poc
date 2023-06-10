@@ -1,6 +1,7 @@
 #ifndef WALLET_POC_NAV_H
 #define WALLET_POC_NAV_H
 
+#include <BLEServer.h>
 #include "Led.h"
 #include "ButtonsHandler.h"
 
@@ -11,39 +12,44 @@ struct Flag {
     void unset();
 };
 
-class Nav {
+class Nav : public BLEServerCallbacks {
 public:
-    static Flag previousCalled;
-    static Flag nextCalled;
-    static Flag bothCalled;
-    static Flag confirmPinCalled;
-    static Flag dropPinCalled;
-    static Flag pinMismatchCalled;
+    bool deviceConnected = false;
+    bool onConnectCalled = false;
+    void onConnect(BLEServer *pServer);
+    void onDisconnect(BLEServer *pServer);
 
-    static Flag firstSeedScreenCalled;
-    static Flag previousSeedScreenCalled;
-    static Flag nextSeedScreenCalled;
-    static Flag confirmSeedScreenCalled;
-    static Flag isValidWordCalled;
+    Flag previousCalled;
+    Flag nextCalled;
+    Flag bothCalled;
+    Flag confirmPinCalled;
+    Flag dropPinCalled;
+    Flag pinMismatchCalled;
 
-    static Flag btConnectedCalled;
-    static Flag btDisconnectedCalled;
-    static Flag receivedTxCalled;
+    Flag firstSeedScreenCalled;
+    Flag previousSeedScreenCalled;
+    Flag nextSeedScreenCalled;
+    Flag confirmSeedScreenCalled;
+    Flag isValidWordCalled;
 
-    static void begin(Led *_led, ButtonsHandler &buttonHandler);
-    static void onPrevious();
-    static void onNext();
-    static void onBoth();
-    static void enterPin();
-    static void navigateSeed(bool nextHighlighted);
-    static void readSeedWordFromSerial();
+    Flag btConnectedCalled;
+    Flag btDisconnectedCalled;
+    Flag receivedTxCalled;
 
-    static void onBtConnected();
-    static void onBtDisconnected();
-    static void listenTx();
+    Nav(Led *_led, ButtonsHandler &buttonHandler);
+    void onPrevious();
+    void onNext();
+    void onBoth();
+    void enterPin();
+    void navigateSeed(bool nextHighlighted);
+    void readSeedWordFromSerial();
+
+    void onBtConnected();
+    void onBtDisconnected();
+    void listenTx();
 private:
 
-    static Led* led;
+    Led* led;
 };
 
 #endif //WALLET_POC_NAV_H

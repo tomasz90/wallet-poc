@@ -17,8 +17,10 @@ CustomState *S9_2 = nullptr;
 CustomState *S9_3 = nullptr;
 CustomState *S9_4 = nullptr;
 
-void Menu::begin() {
+Nav *Menu::nav;
+void Menu::begin(Nav *_nav) {
 
+    nav = _nav;
     // STATES
 //    CustomState *S0 =   machine.addState(&s0);
 //    CustomState *S1_0 = machine.addState(&s1_0);
@@ -42,48 +44,48 @@ void Menu::begin() {
     S9_4 = machine.addState(&s9_4);
 
     // NEXT
-//    S0->addTransition(S1_0,  Nav::bothCalled);
-//    S1_0->addTransition(S1_1,Nav::nextCalled);
-//    S1_1->addTransition(S2,  Nav::bothCalled);
-//    S2->addTransition(S3,    Nav::confirmPinCalled);
-//    S3->addTransition(S4_0,  Nav::confirmPinCalled);
-//    S3->addTransition(S4_1,  Nav::pinMismatchCalled);
-//    S4_0->addTransition(S5,  Nav::bothCalled);
-//    S4_1->addTransition(S2,  Nav::bothCalled);
+//    S0->addTransition(S1_0,  nav->bothCalled);
+//    S1_0->addTransition(S1_1,nav->nextCalled);
+//    S1_1->addTransition(S2,  nav->bothCalled);
+//    S2->addTransition(S3,    nav->confirmPinCalled);
+//    S3->addTransition(S4_0,  nav->confirmPinCalled);
+//    S3->addTransition(S4_1,  nav->pinMismatchCalled);
+//    S4_0->addTransition(S5,  nav->bothCalled);
+//    S4_1->addTransition(S2,  nav->bothCalled);
 
-    S9_0->addTransition(S9_1, Nav::btConnectedCalled);
-    S9_1->addTransition(S9_2, Nav::receivedTxCalled);
-    S9_2->addTransition(S9_3, Nav::nextCalled);
-    S9_3->addTransition(S9_4, Nav::bothCalled);
+    S9_0->addTransition(S9_1, nav->btConnectedCalled);
+    S9_1->addTransition(S9_2, nav->receivedTxCalled);
+    S9_2->addTransition(S9_3, nav->nextCalled);
+    S9_3->addTransition(S9_4, nav->bothCalled);
 
 //    // PREVIOUS
-//    S1_1->addTransition(S1_0,Nav::previousCalled);
-//    S2->addTransition(S1_0,  Nav::dropPinCalled);
-//    S3->addTransition(S2,    Nav::dropPinCalled);
+//    S1_1->addTransition(S1_0,nav->previousCalled);
+//    S2->addTransition(S1_0,  nav->dropPinCalled);
+//    S3->addTransition(S2,    nav->dropPinCalled);
 //
-//    S5->addTransition(S6_0,    Nav::bothCalled);
-//    S6_0->addTransition(S6_1,Nav::nextSeedScreenCalled);
-//    S6_1->addTransition(S6_2,Nav::previousCalled);
-//    S6_2->addTransition(S6_1,Nav::nextCalled);
-//    S6_1->addTransition(S6_1,Nav::nextSeedScreenCalled);
-//    S6_1->addTransition(S7,  Nav::confirmSeedScreenCalled);
-//    S6_2->addTransition(S6_2,Nav::previousSeedScreenCalled);
-//    S6_2->addTransition(S6_0,Nav::firstSeedScreenCalled);
-//    S7->addTransition(S8_0,  Nav::bothCalled);
-//    S8_0->addTransition(S8_1,Nav::nextSeedScreenCalled);
-//    S8_1->addTransition(S8_2,Nav::previousCalled);
-//    S8_2->addTransition(S8_1,Nav::nextCalled);
-//    S8_1->addTransition(S8_1,Nav::nextSeedScreenCalled);
-//    S8_2->addTransition(S8_2,Nav::previousSeedScreenCalled);
-//    S8_2->addTransition(S8_0,Nav::firstSeedScreenCalled);
+//    S5->addTransition(S6_0,    nav->bothCalled);
+//    S6_0->addTransition(S6_1,nav->nextSeedScreenCalled);
+//    S6_1->addTransition(S6_2,nav->previousCalled);
+//    S6_2->addTransition(S6_1,nav->nextCalled);
+//    S6_1->addTransition(S6_1,nav->nextSeedScreenCalled);
+//    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
+//    S6_2->addTransition(S6_2,nav->previousSeedScreenCalled);
+//    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
+//    S7->addTransition(S8_0,  nav->bothCalled);
+//    S8_0->addTransition(S8_1,nav->nextSeedScreenCalled);
+//    S8_1->addTransition(S8_2,nav->previousCalled);
+//    S8_2->addTransition(S8_1,nav->nextCalled);
+//    S8_1->addTransition(S8_1,nav->nextSeedScreenCalled);
+//    S8_2->addTransition(S8_2,nav->previousSeedScreenCalled);
+//    S8_2->addTransition(S8_0,nav->firstSeedScreenCalled);
 
-    S9_1->addTransition(S9_0, Nav::btDisconnectedCalled);
-    S9_2->addTransition(S9_0, Nav::btDisconnectedCalled);
-    S9_3->addTransition(S9_0, Nav::btDisconnectedCalled);
+    S9_1->addTransition(S9_0, nav->btDisconnectedCalled);
+    S9_2->addTransition(S9_0, nav->btDisconnectedCalled);
+    S9_3->addTransition(S9_0, nav->btDisconnectedCalled);
 
-    S9_2->addTransition(S9_1, Nav::bothCalled);
-    S9_3->addTransition(S9_2, Nav::previousCalled);
-    S9_4->addTransition(S9_1, Nav::bothCalled);
+    S9_2->addTransition(S9_1, nav->bothCalled);
+    S9_3->addTransition(S9_2, nav->previousCalled);
+    S9_4->addTransition(S9_1, nav->bothCalled);
 
 }
 
@@ -120,7 +122,7 @@ void Menu::s2() {
     });
 
     Disp::blinkTextWithSign("Set pin:");
-    Nav::enterPin();
+    nav->enterPin();
 }
 
 void Menu::s3() {
@@ -129,7 +131,7 @@ void Menu::s3() {
         Disp::drawPin();
     });
     Disp::blinkTextWithSign("Confirm pin:");
-    Nav::enterPin();
+    nav->enterPin();
 }
 
 void Menu::s4_0() {
@@ -156,7 +158,7 @@ void Menu::s6_0() {
         Disp::setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
     });
     Disp::blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
-    Nav::navigateSeed(true);
+    nav->navigateSeed(true);
 }
 
 void Menu::s6_1() {
@@ -166,7 +168,7 @@ void Menu::s6_1() {
         Disp::setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
     });
     Disp::blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
-    Nav::navigateSeed(true);
+    nav->navigateSeed(true);
 }
 
 void Menu::s6_2() {
@@ -176,7 +178,7 @@ void Menu::s6_2() {
         Disp::setTextAtCenter(SeedGenerator::getCurrentWord(), 24);
     });
     Disp::blinkTextWithSign(std::to_string(SeedGenerator::currentIndex + 1) + ". word is: ", 20);
-    Nav::navigateSeed(false);
+    nav->navigateSeed(false);
 }
 
 void Menu::s7() {
@@ -190,19 +192,19 @@ void Menu::s8_0() {
         Disp::drawOnlyRightBox("NEXT");
     });
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
-    Nav::navigateSeed(true);
+    nav->navigateSeed(true);
 }
 
 void Menu::s8_1() {
     doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", true); });
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
-    Nav::navigateSeed(true);
+    nav->navigateSeed(true);
 }
 
 void Menu::s8_2() {
     doOnce([]() { Disp::drawTwoBoxes("BACK", "NEXT", false); });
     Disp::blinkTextWithSign("Enter " + std::to_string(SeedGenerator::getCurrentRandom() + 1) + " word:", 20);
-    Nav::navigateSeed(false);
+    nav->navigateSeed(false);
 }
 
 void Menu::s9_0() {
@@ -216,7 +218,7 @@ void Menu::s9_1() {
     });
     Disp::blinkTextWithSign("Device connected! Listening for transactions...");
     Bluetooth::sendAddressIfOnConnectedCalled();
-    Nav::listenTx();
+    nav->listenTx();
 }
 
 void Menu::s9_2() {
