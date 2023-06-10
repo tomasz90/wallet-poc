@@ -8,15 +8,16 @@
 enum class SeedVerifierMode { SET, CONFIRM };
 
 using namespace BIP39;
-using std::string;
 using std::vector;
+using std::array;
+using std::string;
 
 class SeedVerifier {
 public:
     uint8_t currentIndex;
     SeedVerifierMode mode;
     word_list mnemonic;
-    std::array<int, MNEMONIC_LENGTH> randomSequence;
+    array<int, MNEMONIC_LENGTH> randomSequence;
 
     SeedVerifier(DataHolder *dataHolder);
     void setMode(SeedVerifierMode mode);

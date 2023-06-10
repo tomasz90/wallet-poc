@@ -9,13 +9,14 @@
 #define MNEMONIC_LENGTH 12
 
 using std::vector;
+using std::array;
 using std::string;
 using namespace BIP39;
 
 class DataHolder {
 public:
     word_list mnemonic;
-    std::array<int, MNEMONIC_LENGTH> randomSequence;
+    array<int, MNEMONIC_LENGTH> randomSequence;
     EthereumHDPrivateKey *account;
 
     DataHolder() = default;

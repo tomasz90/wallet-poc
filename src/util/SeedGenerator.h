@@ -7,6 +7,7 @@
 #include "DataHolder.h"
 
 using std::vector;
+using std::array;
 using std::string;
 using std::find;
 using namespace BIP39;

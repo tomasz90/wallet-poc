@@ -16,7 +16,7 @@ SeedGenerator::SeedGenerator(DataHolder *dataHolder) {
 
 void SeedGenerator::generateRandomSequence(DataHolder *dataHolder) {
     string s;
-    std::array<int, MNEMONIC_LENGTH> randomSequence = dataHolder->randomSequence;
+    array<int, MNEMONIC_LENGTH> randomSequence = dataHolder->randomSequence;
     randomSequence.fill(-1);
     for (int &i: randomSequence) {
         uint8_t temp = esp_random() % MNEMONIC_LENGTH;
