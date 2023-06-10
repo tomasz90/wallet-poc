@@ -14,10 +14,10 @@ using namespace BIP39;
 
 class SeedGenerator {
 public:
-    SeedGenerator(DataHolder *dataHolder);
+    static void generate(DataHolder *dataHolder);
 private:
-    void generateRandomSequence(DataHolder *dataHolder);
-    vector<uint8_t> generateEntropy();
+    static void generateRandomSequence(DataHolder *dataHolder);
+    static vector<uint8_t> generateEntropy();
 };
 
 

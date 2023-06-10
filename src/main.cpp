@@ -21,7 +21,7 @@ void setup() {
     Serial.begin(115200);
     auto disp = new Disp();
     auto dataHolder = new DataHolder();
-    auto seedGenerator = new SeedGenerator(dataHolder);
+    SeedGenerator::generate(dataHolder);
     auto seedVerifier = new SeedVerifier(dataHolder);
     auto pin = new Pin();
     auto nav = new Nav(led, buttonHandler, disp, seedVerifier, pin);

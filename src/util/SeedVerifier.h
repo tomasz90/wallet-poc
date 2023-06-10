@@ -16,8 +16,6 @@ class SeedVerifier {
 public:
     uint8_t currentIndex;
     SeedVerifierMode mode;
-    word_list mnemonic;
-    array<int, MNEMONIC_LENGTH> randomSequence;
 
     SeedVerifier(DataHolder *dataHolder);
     void setMode(SeedVerifierMode mode);
@@ -30,6 +28,9 @@ public:
     string getCurrentWord() const;
     bool validateWord(const string &word);
 
+private:
+    word_list mnemonic;
+    array<int, MNEMONIC_LENGTH> randomSequence;
 };
 
 #endif //SEED_VERIFIER_H

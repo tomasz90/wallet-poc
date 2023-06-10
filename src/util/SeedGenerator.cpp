@@ -3,7 +3,7 @@
 
 #define DEFAULT_PATH "m/44'/60'/0'/0/0"
 
-SeedGenerator::SeedGenerator(DataHolder *dataHolder) {
+void SeedGenerator::generate(DataHolder *dataHolder) {
     // GENERATE RANDOMNESS
     bootloader_random_enable();
     vector<uint8_t> entropy = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//generateEntropy();

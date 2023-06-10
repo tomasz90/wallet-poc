@@ -11,10 +11,10 @@ CustomState *S9_3 = nullptr;
 
 using std::string;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin, Bluetooth *_bt) {
+Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin, Bluetooth *_bt) {
     nav = _nav;
     disp = _disp;
-    seedGenerator = _seedGenerator;
+    seedVerifier = _seedVerifier;
     pin = _pin;
     bt = _bt;
     // STATES
@@ -25,7 +25,7 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin, Blue
 //    CustomState *S3 =   machine.addState([this]() { s3();});
 //    CustomState *S4_0 = machine.addState([this]() { s4_0();});
 //    CustomState *S4_1 = machine.addState([this]() { s4_1();});
-    CustomState *S5 =   machine.addState([this]() { s5();});
+//    CustomState *S5 =   machine.addState([this]() { s5();});
     CustomState *S6_0 = machine.addState([this]() { s6_0();});
     CustomState *S6_1 = machine.addState([this]() { s6_1();});
     CustomState *S6_2 = machine.addState([this]() { s6_2();});
@@ -59,7 +59,7 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin, Blue
 //    S2->addTransition(S1_0,  nav->dropPinCalled);
 //    S3->addTransition(S2,    nav->dropPinCalled);
 
-    S5->addTransition(S6_0,    nav->bothCalled);
+//    S5->addTransition(S6_0,    nav->bothCalled);
     S6_0->addTransition(S6_1,nav->nextSeedScreenCalled);
     S6_1->addTransition(S6_2,nav->previousCalled);
     S6_2->addTransition(S6_1,nav->nextCalled);
@@ -87,7 +87,6 @@ void Menu::run() {
 
 void Menu::doOnce(const std::function<void()>& _doOnce) {
     if (machine.executeOnce) {
-        Serial.println("did once");
         disp->lastTextBlinked = 0;
         nav->resetFlags();
         _doOnce();
@@ -145,13 +144,13 @@ void Menu::s5() {
 
 void Menu::s6_0() {
     doOnce([this]() {
-        seedGenerator->setMode(SeedVerifierMode::SET);
+        seedVerifier->setMode(SeedVerifierMode::SET);
         disp->clearMenu();
         disp->drawOnlyRightBox("NEXT");
         disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
-        disp->setTextAtCenter(seedGenerator->getCurrentWord(), 24);
+        disp->setTextAtCenter(seedVerifier->getCurrentWord(), 24);
     });
-    disp->blinkTextWithSign(std::to_string(seedGenerator->currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedVerifier->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
@@ -159,7 +158,7 @@ void Menu::s6_1() {
     doOnce([this]() {
         disp->drawTwoBoxes("BACK", "NEXT", true);
     });
-    disp->blinkTextWithSign(std::to_string(seedGenerator->currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedVerifier->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(true);
 }
 
@@ -167,7 +166,7 @@ void Menu::s6_2() {
     doOnce([this]() {
         disp->drawTwoBoxes("BACK", "NEXT", false);
     });
-    disp->blinkTextWithSign(std::to_string(seedGenerator->currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedVerifier->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(false);
 }
 
@@ -178,22 +177,22 @@ void Menu::s7() {
 
 void Menu::s8_0() {
     doOnce([this]() {
-        seedGenerator->setMode(SeedVerifierMode::CONFIRM);
+        seedVerifier->setMode(SeedVerifierMode::CONFIRM);
         disp->drawOnlyRightBox("NEXT");
     });
-    disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s8_1() {
     doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
-    disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(true);
 }
 
 void Menu::s8_2() {
     doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
-    disp->blinkTextWithSign("Enter " + std::to_string(seedGenerator->getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
     nav->navigateSeed(false);
 }
 

@@ -196,7 +196,6 @@ void Disp::clearText(uint8_t toLine) {
 }
 
 void Disp::clearTextCenter() {
-    Serial.println("clearTextCenter");
     uint8_t begin = 20;
     display.fillRect(0, begin, SCREEN_WIDTH, SCREEN_TEXT_MENU_BORDER_POSITION - begin, BLACK);
 }
@@ -214,9 +213,3 @@ void Disp::clearMenu() {
 void Disp::disp() {
     display.display();
 }
-
-// TODO: not used, but keep it for now
-//void Disp::clear() {
-//    display.clearDisplay();
-//    display.display();
-//}

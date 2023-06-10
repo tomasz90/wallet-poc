@@ -31,7 +31,7 @@ public:
 
     bool deviceConnected = false;
 
-    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedVerifier *_seedGenerator, Pin *_pin);
+    Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedVerifier *_seedVerifier, Pin *_pin);
     void setBt(Bluetooth *_bt);
     void resetFlags();
     void onPrevious();
@@ -49,7 +49,7 @@ public:
 private:
     Led* led;
     Disp *disp;
-    SeedVerifier *seedGenerator;
+    SeedVerifier *seedVerifier;
     Pin *pin;
     Bluetooth *bt;
 
