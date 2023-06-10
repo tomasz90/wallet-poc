@@ -22,8 +22,9 @@ CustomState *CustomMachine::getLastState() const {
 void CustomMachine::run() {
     if (stateList->size() == 0) return;
 
-    int next = stateList->get(currentState)->execute(isNextState);
-    if (isNextState) {
+    int next = stateList->get(currentState)->execute();
+    executeOnce = currentState != next;
+    if (executeOnce) {
         lastState = currentState;
         currentState = next;
     }
@@ -32,14 +33,14 @@ void CustomMachine::run() {
 
 CustomState* CustomMachine::transitionTo(CustomState* s){
     this->currentState = s->index;
-    this->isNextState = true;
+    this->executeOnce = true;
     return s;
 }
 
 int CustomMachine::transitionTo(int i){
     if(i < stateList->size()){
         this->currentState = i;
-        this->isNextState = true;
+        this->executeOnce = true;
         return i;
     }
     return currentState;

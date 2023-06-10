@@ -21,8 +21,8 @@ public:
 
     CustomState();
     void addTransition(CustomState *s, Flag &isTrans) const;
-    int evalTransitions(bool &isNextState) const;
-    int execute(bool &isNextState);
+    int evalTransitions() const;
+    int execute();
     int setTransition(int index, int stateNumber);
 
 private:
