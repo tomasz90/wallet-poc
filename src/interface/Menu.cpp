@@ -11,12 +11,12 @@ CustomState *S9_3 = nullptr;
 
 using std::string;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin) {
+Menu::Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin, Bluetooth *_bt) {
     nav = _nav;
     disp = _disp;
     seedGenerator = _seedGenerator;
     pin = _pin;
-
+    bt = _bt;
     // STATES
     CustomState *S0 =   machine.addState([this]() { s0();});
     CustomState *S1_0 = machine.addState([this]() { s1_0();});
@@ -224,9 +224,9 @@ void Menu::s9_2() {
             disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         }
 
-        string chainId = Bluetooth::tx->formatChainId();
-        string address = Bluetooth::tx->formatAddress();
-        string value = Bluetooth::tx->formatEthValue();
+        string chainId = bt->tx->formatChainId();
+        string address = bt->tx->formatAddress();
+        string value = bt->tx->formatEthValue();
 
         disp->drawTransaction(chainId, address, value);
         disp->drawTwoBoxes("DECLINE", "ACCEPT", false);

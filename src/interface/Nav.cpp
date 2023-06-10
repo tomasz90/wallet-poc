@@ -2,7 +2,6 @@
 #include "io/Led.h"
 #include "ButtonsHandler.h"
 #include "util/SeedGenerator.h"
-#include "io/Bluetooth.h"
 
 bool Flag::check() {
     bool temp = flag;
@@ -27,6 +26,10 @@ Nav::Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_
             [this]() { onNext(); },
             [this]() { onBoth(); }
     );
+}
+
+void Nav::setBt(Bluetooth *_bt) {
+    bt = _bt;
 }
 
 void Nav::onPrevious() {
@@ -153,7 +156,7 @@ void Nav::onConnect(BLEServer *pServer) {
 
 void Nav::onDisconnect(BLEServer *pServer) {
     Serial.println("disconnected");
-    Bluetooth::declineTx();
+    bt->declineTx();
     pServer->startAdvertising(); // restart advertising
     btDisconnectedCalled.set();
     deviceConnected = false;
@@ -162,13 +165,13 @@ void Nav::onDisconnect(BLEServer *pServer) {
 void Nav::sendAddress() {
     if (deviceConnected && btConnectedCalledPrivate.check()) {
         delay(2000);
-        Bluetooth::sendAddress();
+        bt->sendAddress();
     }
 }
 
 void Nav::listenTx() {
     if (deviceConnected) {
-        if (Bluetooth::receivedTx()) {
+        if (bt->receivedTx()) {
             receivedTxCalled.set();
         }
     }
@@ -176,7 +179,7 @@ void Nav::listenTx() {
 
 void Nav::signTx() const {
     if (deviceConnected) {
-        Bluetooth::signTx();
+        bt->signTx();
     } else {
         Serial.println("Cant sign, device not connected");
     }

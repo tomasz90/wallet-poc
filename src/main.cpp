@@ -22,8 +22,9 @@ void setup() {
     auto seedGenerator = new SeedGenerator();
     auto pin = new Pin();
     auto nav = new Nav(led, buttonHandler, disp, seedGenerator, pin);
-    menu = new Menu(nav, disp, seedGenerator, pin);
-    Bluetooth::begin(nav);
+    auto bt = new Bluetooth(nav);
+    nav->setBt(bt);
+    menu = new Menu(nav, disp, seedGenerator, pin, bt);
 }
 
 void loop() {

@@ -11,7 +11,7 @@ class Menu {
 
 public:
 
-    Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin);
+    Menu(Nav *_nav, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin, Bluetooth *_bt);
     void run();
     void doOnce(const std::function<void()>& _doOnce);
 private:
@@ -19,6 +19,7 @@ private:
     Nav *nav;
     SeedGenerator *seedGenerator;
     Pin *pin;
+    Bluetooth *bt;
 
     void s0();
     void s1_0();

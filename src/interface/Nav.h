@@ -2,6 +2,7 @@
 #define WALLET_POC_NAV_H
 
 #include <BLEServer.h>
+#include "io/Bluetooth.h"
 #include "io/Led.h"
 #include "ButtonsHandler.h"
 #include "interface/Disp.h"
@@ -37,6 +38,7 @@ public:
     bool deviceConnected = false;
 
     Nav(Led *_led, ButtonsHandler &buttonHandler, Disp *_disp, SeedGenerator *_seedGenerator, Pin *_pin);
+    void setBt(Bluetooth *_bt);
     void onPrevious();
     void onNext();
     void onBoth();
@@ -54,6 +56,7 @@ private:
     Disp *disp;
     SeedGenerator *seedGenerator;
     Pin *pin;
+    Bluetooth *bt;
 
     // this is for Nav purposes only
     Flag btConnectedCalledPrivate;

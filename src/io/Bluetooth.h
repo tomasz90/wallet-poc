@@ -2,7 +2,6 @@
 #define WALLET_POC_BLUETOOTH_H
 
 #include "EthTx.h"
-#include "interface/Nav.h"
 
 // SERVICES
 #define SERVICE_ADDRESS_UUID  "b39418c1-5b51-4828-a8a0-7ee0eef01dba"
@@ -15,13 +14,12 @@
 
 class Bluetooth {
 public:
-    static EthTx* tx;
-    static Nav *nav;
-    static void begin(Nav *nav);
-    static void sendAddress();
-    static bool receivedTx();
-    static void signTx();
-    static void declineTx();
+    EthTx* tx;
+    Bluetooth(BLEServerCallbacks *_nav);
+    void sendAddress();
+    bool receivedTx();
+    void signTx();
+    void declineTx();
 };
 
 #endif //WALLET_POC_BLUETOOTH_H

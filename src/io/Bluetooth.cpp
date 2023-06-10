@@ -3,25 +3,19 @@
 #include <BLE2902.h>
 #include <Arduino.h>
 #include "Bluetooth.h"
-#include "interface/Nav.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristicSender = NULL;
 BLECharacteristic *pCharacteristicSenderAddress = NULL;
 BLECharacteristic *pCharacteristicReceiver = NULL;
 
-Nav *Bluetooth::nav;
-
-EthTx *Bluetooth::tx;
-
-void Bluetooth::begin(Nav *_nav) {
-    nav = _nav;
+Bluetooth::Bluetooth(BLEServerCallbacks *_nav) {
     // Create the BLE Device
     BLEDevice::init("ESP32");
 
     // Create the BLE Server
     pServer = BLEDevice::createServer();
-    pServer->setCallbacks(nav);
+    pServer->setCallbacks(_nav);
 
     // Create the BLE Services
     BLEService *pServiceAddress = pServer->createService(SERVICE_ADDRESS_UUID);
