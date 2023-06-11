@@ -5,8 +5,8 @@
 #define FAIL_TRIES_ADDRESS 1
 #define PIN_ADDRESS 2
 
-uint8_t DataHolder::getPinDigit(uint8_t position) {
-    return EEPROM.readUChar(position + PIN_ADDRESS);
+void DataHolder::getPin(uint8_t pinCombination[4]) {
+    EEPROM.readBytes(PIN_ADDRESS, pinCombination, 4);
 }
 
 void DataHolder::savePin(uint8_t pinCombination[4]) {

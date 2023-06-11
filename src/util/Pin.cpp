@@ -92,28 +92,39 @@ void Pin::unsetOneDigit() {
 }
 
 bool Pin::savePin() {
-    for (int i = 0; i <= 3; i++) {
-        switch (mode) {
-            case PinMode::SET:
-                savedCombination[i] = rawCombination[i];
-                break;
-            case PinMode::CONFIRM:
-                if (savedCombination[i] != rawCombination[i]) return false;
-                break;
-            case PinMode::UNLOCK:
-                if (dataHolder->getPinDigit(i) != rawCombination[i]) {
-                    dataHolder->saveFailTryOrReset();
-                    return false;
-                }
-        }
-    }
     switch (mode) {
+        case PinMode::SET:
+            assignArray(savedCombination, rawCombination);
+            break;
         case PinMode::CONFIRM:
-            dataHolder->savePin(savedCombination);
+            if (areTheSame(savedCombination, rawCombination)) {
+                dataHolder->savePin(savedCombination);
+            } else {
+                return false;
+            }
             break;
         case PinMode::UNLOCK:
-            dataHolder->resetTries();
-            break;
+            uint8_t pinFromFlash[4];
+            dataHolder->getPin(pinFromFlash);
+            if (areTheSame(pinFromFlash, rawCombination)) {
+                dataHolder->resetTries();
+            } else {
+                dataHolder->saveFailTryOrReset();
+                return false;
+            }
+    }
+    return true;
+}
+
+void Pin::assignArray(uint8_t saved[4], const int raw[4]) {
+    for (int i = 0; i <= 3; i++) {
+        saved[i] = raw[i];
+    }
+}
+
+bool Pin::areTheSame(const uint8_t saved[4], const int raw[4]) {
+    for (int i = 0; i <= 3; i++) {
+        if (saved[i] != raw[i]) return false;
     }
     return true;
 }

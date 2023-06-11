@@ -33,6 +33,8 @@ private:
 
     int _random(int with);
     char getCharAt(int index);
+    void assignArray(uint8_t *saved, const int *raw);
+    bool areTheSame(const uint8_t *saved, const int *raw);
 };
 
 #endif //PIN_H
