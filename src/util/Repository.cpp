@@ -109,11 +109,15 @@ EthTx* Repository::getTx() {
 string Repository::getPrivateKey() {
     EthereumHDPrivateKey hd(getMnemonic());
     EthereumHDPrivateKey* firstAccount = hd.derive(DEFAULT_PATH);
-    return firstAccount->prv().c_str();
+    string privateKey = firstAccount->prv().c_str();
+    delete firstAccount;
+    return privateKey;
 }
 
 string Repository::getAddress() {
     EthereumHDPrivateKey hd(getMnemonic());
     EthereumHDPrivateKey* firstAccount = hd.derive(DEFAULT_PATH);
-    return firstAccount->addressChecksumed().c_str();
+    string address = firstAccount->addressChecksumed().c_str();
+    delete firstAccount;
+    return address;
 }
