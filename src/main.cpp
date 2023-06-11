@@ -26,7 +26,7 @@ void setup() {
     SeedGenerator::generate(dataHolder);
     auto seedViewer = new SeedViewer(dataHolder);
     auto seedVerifier = new SeedVerifier(dataHolder);
-    auto pin = new Pin();
+    auto pin = new Pin(dataHolder);
     auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, dataHolder, pin);
     auto bt = new Bluetooth(nav, dataHolder);
     nav->setBt(bt);

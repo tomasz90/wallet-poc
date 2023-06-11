@@ -1,8 +1,9 @@
 #include "Pin.h"
 #include "Wmath.cpp"
 
-Pin::Pin() {
+Pin::Pin(DataHolder *dataHolder) {
     currentIndex = 0;
+    this->dataHolder = dataHolder;
 }
 
 void Pin::clearValues() {
@@ -97,7 +98,11 @@ bool Pin::savePin() {
                 savedCombination[i] = rawCombination[i];
                 break;
             case PinMode::CONFIRM:
-                if (savedCombination[i] != rawCombination[i]) { return false; }
+                if (savedCombination[i] != rawCombination[i]) {
+                    dataHolder->pinCombination.fill(-1);
+                    return false;
+                }
+                dataHolder->pinCombination[i] = savedCombination[i];
                 break;
         }
     }

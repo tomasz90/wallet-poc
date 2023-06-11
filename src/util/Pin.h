@@ -1,4 +1,5 @@
 #include <string>
+#include "DataHolder.h"
 
 #ifndef PIN_H
 #define PIN_H
@@ -9,7 +10,7 @@ enum class PinMode { SET, CONFIRM };
 
 class Pin {
 public:
-    Pin();
+    Pin(DataHolder *dataHolder);
     void clearValues();
     std::string getPinString();
     void incrementCurrentDigit();
@@ -24,10 +25,11 @@ public:
 
 private:
     PinMode mode;
+    DataHolder *dataHolder;
+    int currentIndex;
     int rawCombination[4];
     int savedCombination[4];
     DigitState stateCombination[4];
-    int currentIndex;
 
     int _random(int with);
     char getCharAt(int index);
