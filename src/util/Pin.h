@@ -10,6 +10,8 @@ enum class PinMode { SET, CONFIRM, UNLOCK };
 
 class Pin {
 public:
+    PinMode mode;
+
     Pin(DataHolder *dataHolder);
     void clearValues();
     std::string getPinString();
@@ -21,10 +23,9 @@ public:
     void unsetOneDigit();
     void setOneDigit();
     bool savePin();
-    void setMode(PinMode mode);
 
+    void setMode(PinMode mode);
 private:
-    PinMode mode;
     DataHolder *dataHolder;
     int currentIndex;
     int rawCombination[4];

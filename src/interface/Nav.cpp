@@ -82,9 +82,10 @@ void Nav::enterPin() {
         if (saved) {
             confirmPinCalled.set();
         } else {
-            if(dataHolder->isInitialized()) {
+            if(pin->mode == PinMode::CONFIRM) {
+                Serial.println("PIN MISMATCH");
                 pinMismatchCalled.set();
-            } else {
+            } else if(pin->mode == PinMode::UNLOCK && !dataHolder->isInitialized()) {
                 resetDeviceCalled.set();
             }
         }
