@@ -92,19 +92,17 @@ void Pin::unsetOneDigit() {
 }
 
 bool Pin::savePin() {
-    for (int i = 0; i <= 3 ; i++) {
+    for (int i = 0; i <= 3; i++) {
         switch (mode) {
             case PinMode::SET:
                 savedCombination[i] = rawCombination[i];
                 break;
             case PinMode::CONFIRM:
-                if (savedCombination[i] != rawCombination[i]) {
-                    dataHolder->pinCombination.fill(-1);
-                    return false;
-                }
-                dataHolder->pinCombination[i] = savedCombination[i];
-                break;
+                if (savedCombination[i] != rawCombination[i]) return false;
         }
+    }
+    if (mode == PinMode::CONFIRM) {
+        dataHolder->savePin(savedCombination);
     }
     return true;
 }

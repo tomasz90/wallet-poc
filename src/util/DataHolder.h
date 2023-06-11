@@ -20,9 +20,8 @@ public:
     array<int, MNEMONIC_LENGTH> randomSequence;
     EthereumHDPrivateKey *account;
     EthTx* tx;
-    array<int, 4> pinCombination;
     DataHolder() = default;
-
+    void savePin(uint8_t pinCombination[4]);
 };
 
 

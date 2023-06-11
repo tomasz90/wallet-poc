@@ -28,7 +28,7 @@ private:
     DataHolder *dataHolder;
     int currentIndex;
     int rawCombination[4];
-    int savedCombination[4];
+    uint8_t savedCombination[4];
     DigitState stateCombination[4];
 
     int _random(int with);
