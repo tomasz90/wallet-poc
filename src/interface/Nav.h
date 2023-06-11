@@ -46,7 +46,10 @@ public:
     void onPrevious();
     void onNext();
     void onBoth();
-    void enterPin();
+    void unlockPin();
+    void confirmPin();
+    void setPin();
+    void enterPin(bool _bothCalled);
     void navigateSeed(bool nextHighlighted);
     void navigateSeedConfirm(bool nextHighlighted);
     void checkSerialData();
@@ -54,8 +57,8 @@ public:
     void onDisconnect(BLEServer *pServer) override;
     void listenTx();
     void sendAddress();
-    void signTx() const;
 
+    void signTx() const;
 private:
     Led* led;
     Disp *disp;

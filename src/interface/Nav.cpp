@@ -61,10 +61,61 @@ void Nav::onBoth() {
     bothCalled.set();
 }
 
-void Nav::enterPin() {
+void Nav::setPin() {
     // bothCalled.check() needs to be called only once here
     bool _bothCalled = bothCalled.check();
 
+    // TRY SET PIN
+    if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
+        pin->setOneDigit();
+        pin->savePin();
+        pin->clearValues();
+        return;
+    }
+    enterPin(_bothCalled);
+}
+
+void Nav::confirmPin() {
+    // bothCalled.check() needs to be called only once here
+    bool _bothCalled = bothCalled.check();
+
+    // TRY CONFIRM PIN
+    if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
+        pin->setOneDigit();
+        if (pin->savePin()) {
+            confirmPinCalled.set();
+        } else {
+            pinMismatchCalled.set();
+        }
+        pin->clearValues();
+        return;
+    }
+    enterPin(_bothCalled);
+}
+
+void Nav::unlockPin() {
+    // bothCalled.check() needs to be called only once here
+    bool _bothCalled = bothCalled.check();
+
+    // TRY UNLOCK PIN
+    if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
+        pin->setOneDigit();
+        if (pin->savePin()) {
+            confirmPinCalled.set();
+        } else {
+            if (dataHolder->isInitialized()) {
+                pinMismatchCalled.set();
+            } else {
+                resetDeviceCalled.set();
+            }
+        }
+        pin->clearValues();
+        return;
+    }
+    enterPin(_bothCalled);
+}
+
+void Nav::enterPin(bool _bothCalled) {
     // INCREMENT DIGIT
     if (nextCalled.check()) {
         pin->incrementCurrentDigit();
@@ -74,25 +125,6 @@ void Nav::enterPin() {
     else if (previousCalled.check()) {
         pin->decrementCurrentDigit();
         disp->drawPin(pin->getPinString());
-    }
-    // TRY SET PIN
-    else if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
-        pin->setOneDigit();
-        bool saved = pin->savePin();
-        if (saved) {
-            confirmPinCalled.set();
-        } else {
-            if (pin->mode == PinMode::UNLOCK && !dataHolder->isInitialized()) {
-                resetDeviceCalled.set();
-            } else if (pin->mode == PinMode::UNLOCK) {
-                Serial.println("PIN MISMATCH");
-                pinMismatchCalled.set();
-            } else if (pin->mode == PinMode::CONFIRM) {
-                Serial.println("PIN MISMATCH");
-                pinMismatchCalled.set();
-            }
-        }
-        pin->clearValues();
     }
     // DROP PIN
     else if (_bothCalled && pin->isArrow() && pin->isFirstDigit()) {
