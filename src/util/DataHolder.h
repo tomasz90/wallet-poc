@@ -22,8 +22,9 @@ public:
     EthTx* tx;
     DataHolder() = default;
     bool isInitialized();
+    int getPinDigit(uint8_t position);
     void savePin(uint8_t pinCombination[4]);
-    void saveTryOrReset();
+    void saveFailTryOrReset();
 };
 
 

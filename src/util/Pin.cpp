@@ -99,6 +99,12 @@ bool Pin::savePin() {
                 break;
             case PinMode::CONFIRM:
                 if (savedCombination[i] != rawCombination[i]) return false;
+                break;
+            case PinMode::UNLOCK:
+                if (dataHolder->getPinDigit(i) != rawCombination[i]) {
+                    dataHolder->saveFailTryOrReset();
+                    return false;
+                }
         }
     }
     if (mode == PinMode::CONFIRM) {

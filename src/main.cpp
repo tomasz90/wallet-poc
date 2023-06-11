@@ -22,7 +22,7 @@ Menu *menu;
 void setup() {
     Serial.begin(115200);
     Serial.println('\n');
-    EEPROM.begin(5); //todo: increase later
+    EEPROM.begin(10); //todo: increase later
 
     auto disp = new Disp();
     auto dataHolder = new DataHolder();
@@ -36,7 +36,7 @@ void setup() {
     menu = new Menu(nav, disp, seedViewer, seedVerifier, dataHolder, pin);
 
     uint8_t read[4];
-    EEPROM.readBytes(0, read, 4);
+    EEPROM.readBytes(2, read, 4);
     Serial.printf("PIN: %d%d%d%d\n", read[0], read[1], read[2], read[3]);
 }
 

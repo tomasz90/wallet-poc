@@ -6,7 +6,7 @@
 
 enum class DigitState { UN_INIT, INIT, SET };
 
-enum class PinMode { SET, CONFIRM };
+enum class PinMode { SET, CONFIRM, UNLOCK };
 
 class Pin {
 public:

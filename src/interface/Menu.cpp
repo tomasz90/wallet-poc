@@ -47,6 +47,8 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     CustomState *S9_4 = machine.addState([this]() { s9_4(); });
 
     // NEXT
+    S1_0_->addTransition(S0,nav->pinMismatchCalled);
+    S1_0_->addTransition(S9_0,nav->confirmPinCalled);
     S1_0->addTransition(S1_1,nav->nextCalled);
     S1_1->addTransition(S2,  nav->bothCalled);
     S2->addTransition(S3,    nav->confirmPinCalled);
@@ -104,7 +106,6 @@ void Menu::s0() {
     doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Hello!");
     if(nav->bothCalled.check()) {
-        Serial.println("both calledoooooooo");
         if(dataHolder->isInitialized()) {
             machine.transitionTo(S1_0_);
         } else {
@@ -114,6 +115,10 @@ void Menu::s0() {
 }
 
 void Menu::s1_0_() {
+    doOnce([this]() {
+        pin->setMode(PinMode::UNLOCK);
+        disp->drawPin(pin->getPinString());
+    });
     disp->blinkTextWithSign("Enter pin:");
     nav->enterPin();
 }
