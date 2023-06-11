@@ -9,6 +9,9 @@
 
 #define MNEMONIC_LENGTH 12
 
+#define PIN_BYTES_LENGTH 4
+#define MNEMONIC_BYTES_LENGTH 107
+
 using std::vector;
 using std::array;
 using std::string;
@@ -22,13 +25,15 @@ public:
     EthTx* tx;
     DataHolder() = default;
     bool isInitialized();
-    void getPin(uint8_t pinCombination[4]);
+    void getPin(uint8_t pinCombination[PIN_BYTES_LENGTH]);
+    void savePin(uint8_t pinCombination[PIN_BYTES_LENGTH]);
     uint8_t getLeftTries();
-    void savePin(uint8_t pinCombination[4]);
     void printInfo();
     void resetTries();
     void incrementUsedTries();
     void resetDevice();
+    std::string getMnemonic() const;
+    void saveMnemonic(const std::string &mnemonic) const;
 };
 
 

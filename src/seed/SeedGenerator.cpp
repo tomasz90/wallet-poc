@@ -11,9 +11,10 @@ void SeedGenerator::generate(DataHolder *dataHolder) {
     bootloader_random_disable();
 
     dataHolder->mnemonic = create_mnemonic(entropy, language::en);
+    dataHolder->saveMnemonic(dataHolder->mnemonic.to_string());
     EthereumHDPrivateKey hd(dataHolder->mnemonic.to_string());
     dataHolder->account = hd.derive(DEFAULT_PATH);
-    Serial.println(dataHolder->mnemonic.to_string().c_str());
+    Serial.println(dataHolder->getMnemonic().c_str());
 }
 
 void SeedGenerator::generateRandomSequence(DataHolder *dataHolder) {
