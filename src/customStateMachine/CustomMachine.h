@@ -14,9 +14,11 @@ public:
     void run();
     CustomState* transitionTo(CustomState* s);
     int transitionTo(int i);
+
+    int currentState = 0;
 private:
     LinkedList<CustomState*> *stateList;
-    int currentState = 0;	//Indicates the current state number
+    //Indicates the current state number
     int lastState = 0;
 };
 

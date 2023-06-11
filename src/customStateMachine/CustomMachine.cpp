@@ -22,10 +22,10 @@ CustomState *CustomMachine::getLastState() const {
 void CustomMachine::run() {
     if (stateList->size() == 0) return;
 
+    int initialState = currentState;
     int next = stateList->get(currentState)->execute();
-    executeOnce = currentState != next;
-    if (executeOnce) {
-        lastState = currentState;
+    if (initialState == currentState) {
+        executeOnce = currentState != next;
         currentState = next;
     }
 }
