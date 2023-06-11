@@ -87,6 +87,9 @@ void Nav::enterPin() {
                 pinMismatchCalled.set();
             } else if(pin->mode == PinMode::UNLOCK && !dataHolder->isInitialized()) {
                 resetDeviceCalled.set();
+            } else if (pin->mode == PinMode::UNLOCK) {
+                Serial.println("PIN MISMATCH");
+                pinMismatchCalled.set();
             }
         }
         pin->clearValues();
