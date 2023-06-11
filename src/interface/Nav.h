@@ -19,6 +19,7 @@ public:
     Flag confirmPinCalled;
     Flag dropPinCalled;
     Flag pinMismatchCalled;
+    Flag resetDeviceCalled;
 
     Flag firstSeedScreenCalled;
     Flag previousSeedScreenCalled;

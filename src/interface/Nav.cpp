@@ -79,7 +79,15 @@ void Nav::enterPin() {
     else if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
         bool saved = pin->savePin();
-        if (saved) { confirmPinCalled.set(); } else { pinMismatchCalled.set(); }
+        if (saved) {
+            confirmPinCalled.set();
+        } else {
+            if(dataHolder->isInitialized()) {
+                pinMismatchCalled.set();
+            } else {
+                resetDeviceCalled.set();
+            }
+        }
         pin->clearValues();
     }
     // DROP PIN

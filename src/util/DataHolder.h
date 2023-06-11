@@ -26,9 +26,7 @@ public:
     uint8_t getLeftTries();
     void savePin(uint8_t pinCombination[4]);
     void saveFailTryOrReset();
-
     void printInfo();
-
     void resetTries();
 };
 
