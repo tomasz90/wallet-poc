@@ -1,6 +1,6 @@
 #include <EEPROM.h>
 #include <cstring>
-#include "DataHolder.h"
+#include "Repository.h"
 #include "utility/trezor/memzero.h"
 
 #define INITIALIZED_ADDRESS 0
@@ -8,11 +8,11 @@
 #define PIN_ADDRESS 2
 #define MNEMONIC_ADDRESS 6
 
-void DataHolder::getPin(uint8_t pinCombination[4]) {
+void Repository::getPin(uint8_t pinCombination[4]) {
     EEPROM.readBytes(PIN_ADDRESS, pinCombination, 4);
 }
 
-void DataHolder::savePin(uint8_t pinCombination[4]) {
+void Repository::savePin(uint8_t pinCombination[4]) {
     Serial.println("saving pin: " + String(pinCombination[0]) + String(pinCombination[1]) + String(pinCombination[2]) +
                    String(pinCombination[3]));
     // bool initialized
@@ -21,7 +21,7 @@ void DataHolder::savePin(uint8_t pinCombination[4]) {
     EEPROM.commit();
 }
 
-std::string DataHolder::getMnemonic() const {
+std::string Repository::getMnemonic() const {
     char _mnemonic[MNEMONIC_BYTES_LENGTH];
     EEPROM.readBytes(MNEMONIC_ADDRESS, _mnemonic, MNEMONIC_BYTES_LENGTH);
 
@@ -41,7 +41,7 @@ std::string DataHolder::getMnemonic() const {
     return str;
 }
 
-void DataHolder::saveMnemonic(const std::string &mnemonicStr) const {
+void Repository::saveMnemonic(const std::string &mnemonicStr) const {
     char _mnemonic[MNEMONIC_BYTES_LENGTH];
     // FILL WITH SPACES
     std::memset(_mnemonic, ' ', MNEMONIC_BYTES_LENGTH);
@@ -54,23 +54,23 @@ void DataHolder::saveMnemonic(const std::string &mnemonicStr) const {
     EEPROM.commit();
 }
 
-uint8_t DataHolder::getLeftTries() {
+uint8_t Repository::getLeftTries() {
     return 3 - EEPROM.readUChar(FAIL_TRIES_ADDRESS);
 }
 
-void DataHolder::resetTries() {
+void Repository::resetTries() {
     EEPROM.writeUChar(FAIL_TRIES_ADDRESS, 0);
     EEPROM.commit();
 }
 
-void DataHolder::incrementUsedTries() {
+void Repository::incrementUsedTries() {
     uint8_t tries = EEPROM.readUChar(FAIL_TRIES_ADDRESS);
     tries++;
     EEPROM.writeUChar(FAIL_TRIES_ADDRESS, tries);
     EEPROM.commit();
 }
 
-void DataHolder::resetDevice() {
+void Repository::resetDevice() {
     Serial.println("resetting device");
     uint8_t zeroPin[4] = {0, 0, 0, 0};
     char zeroMnemonic[MNEMONIC_BYTES_LENGTH];
@@ -82,11 +82,11 @@ void DataHolder::resetDevice() {
     EEPROM.commit();
 }
 
-bool DataHolder::isInitialized() {
+bool Repository::isInitialized() {
     return EEPROM.readBool(INITIALIZED_ADDRESS);
 }
 
-void DataHolder::printInfo() {
+void Repository::printInfo() {
     uint8_t pin[4];
     EEPROM.readBytes(PIN_ADDRESS, pin, 4);
     uint8_t failTries = EEPROM.readUChar(FAIL_TRIES_ADDRESS);

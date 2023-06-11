@@ -10,12 +10,13 @@ Nav::Nav(Led *_led,
          Disp *_disp,
          SeedViewer *_seedViewer,
          SeedVerifier *_seedVerifier,
-         DataHolder *_dataHolder,
+         Repository *_repository,
          Pin *_pin) {
     led = _led;
     disp = _disp;
     seedViewer = _seedViewer;
     seedVerifier = _seedVerifier;
+    repository = _repository;
     pin = _pin;
     buttonHandler.setDebounceTime(10);
     buttonHandler.setCallbacks(
@@ -84,7 +85,7 @@ void Nav::confirmPin() {
     if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
         if (pin->confirmPin()) {
-            dataHolder->savePin(pin->savedCombination);
+            repository->savePin(pin->savedCombination);
             confirmPinCalled.set();
         } else {
             pinMismatchCalled.set();
@@ -103,16 +104,16 @@ void Nav::unlockPin() {
     if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
         uint8_t pinFromFlash[4];
-        dataHolder->getPin(pinFromFlash);
+        repository->getPin(pinFromFlash);
         if (pin->unlockPin(pinFromFlash)) {
-            dataHolder->resetTries();
+            repository->resetTries();
             confirmPinCalled.set();
         } else {
-            if (dataHolder->getLeftTries() > 1) {
-                dataHolder->incrementUsedTries();
+            if (repository->getLeftTries() > 1) {
+                repository->incrementUsedTries();
                 pinMismatchCalled.set();
             } else {
-                dataHolder->resetDevice();
+                repository->resetDevice();
                 resetDeviceCalled.set();
             }
         }

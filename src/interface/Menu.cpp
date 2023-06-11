@@ -14,14 +14,14 @@ using std::string;
 CustomState *S1_0 = nullptr;
 CustomState *S1_0_ = nullptr;
 
-Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, DataHolder *_dataHolder,
+Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Repository *_repository,
            Pin *_pin) {
     nav = _nav;
     disp = _disp;
     seedViewer = _seedViewer;
     seedVerifier = _seedVerifier;
     pin = _pin;
-    dataHolder = _dataHolder;
+    repository = _repository;
 
     // STATES
     CustomState *S0 =   machine.addState([this]() { s0();});
@@ -111,7 +111,7 @@ void Menu::s0() {
     doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Hello!");
     if(nav->bothCalled.check()) {
-        if(dataHolder->isInitialized()) {
+        if(repository->isInitialized()) {
             machine.transitionTo(S1_0_);
         } else {
             machine.transitionTo(S1_0);
@@ -130,7 +130,7 @@ void Menu::s1_0_() {
 void Menu::s1_1_() {
     doOnce([this]() {
         disp->drawOnlyLeftBox("BACK");
-        disp->setTextAtCenter(("Left tries: " + String(dataHolder->getLeftTries())).c_str(), 24);
+        disp->setTextAtCenter(("Left tries: " + String(repository->getLeftTries())).c_str(), 24);
     });
     disp->blinkTextWithSign("Pin not matching.", 20);
 }
@@ -256,9 +256,9 @@ void Menu::s9_2() {
             disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
         }
 
-        string chainId = dataHolder->tx->formatChainId();
-        string address = dataHolder->tx->formatAddress();
-        string value = dataHolder->tx->formatEthValue();
+        string chainId = repository->tx->formatChainId();
+        string address = repository->tx->formatAddress();
+        string value = repository->tx->formatEthValue();
 
         disp->drawTransaction(chainId, address, value);
         disp->drawTwoBoxes("DECLINE", "ACCEPT", false);

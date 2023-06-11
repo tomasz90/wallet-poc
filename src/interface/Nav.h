@@ -38,7 +38,7 @@ public:
         Disp *_disp,
         SeedViewer *_seedViewer,
         SeedVerifier *_seedVerifier,
-        DataHolder *_dataHolder,
+        Repository *_repository,
         Pin *_pin);
 
     void setBt(Bluetooth *_bt);
@@ -64,7 +64,7 @@ private:
     SeedVerifier *seedVerifier;
     Pin *pin;
     Bluetooth *bt;
-    DataHolder *dataHolder;
+    Repository *repository;
 
     void enterPin(bool _bothCalled);
 };

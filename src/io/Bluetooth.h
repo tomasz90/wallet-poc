@@ -2,7 +2,7 @@
 #define BLUETOOTH_H
 
 #include "EthTx.h"
-#include "util/DataHolder.h"
+#include "util/Repository.h"
 
 // SERVICES
 #define SERVICE_ADDRESS_UUID  "b39418c1-5b51-4828-a8a0-7ee0eef01dba"
@@ -15,8 +15,8 @@
 
 class Bluetooth {
 public:
-    DataHolder *dataHolder;
-    Bluetooth(BLEServerCallbacks *_nav, DataHolder *_dataHolder);
+    Repository *repository;
+    Bluetooth(BLEServerCallbacks *_nav, Repository *_repository);
     void sendAddress();
     bool receivedTx();
     void signTx();

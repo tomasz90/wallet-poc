@@ -25,19 +25,19 @@ void setup() {
     EEPROM.begin(115);
 
     auto disp = new Disp();
-    auto dataHolder = new DataHolder();
+    auto repository = new Repository();
     auto seedViewer = new SeedViewer();
     auto seedVerifier = new SeedVerifier();
     auto pin = new Pin();
-    auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, dataHolder, pin);
-    auto bt = new Bluetooth(nav, dataHolder);
+    auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, repository, pin);
+    auto bt = new Bluetooth(nav, repository);
 
-    // THIS HAS TO BA AFTER BT INIT TO GENERATE TRUE RANDOM NUMBERS
+    // THIS HAS TO BE AFTER BT INIT TO GENERATE TRUE RANDOM NUMBERS
     SeedGenerator::generate(seedViewer, seedVerifier);
     nav->setBt(bt);
-    menu = new Menu(nav, disp, seedViewer, seedVerifier, dataHolder, pin);
+    menu = new Menu(nav, disp, seedViewer, seedVerifier, repository, pin);
 
-    dataHolder->printInfo();
+    repository->printInfo();
 }
 
 void loop() {

@@ -3,15 +3,15 @@
 #include <BLE2902.h>
 #include <Arduino.h>
 #include "Bluetooth.h"
-#include "util/DataHolder.h"
+#include "util/Repository.h"
 
 BLEServer *pServer = NULL;
 BLECharacteristic *pCharacteristicSender = NULL;
 BLECharacteristic *pCharacteristicSenderAddress = NULL;
 BLECharacteristic *pCharacteristicReceiver = NULL;
 
-Bluetooth::Bluetooth(BLEServerCallbacks *_nav, DataHolder *_dataHolder) {
-    dataHolder = _dataHolder;
+Bluetooth::Bluetooth(BLEServerCallbacks *_nav, Repository *_repository) {
+    repository = _repository;
     // Create the BLE Device
     BLEDevice::init("ESP32");
 
@@ -51,14 +51,14 @@ Bluetooth::Bluetooth(BLEServerCallbacks *_nav, DataHolder *_dataHolder) {
 }
 
 void Bluetooth::sendAddress() {
-    pCharacteristicSenderAddress->setValue(dataHolder->account->addressChecksumed().c_str());
+    pCharacteristicSenderAddress->setValue(repository->account->addressChecksumed().c_str());
     pCharacteristicSenderAddress->notify();
 }
 
 bool Bluetooth::receivedTx() {
     auto receiverValue = pCharacteristicReceiver->getValue();
     if (receiverValue.length() > 0) {
-        dataHolder->tx = new EthTx(receiverValue);
+        repository->tx = new EthTx(receiverValue);
         // received, so reset value for now
         pCharacteristicReceiver->setValue("");
         return true;
@@ -69,13 +69,13 @@ bool Bluetooth::receivedTx() {
 void Bluetooth::signTx() {
     Serial.println("Sending transaction");
     char *buffer;
-    dataHolder->tx->sign(buffer, dataHolder->account->prv().c_str());
+    repository->tx->sign(buffer, repository->account->prv().c_str());
     pCharacteristicSender->setValue(buffer);
     pCharacteristicSender->notify();
     delete[] buffer;
-    delete dataHolder->tx;
+    delete repository->tx;
 }
 
 void Bluetooth::declineTx() {
-    delete dataHolder->tx;
+    delete repository->tx;
 }

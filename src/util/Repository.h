@@ -16,12 +16,12 @@ using std::array;
 using std::string;
 using namespace BIP39;
 
-class DataHolder {
+class Repository {
 public:
     array<int, MNEMONIC_LENGTH> randomSequence;
     EthereumHDPrivateKey *account;
     EthTx* tx;
-    DataHolder() = default;
+    Repository() = default;
     bool isInitialized();
     void getPin(uint8_t pinCombination[PIN_BYTES_LENGTH]);
     void savePin(uint8_t pinCombination[PIN_BYTES_LENGTH]);

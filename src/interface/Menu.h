@@ -12,7 +12,7 @@ class Menu {
 
 public:
 
-    Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, DataHolder *_dataHolder,
+    Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Repository *_repository,
          Pin *_pin);
     void run();
     void doOnce(const std::function<void()>& _doOnce);
@@ -22,7 +22,7 @@ private:
     SeedViewer *seedViewer;
     SeedVerifier *seedVerifier;
     Pin *pin;
-    DataHolder *dataHolder;
+    Repository *repository;
 
     void s0();
     void s1_0();
