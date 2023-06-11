@@ -205,9 +205,9 @@ void Menu::s9_0() {
 void Menu::s9_1() {
     doOnce([this]() {
         disp->clearMenu();
+        nav->sendAddress();
     });
     disp->blinkTextWithSign("Device connected!   Listening for txs..");
-    nav->sendAddress();
     nav->listenTx();
 }
 

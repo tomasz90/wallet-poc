@@ -63,8 +63,6 @@ private:
     Pin *pin;
     Bluetooth *bt;
     DataHolder *dataHolder;
-    // this is for Nav purposes only
-    Flag btConnectedCalledPrivate;
 };
 
 #endif //NAV_H

@@ -70,30 +70,30 @@ void Nav::enterPin() {
         pin->incrementCurrentDigit();
         disp->drawPin(pin->getPinString());
     }
-        // DECREMENT DIGIT
+    // DECREMENT DIGIT
     else if (previousCalled.check()) {
         pin->decrementCurrentDigit();
         disp->drawPin(pin->getPinString());
     }
-        // TRY SET PIN
+    // TRY SET PIN
     else if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
         bool saved = pin->savePin();
         if (saved) { confirmPinCalled.set(); } else { pinMismatchCalled.set(); }
         pin->clearValues();
     }
-        // DROP PIN
+    // DROP PIN
     else if (_bothCalled && pin->isArrow() && pin->isFirstDigit()) {
         dropPinCalled.set();
         pin->clearValues();
     }
-        // SET DIGIT
+    // SET DIGIT
     else if (_bothCalled && !pin->isArrow()) {
         pin->setOneDigit();
         disp->drawPin(pin->getPinString());
     }
 
-        // UNSET DIGIT
+    // UNSET DIGIT
     else if (_bothCalled && pin->isArrow()) {
         pin->unsetOneDigit();
         disp->drawPin(pin->getPinString());
@@ -106,25 +106,24 @@ void Nav::navigateSeed(bool nextHighlighted) {
         if (nextHighlighted && seedViewer->isLast()) {
             confirmSeedScreenCalled.set();
             seedViewer->resetIndex();
+            return;
         }
-            // INCREMENT WORD GO NEXT SCREEN
+        // INCREMENT WORD GO NEXT SCREEN
         else if (nextHighlighted) {
             nextSeedScreenCalled.set();
             seedViewer->increment();
-            disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
-            // DECREMENT WORD GO FIRST SCREEN
+        // DECREMENT WORD GO FIRST SCREEN
         else if (seedViewer->isSecond()) {
             firstSeedScreenCalled.set();
             seedViewer->decrement();
-            disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
-            // DECREMENT WORD GO PREVIOUS SCREEN
+        // DECREMENT WORD GO PREVIOUS SCREEN
         else {
             previousSeedScreenCalled.set();
             seedViewer->decrement();
-            disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
         }
+        disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
     }
 }
 
@@ -135,29 +134,28 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         if (nextHighlighted && seedVerifier->isCurrentWordValid() && seedVerifier->isLast()) {
             confirmSeedScreenCalled.set();
             seedVerifier->resetIndex();
+            return;
         }
-            // INCREMENT WORD GO NEXT SCREEN
+        // INCREMENT WORD GO NEXT SCREEN
         else if (nextHighlighted && seedVerifier->isCurrentWordValid()) {
             nextSeedScreenCalled.set();
             seedVerifier->increment();
-            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
-            // SCREEN NO WORD RECEIVED
+        // SCREEN NO WORD RECEIVED
         else if (nextHighlighted) {
             disp->blinkTextWarningAtCenter("Need valid word!");
         }
-            // DECREMENT WORD GO FIRST SCREEN
+        // DECREMENT WORD GO FIRST SCREEN
         else if (seedVerifier->isSecond()) {
             firstSeedScreenCalled.set();
             seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
-            // DECREMENT WORD GO PREVIOUS SCREEN
+        // DECREMENT WORD GO PREVIOUS SCREEN
         else {
             previousSeedScreenCalled.set();
             seedVerifier->decrement();
-            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         }
+        disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
     }
 }
 
@@ -180,7 +178,6 @@ void Nav::checkSerialData() {
 void Nav::onConnect(BLEServer *pServer) {
     Serial.println("connected");
     btConnectedCalled.set();
-    btConnectedCalledPrivate.set();
     deviceConnected = true;
 }
 
@@ -193,7 +190,7 @@ void Nav::onDisconnect(BLEServer *pServer) {
 }
 
 void Nav::sendAddress() {
-    if (deviceConnected && btConnectedCalledPrivate.check()) {
+    if (deviceConnected) {
         delay(2200);
         bt->sendAddress();
     }
