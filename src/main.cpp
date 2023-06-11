@@ -35,9 +35,7 @@ void setup() {
     nav->setBt(bt);
     menu = new Menu(nav, disp, seedViewer, seedVerifier, dataHolder, pin);
 
-    uint8_t read[4];
-    EEPROM.readBytes(2, read, 4);
-    Serial.printf("PIN: %d%d%d%d\n", read[0], read[1], read[2], read[3]);
+    dataHolder->printInfo();
 }
 
 void loop() {

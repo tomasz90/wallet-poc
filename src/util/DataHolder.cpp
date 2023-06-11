@@ -5,8 +5,8 @@
 #define FAIL_TRIES_ADDRESS 1
 #define PIN_ADDRESS 2
 
-int DataHolder::getPinDigit(uint8_t position) {
-    return EEPROM.readInt(position + PIN_ADDRESS);
+uint8_t DataHolder::getPinDigit(uint8_t position) {
+    return EEPROM.readUChar(position + PIN_ADDRESS);
 }
 
 void DataHolder::savePin(uint8_t pinCombination[4]) {
@@ -17,8 +17,12 @@ void DataHolder::savePin(uint8_t pinCombination[4]) {
     EEPROM.commit();
 }
 
+uint8_t DataHolder::getLeftTries() {
+    return 3 - EEPROM.readUChar(FAIL_TRIES_ADDRESS);
+}
+
 void DataHolder::saveFailTryOrReset() {
-    int tries = EEPROM.readInt(FAIL_TRIES_ADDRESS);
+    uint8_t tries = EEPROM.readUChar(FAIL_TRIES_ADDRESS);
     tries++;
     Serial.println("Failed try: " + String(tries) + " of 3");
     if (tries >= 3) {
@@ -28,12 +32,20 @@ void DataHolder::saveFailTryOrReset() {
         EEPROM.writeBytes(PIN_ADDRESS, pinReset, 4);
         EEPROM.writeBool(INITIALIZED_ADDRESS, false);
     }
-    EEPROM.write(FAIL_TRIES_ADDRESS, tries);
+    EEPROM.writeUChar(FAIL_TRIES_ADDRESS, tries);
     EEPROM.commit();
 }
 
 bool DataHolder::isInitialized() {
-    bool init =  EEPROM.readBool(INITIALIZED_ADDRESS);
-    Serial.println("isInitialized: " + String(init));
-    return init;
+    return EEPROM.readBool(INITIALIZED_ADDRESS);
+}
+
+void DataHolder::printInfo() {
+    uint8_t pin[4];
+    EEPROM.readBytes(PIN_ADDRESS, pin, 4);
+    uint8_t failTries = EEPROM.readUChar(FAIL_TRIES_ADDRESS);
+
+    Serial.println("Initialized: " + String(isInitialized()));
+    Serial.println("Failed tries: " + String(failTries));
+    Serial.printf("PIN: %d%d%d%d\n", pin[0], pin[1], pin[2], pin[3]);
 }

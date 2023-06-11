@@ -27,6 +27,7 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     CustomState *S0 =   machine.addState([this]() { s0();});
     S1_0 = machine.addState([this]() { s1_0();});
     S1_0_ = machine.addState([this]() { s1_0_();});
+    CustomState *S1_1_ = machine.addState([this]() { s1_1_();});
     CustomState *S1_1 = machine.addState([this]() { s1_1();});
     CustomState *S2 =   machine.addState([this]() { s2();});
     CustomState *S3 =   machine.addState([this]() { s3();});
@@ -47,8 +48,9 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     CustomState *S9_4 = machine.addState([this]() { s9_4(); });
 
     // NEXT
-    S1_0_->addTransition(S0,nav->pinMismatchCalled);
+    S1_0_->addTransition(S1_1_,nav->pinMismatchCalled);
     S1_0_->addTransition(S9_0,nav->confirmPinCalled);
+    S1_1_->addTransition(S1_0_,nav->bothCalled);
     S1_0->addTransition(S1_1,nav->nextCalled);
     S1_1->addTransition(S2,  nav->bothCalled);
     S2->addTransition(S3,    nav->confirmPinCalled);
@@ -121,6 +123,14 @@ void Menu::s1_0_() {
     });
     disp->blinkTextWithSign("Enter pin:");
     nav->enterPin();
+}
+
+void Menu::s1_1_() {
+    doOnce([this]() {
+        disp->drawOnlyLeftBox("BACK");
+        disp->setTextAtCenter(("Left tries: " + String(dataHolder->getLeftTries())).c_str(), 24);
+    });
+    disp->blinkTextWithSign("Pin not matching...", 20);
 }
 
 void Menu::s1_0() {
