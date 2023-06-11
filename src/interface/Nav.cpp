@@ -108,10 +108,11 @@ void Nav::unlockPin() {
             dataHolder->resetTries();
             confirmPinCalled.set();
         } else {
-            dataHolder->saveFailTryOrReset();
-            if (dataHolder->isInitialized()) {
+            if (dataHolder->getLeftTries() > 1) {
+                dataHolder->incrementUsedTries();
                 pinMismatchCalled.set();
             } else {
+                dataHolder->resetDevice();
                 resetDeviceCalled.set();
             }
         }

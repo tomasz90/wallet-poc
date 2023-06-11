@@ -25,9 +25,10 @@ public:
     void getPin(uint8_t pinCombination[4]);
     uint8_t getLeftTries();
     void savePin(uint8_t pinCombination[4]);
-    void saveFailTryOrReset();
     void printInfo();
     void resetTries();
+    void incrementUsedTries();
+    void resetDevice();
 };
 
 
