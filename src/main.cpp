@@ -26,12 +26,14 @@ void setup() {
 
     auto disp = new Disp();
     auto dataHolder = new DataHolder();
-    SeedGenerator::generate(dataHolder);
-    auto seedViewer = new SeedViewer(dataHolder);
-    auto seedVerifier = new SeedVerifier(dataHolder);
+    auto seedViewer = new SeedViewer();
+    auto seedVerifier = new SeedVerifier();
     auto pin = new Pin();
     auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, dataHolder, pin);
     auto bt = new Bluetooth(nav, dataHolder);
+
+    // THIS HAS TO BA AFTER BT INIT TO GENERATE TRUE RANDOM NUMBERS
+    SeedGenerator::generate(seedViewer, seedVerifier);
     nav->setBt(bt);
     menu = new Menu(nav, disp, seedViewer, seedVerifier, dataHolder, pin);
 

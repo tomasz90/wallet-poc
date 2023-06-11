@@ -72,8 +72,11 @@ void DataHolder::incrementUsedTries() {
 
 void DataHolder::resetDevice() {
     Serial.println("resetting device");
-    uint8_t pinReset[4] = {0, 0, 0, 0};
-    EEPROM.writeBytes(PIN_ADDRESS, pinReset, 4);
+    uint8_t zeroPin[4] = {0, 0, 0, 0};
+    char zeroMnemonic[MNEMONIC_BYTES_LENGTH];
+    memzero(zeroMnemonic, MNEMONIC_BYTES_LENGTH);
+    EEPROM.writeBytes(MNEMONIC_ADDRESS, zeroMnemonic, MNEMONIC_BYTES_LENGTH);
+    EEPROM.writeBytes(PIN_ADDRESS, zeroPin, PIN_BYTES_LENGTH);
     EEPROM.writeBool(INITIALIZED_ADDRESS, false);
     EEPROM.writeUChar(FAIL_TRIES_ADDRESS, 0);
     EEPROM.commit();

@@ -1,8 +1,12 @@
 #include "AbstractSeedSetter.h"
+#include "const.h"
 
-AbstractSeedSetter::AbstractSeedSetter(DataHolder *dataHolder) {
+AbstractSeedSetter::AbstractSeedSetter() {
     currentIndex = 0;
-    this->mnemonic = dataHolder->mnemonic;
+}
+
+void AbstractSeedSetter::setMnemonic(word_list &_tempMnemonic) {
+    this->tempMnemonic = _tempMnemonic;
 }
 
 bool AbstractSeedSetter::isSecond() const {

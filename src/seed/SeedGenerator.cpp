@@ -3,22 +3,25 @@
 
 #define DEFAULT_PATH "m/44'/60'/0'/0/0"
 
-void SeedGenerator::generate(DataHolder *dataHolder) {
+void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier) {
     // GENERATE RANDOMNESS
-    bootloader_random_enable();
-    vector<uint8_t> entropy = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//generateEntropy();
-    generateRandomSequence(dataHolder);
-    bootloader_random_disable();
+//    bootloader_random_enable();
+//    bootloader_random_disable();
 
-    dataHolder->mnemonic = create_mnemonic(entropy, language::en);
-    dataHolder->saveMnemonic(dataHolder->mnemonic.to_string());
-    EthereumHDPrivateKey hd(dataHolder->mnemonic.to_string());
-    dataHolder->account = hd.derive(DEFAULT_PATH);
-    Serial.println(dataHolder->getMnemonic().c_str());
+    // GENERATE RANDOM SEQUENCE
+    array<int, MNEMONIC_LENGTH> seq{};
+    generateRandomSequence(seq);
+
+    // GENERATE MNEMONIC
+    vector<uint8_t> entropy = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//generateEntropy();
+    word_list mnemonic = create_mnemonic(entropy, language::en);
+
+    seedViewer->setMnemonic(mnemonic);
+    seedVerifier->setMnemonic(mnemonic);
+    seedVerifier->setRandomSequence(seq);
 }
 
-void SeedGenerator::generateRandomSequence(DataHolder *dataHolder) {
-    array<int, MNEMONIC_LENGTH> seq{};
+void SeedGenerator::generateRandomSequence(array<int, MNEMONIC_LENGTH> seq) {
     seq.fill(-1);
     for (int &i: seq) {
         uint8_t temp = esp_random() % MNEMONIC_LENGTH;
@@ -27,7 +30,6 @@ void SeedGenerator::generateRandomSequence(DataHolder *dataHolder) {
         }
         i = temp;
     }
-    dataHolder->randomSequence = seq;
 }
 
 vector<uint8_t> SeedGenerator::generateEntropy() {

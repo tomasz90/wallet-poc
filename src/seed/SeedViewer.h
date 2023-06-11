@@ -5,7 +5,7 @@
 
 class SeedViewer : public AbstractSeedSetter {
 public:
-    explicit SeedViewer(DataHolder *dataHolder);
+    explicit SeedViewer();
     string getCurrentWord() const;
 };
 

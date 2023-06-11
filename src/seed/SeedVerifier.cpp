@@ -1,8 +1,11 @@
 #include "SeedVerifier.h"
 
-SeedVerifier::SeedVerifier(DataHolder *dataHolder) : AbstractSeedSetter(dataHolder) {
-    this->randomSequence = dataHolder->randomSequence;
+SeedVerifier::SeedVerifier() : AbstractSeedSetter() {
     this->verifiedWords.fill("");
+}
+
+void SeedVerifier::setRandomSequence(array<int, MNEMONIC_LENGTH> seq) {
+    this->randomSequence = seq;
 }
 
 int SeedVerifier::getCurrentRandom() {
@@ -19,7 +22,7 @@ bool SeedVerifier::isCurrentWordValid() {
 
 bool SeedVerifier::validateWord(const string &word) {
     Serial.println(("currentIndex: " + std::to_string(currentIndex)).c_str());
-    if (mnemonic.getWordAt(getCurrentRandom()) == word) {
+    if (tempMnemonic.getWordAt(getCurrentRandom()) == word) {
         verifiedWords[getCurrentRandom()] = word;
         return true;
     } else {

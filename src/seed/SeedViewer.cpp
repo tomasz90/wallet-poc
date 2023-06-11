@@ -1,7 +1,7 @@
 #include "SeedViewer.h"
 
-SeedViewer::SeedViewer(DataHolder *dataHolder) : AbstractSeedSetter(dataHolder) {}
+SeedViewer::SeedViewer() : AbstractSeedSetter() {}
 
 string SeedViewer::getCurrentWord() const {
-    return mnemonic.getWordAt(currentIndex);
+    return tempMnemonic.getWordAt(currentIndex);
 }

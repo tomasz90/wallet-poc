@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include <array>
 #include "bip39/word_list.h"
-#include "SeedGenerator.h"
 
 using namespace BIP39;
 using std::vector;
@@ -14,14 +13,16 @@ using std::string;
 class AbstractSeedSetter {
 public:
     uint8_t currentIndex;
-    word_list mnemonic;
 
-    AbstractSeedSetter(DataHolder *dataHolder);
+    AbstractSeedSetter();
     bool isSecond() const;
     bool isLast() const;
     void increment();
     void decrement();
     void resetIndex();
+    void setMnemonic(word_list &tempMnemonic);
+protected:
+    word_list tempMnemonic;
 };
 
 
