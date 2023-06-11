@@ -6,16 +6,16 @@
 
 class SeedVerifier : public AbstractSeedSetter {
 public:
-    array<int, MNEMONIC_LENGTH> randomSequence{};
-
     explicit SeedVerifier();
     void setRandomSequence(array<int, MNEMONIC_LENGTH> seq);
     int getCurrentRandom();
     string getCurrentRandomWord();
     bool validateWord(const string &word);
     bool isCurrentWordValid();
+    string getMnemonic();
 
 private:
+    array<int, MNEMONIC_LENGTH> randomSequence{};
     array<string, MNEMONIC_LENGTH> verifiedWords;
 };
 

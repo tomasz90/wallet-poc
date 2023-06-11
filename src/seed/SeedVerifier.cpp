@@ -29,3 +29,7 @@ bool SeedVerifier::validateWord(const string &word) {
         return false;
     }
 }
+
+std::string SeedVerifier::getMnemonic() {
+    return tempMnemonic.to_string();
+}

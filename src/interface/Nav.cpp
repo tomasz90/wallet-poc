@@ -185,6 +185,7 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         // CONFIRM SEED PHRASE
         if (nextHighlighted && seedVerifier->isCurrentWordValid() && seedVerifier->isLast()) {
             confirmSeedScreenCalled.set();
+            repository->saveMnemonic(seedVerifier->getMnemonic());
             seedVerifier->resetIndex();
             return;
         }
