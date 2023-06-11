@@ -22,7 +22,7 @@ Menu *menu;
 void setup() {
     Serial.begin(115200);
     Serial.println('\n');
-    EEPROM.begin(4); //todo: increase later
+    EEPROM.begin(5); //todo: increase later
 
     auto disp = new Disp();
     auto dataHolder = new DataHolder();
