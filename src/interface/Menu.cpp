@@ -11,6 +11,9 @@ CustomState *S9_3 = nullptr;
 
 using std::string;
 
+CustomState *S1_0 = nullptr;
+CustomState *S1_0_ = nullptr;
+
 Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, DataHolder *_dataHolder,
            Pin *_pin) {
     nav = _nav;
@@ -22,7 +25,8 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
 
     // STATES
     CustomState *S0 =   machine.addState([this]() { s0();});
-    CustomState *S1_0 = machine.addState([this]() { s1_0();});
+    S1_0 = machine.addState([this]() { s1_0();});
+    S1_0_ = machine.addState([this]() { s1_0_();});
     CustomState *S1_1 = machine.addState([this]() { s1_1();});
     CustomState *S2 =   machine.addState([this]() { s2();});
     CustomState *S3 =   machine.addState([this]() { s3();});
@@ -43,7 +47,6 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     CustomState *S9_4 = machine.addState([this]() { s9_4(); });
 
     // NEXT
-    S0->addTransition(S1_0,  nav->bothCalled);
     S1_0->addTransition(S1_1,nav->nextCalled);
     S1_1->addTransition(S2,  nav->bothCalled);
     S2->addTransition(S3,    nav->confirmPinCalled);
@@ -100,6 +103,19 @@ void Menu::doOnce(const std::function<void()> &_doOnce) {
 void Menu::s0() {
     doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Hello!");
+    if(nav->bothCalled.check()) {
+        Serial.println("both calledoooooooo");
+        if(dataHolder->isInitialized()) {
+            machine.transitionTo(S1_0_);
+        } else {
+            machine.transitionTo(S1_0);
+        }
+    }
+}
+
+void Menu::s1_0_() {
+    disp->blinkTextWithSign("Enter pin:");
+    nav->enterPin();
 }
 
 void Menu::s1_0() {

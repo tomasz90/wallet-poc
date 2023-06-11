@@ -26,6 +26,7 @@ private:
 
     void s0();
     void s1_0();
+    void s1_0_();
     void s1_1();
     void s2();
     void s3();
