@@ -36,6 +36,11 @@ void DataHolder::saveFailTryOrReset() {
     EEPROM.commit();
 }
 
+void DataHolder::resetTries() {
+    EEPROM.writeUChar(FAIL_TRIES_ADDRESS, 0);
+    EEPROM.commit();
+}
+
 bool DataHolder::isInitialized() {
     return EEPROM.readBool(INITIALIZED_ADDRESS);
 }

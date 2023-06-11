@@ -28,6 +28,8 @@ public:
     void saveFailTryOrReset();
 
     void printInfo();
+
+    void resetTries();
 };
 
 

@@ -107,8 +107,13 @@ bool Pin::savePin() {
                 }
         }
     }
-    if (mode == PinMode::CONFIRM) {
-        dataHolder->savePin(savedCombination);
+    switch (mode) {
+        case PinMode::CONFIRM:
+            dataHolder->savePin(savedCombination);
+            break;
+        case PinMode::UNLOCK:
+            dataHolder->resetTries();
+            break;
     }
     return true;
 }
