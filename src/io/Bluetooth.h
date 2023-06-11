@@ -15,12 +15,10 @@
 
 class Bluetooth {
 public:
-    Repository *repository;
-    Bluetooth(BLEServerCallbacks *_nav, Repository *_repository);
-    void sendAddress();
-    bool receivedTx();
-    void signTx();
-    void declineTx();
+    Bluetooth(BLEServerCallbacks *_nav);
+    void sendAddress(const string &address);
+    string receiveTx();
+    void sendTx(char *buffer);
 };
 
 #endif //BLUETOOTH_H

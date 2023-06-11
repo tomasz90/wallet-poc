@@ -2,6 +2,7 @@
 #include "io/Led.h"
 #include "ButtonsHandler.h"
 #include "seed/SeedVerifier.h"
+#include "io/Signer.h"
 
 using std::string;
 
@@ -18,6 +19,7 @@ Nav::Nav(Led *_led,
     seedVerifier = _seedVerifier;
     repository = _repository;
     pin = _pin;
+    signer = new Signer(repository);
     buttonHandler.setDebounceTime(10);
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
@@ -236,7 +238,7 @@ void Nav::onConnect(BLEServer *pServer) {
 
 void Nav::onDisconnect(BLEServer *pServer) {
     Serial.println("disconnected");
-    bt->declineTx();
+    delete repository->getTx();
     pServer->startAdvertising(); // restart advertising
     btDisconnectedCalled.set();
     deviceConnected = false;
@@ -245,13 +247,16 @@ void Nav::onDisconnect(BLEServer *pServer) {
 void Nav::sendAddress() {
     if (deviceConnected) {
         delay(2200);
-        bt->sendAddress();
+        string address = repository->getAddress();
+        bt->sendAddress(address);
     }
 }
 
 void Nav::listenTx() {
     if (deviceConnected) {
-        if (bt->receivedTx()) {
+        string receivedValue = bt->receiveTx();
+        if (receivedValue.length() > 0) {
+            repository->saveTx(new EthTx(receivedValue));
             receivedTxCalled.set();
         }
     }
@@ -259,7 +264,12 @@ void Nav::listenTx() {
 
 void Nav::signTx() const {
     if (deviceConnected) {
-        bt->signTx();
+        char *buffer;
+        auto key = repository->getPrivateKey();
+        auto tx = repository->getTx();
+        signer->sign(tx, key, buffer);
+        delete tx;
+        bt->sendTx(buffer);
     } else {
         Serial.println("Cant sign, device not connected");
     }

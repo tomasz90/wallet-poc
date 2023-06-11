@@ -10,6 +10,7 @@
 #include "Flag.h"
 #include "seed/SeedViewer.h"
 #include "seed/SeedVerifier.h"
+#include "io/Signer.h"
 
 class Nav : public BLEServerCallbacks {
 public:
@@ -65,6 +66,7 @@ private:
     Pin *pin;
     Bluetooth *bt;
     Repository *repository;
+    Signer *signer;
 
     void enterPin(bool _bothCalled);
 };

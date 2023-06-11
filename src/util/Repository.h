@@ -19,7 +19,6 @@ using namespace BIP39;
 class Repository {
 public:
     array<int, MNEMONIC_LENGTH> randomSequence;
-    EthereumHDPrivateKey *account;
     EthTx* tx;
     Repository() = default;
     bool isInitialized();
@@ -32,6 +31,10 @@ public:
     void resetDevice();
     std::string getMnemonic() const;
     void saveMnemonic(const std::string &mnemonic) const;
+    void saveTx(EthTx* _tx);
+    EthTx* getTx();
+    string getPrivateKey();
+    string getAddress();
 };
 
 

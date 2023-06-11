@@ -8,6 +8,8 @@
 #define PIN_ADDRESS 2
 #define MNEMONIC_ADDRESS 6
 
+#define DEFAULT_PATH "m/44'/60'/0'/0/0"
+
 void Repository::getPin(uint8_t pinCombination[4]) {
     EEPROM.readBytes(PIN_ADDRESS, pinCombination, 4);
 }
@@ -94,4 +96,24 @@ void Repository::printInfo() {
     Serial.println("Initialized: " + String(isInitialized()));
     Serial.println("Failed tries: " + String(failTries));
     Serial.printf("PIN: %d%d%d%d\n", pin[0], pin[1], pin[2], pin[3]);
+}
+
+void Repository::saveTx(EthTx* _tx) {
+    tx = _tx;
+}
+
+EthTx* Repository::getTx() {
+    return tx;
+}
+
+string Repository::getPrivateKey() {
+    EthereumHDPrivateKey hd(getMnemonic());
+    EthereumHDPrivateKey* firstAccount = hd.derive(DEFAULT_PATH);
+    return firstAccount->prv().c_str();
+}
+
+string Repository::getAddress() {
+    EthereumHDPrivateKey hd(getMnemonic());
+    EthereumHDPrivateKey* firstAccount = hd.derive(DEFAULT_PATH);
+    return firstAccount->addressChecksumed().c_str();
 }

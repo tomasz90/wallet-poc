@@ -22,43 +22,7 @@ EthTx::EthTx(std::string &receiverValue) {
 }
 
 void EthTx::sign(char *&buffer, const char *key) {
-    JsonObject &obj = jb.createObject();
 
-    Contract contract(chainId);
-    contract.SetPrivateKey(key);
-
-    string encoded = contract.SignTransaction(nonce, gasPrice, gasLimit,
-                                              &destinationAddress, &value, &data);
-
-    string nonceStr = std::to_string(nonce);
-    string chainIdStr = std::to_string(chainId);
-    string gasPriceStr = std::to_string(gasPrice);
-    string gasLimitStr = std::to_string(gasLimit);
-    string valueStr = value.str();
-
-    obj["nonce"] = nonceStr.c_str();
-    obj["chainId"] = chainIdStr.c_str();
-    obj["gasPrice"] = gasPriceStr.c_str();
-    obj["gasLimit"] = gasLimitStr.c_str();;
-    obj["destinationAddress"] = destinationAddress.c_str();
-    obj["value"] = valueStr.c_str();
-    obj["data"] = data.c_str();
-    obj["encoded"] = encoded.c_str();
-
-    Serial.println(obj["nonce"].as<char *>());
-    Serial.println(obj["chainId"].as<char *>());
-    Serial.println(obj["gasPrice"].as<char *>());
-    Serial.println(obj["gasLimit"].as<char *>());
-    Serial.println(obj["destinationAddress"].as<char *>());
-    Serial.println(obj["value"].as<char *>());
-    Serial.println(obj["data"].as<char *>());
-    Serial.println(obj["encoded"].as<char *>());
-
-    // Get the size of the JSON string
-    size_t bufferSize = obj.measureLength() + 1;
-    buffer = new char[bufferSize];
-
-    obj.printTo(buffer, bufferSize);
 }
 
 std::string EthTx::formatChainId() const {

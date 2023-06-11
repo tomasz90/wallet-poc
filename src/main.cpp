@@ -30,7 +30,7 @@ void setup() {
     auto seedVerifier = new SeedVerifier();
     auto pin = new Pin();
     auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, repository, pin);
-    auto bt = new Bluetooth(nav, repository);
+    auto bt = new Bluetooth(nav);
 
     // THIS HAS TO BE AFTER BT INIT TO GENERATE TRUE RANDOM NUMBERS
     SeedGenerator::generate(seedViewer, seedVerifier);

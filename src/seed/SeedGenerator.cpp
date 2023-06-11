@@ -1,8 +1,6 @@
 #include <bootloader_random.h>
 #include "SeedGenerator.h"
 
-#define DEFAULT_PATH "m/44'/60'/0'/0/0"
-
 void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier) {
     // GENERATE RANDOMNESS
 //    bootloader_random_enable();

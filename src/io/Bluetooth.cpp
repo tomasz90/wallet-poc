@@ -10,8 +10,7 @@ BLECharacteristic *pCharacteristicSender = NULL;
 BLECharacteristic *pCharacteristicSenderAddress = NULL;
 BLECharacteristic *pCharacteristicReceiver = NULL;
 
-Bluetooth::Bluetooth(BLEServerCallbacks *_nav, Repository *_repository) {
-    repository = _repository;
+Bluetooth::Bluetooth(BLEServerCallbacks *_nav) {
     // Create the BLE Device
     BLEDevice::init("ESP32");
 
@@ -50,32 +49,18 @@ Bluetooth::Bluetooth(BLEServerCallbacks *_nav, Repository *_repository) {
     pServer->startAdvertising();
 }
 
-void Bluetooth::sendAddress() {
-    pCharacteristicSenderAddress->setValue(repository->account->addressChecksumed().c_str());
+void Bluetooth::sendAddress(const string &address) {
+    pCharacteristicSenderAddress->setValue(address);
     pCharacteristicSenderAddress->notify();
 }
 
-bool Bluetooth::receivedTx() {
-    auto receiverValue = pCharacteristicReceiver->getValue();
-    if (receiverValue.length() > 0) {
-        repository->tx = new EthTx(receiverValue);
-        // received, so reset value for now
-        pCharacteristicReceiver->setValue("");
-        return true;
-    }
-    return false;
+string Bluetooth::receiveTx() {
+    return pCharacteristicReceiver->getValue();
 }
 
-void Bluetooth::signTx() {
+void Bluetooth::sendTx(char *buffer) {
     Serial.println("Sending transaction");
-    char *buffer;
-    repository->tx->sign(buffer, repository->account->prv().c_str());
     pCharacteristicSender->setValue(buffer);
     pCharacteristicSender->notify();
     delete[] buffer;
-    delete repository->tx;
-}
-
-void Bluetooth::declineTx() {
-    delete repository->tx;
 }
