@@ -117,7 +117,7 @@ void should_throws_exception_when_not_all_digits_are_initialized_when_save_pin()
     Pin::setOneDigit();
 
     try {
-        Pin::savePin();
+        Pin::setPin();
         TEST_FAIL_MESSAGE("Expected exception, but was not thrown");
     } catch (std::runtime_error &e) {
         TEST_PASS();
@@ -150,7 +150,7 @@ void should_return_false_when_pin_mismatch() {
     Pin::setOneDigit();
     Pin::setOneDigit();
 
-    TEST_ASSERT_FALSE(Pin::savePin());
+    TEST_ASSERT_FALSE(Pin::setPin());
 }
 
 void should_save_pin() {
@@ -172,7 +172,7 @@ void should_save_pin() {
     int digit3 = getDigitAt(3);
     Pin::setOneDigit();
 
-    TEST_ASSERT_TRUE(Pin::savePin());
+    TEST_ASSERT_TRUE(Pin::setPin());
 
     Pin::setMode(PinMode::CONFIRM);
 
@@ -199,7 +199,7 @@ void should_save_pin() {
 
     Pin::setOneDigit();
 
-    TEST_ASSERT_TRUE(Pin::savePin());
+    TEST_ASSERT_TRUE(Pin::setPin());
 }
 
 void setup() {

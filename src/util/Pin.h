@@ -6,13 +6,11 @@
 
 enum class DigitState { UN_INIT, INIT, SET };
 
-enum class PinMode { SET, CONFIRM, UNLOCK };
-
 class Pin {
 public:
-    PinMode mode;
+    uint8_t savedCombination[4];
 
-    Pin(DataHolder *dataHolder);
+    Pin();
     void clearValues();
     std::string getPinString();
     void incrementCurrentDigit();
@@ -22,14 +20,12 @@ public:
     bool isLastDigit();
     void unsetOneDigit();
     void setOneDigit();
-    bool savePin();
-
-    void setMode(PinMode mode);
+    void setPin();
+    bool confirmPin();
+    bool unlockPin(uint8_t pinFromFlash[4]);
 private:
-    DataHolder *dataHolder;
     int currentIndex;
     int rawCombination[4];
-    uint8_t savedCombination[4];
     DigitState stateCombination[4];
 
     int _random(int with);

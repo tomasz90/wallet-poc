@@ -121,11 +121,10 @@ void Menu::s0() {
 
 void Menu::s1_0_() {
     doOnce([this]() {
-        pin->setMode(PinMode::UNLOCK);
         disp->drawPin(pin->getPinString());
     });
     disp->blinkTextWithSign("Enter pin:");
-    nav->enterPin();
+    nav->unlockPin();
 }
 
 void Menu::s1_1_() {
@@ -155,21 +154,19 @@ void Menu::s1_1() {
 
 void Menu::s2() {
     doOnce([this]() {
-        pin->setMode(PinMode::SET);
         disp->drawPin(pin->getPinString());
     });
 
     disp->blinkTextWithSign("Set pin:");
-    nav->enterPin();
+    nav->setPin();
 }
 
 void Menu::s3() {
     doOnce([this]() {
-        pin->setMode(PinMode::CONFIRM);
         disp->drawPin(pin->getPinString());
     });
     disp->blinkTextWithSign("Confirm pin:");
-    nav->enterPin();
+    nav->confirmPin();
 }
 
 void Menu::s4_0() {

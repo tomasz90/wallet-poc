@@ -49,7 +49,6 @@ public:
     void unlockPin();
     void confirmPin();
     void setPin();
-    void enterPin(bool _bothCalled);
     void navigateSeed(bool nextHighlighted);
     void navigateSeedConfirm(bool nextHighlighted);
     void checkSerialData();
@@ -57,7 +56,6 @@ public:
     void onDisconnect(BLEServer *pServer) override;
     void listenTx();
     void sendAddress();
-
     void signTx() const;
 private:
     Led* led;
@@ -67,6 +65,8 @@ private:
     Pin *pin;
     Bluetooth *bt;
     DataHolder *dataHolder;
+
+    void enterPin(bool _bothCalled);
 };
 
 #endif //NAV_H

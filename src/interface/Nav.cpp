@@ -68,7 +68,8 @@ void Nav::setPin() {
     // TRY SET PIN
     if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
-        pin->savePin();
+        pin->setPin();
+        confirmPinCalled.set();
         pin->clearValues();
         return;
     }
@@ -82,7 +83,8 @@ void Nav::confirmPin() {
     // TRY CONFIRM PIN
     if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
-        if (pin->savePin()) {
+        if (pin->confirmPin()) {
+            dataHolder->savePin(pin->savedCombination);
             confirmPinCalled.set();
         } else {
             pinMismatchCalled.set();
@@ -100,9 +102,13 @@ void Nav::unlockPin() {
     // TRY UNLOCK PIN
     if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
-        if (pin->savePin()) {
+        uint8_t pinFromFlash[4];
+        dataHolder->getPin(pinFromFlash);
+        if (pin->unlockPin(pinFromFlash)) {
+            dataHolder->resetTries();
             confirmPinCalled.set();
         } else {
+            dataHolder->saveFailTryOrReset();
             if (dataHolder->isInitialized()) {
                 pinMismatchCalled.set();
             } else {

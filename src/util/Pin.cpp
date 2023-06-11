@@ -1,9 +1,8 @@
 #include "Pin.h"
 #include "Wmath.cpp"
 
-Pin::Pin(DataHolder *dataHolder) {
-    currentIndex = 0;
-    this->dataHolder = dataHolder;
+Pin::Pin() {
+    clearValues();
 }
 
 void Pin::clearValues() {
@@ -16,11 +15,6 @@ void Pin::clearValues() {
     stateCombination[1] = DigitState::UN_INIT;
     stateCombination[2] = DigitState::UN_INIT;
     stateCombination[3] = DigitState::UN_INIT;
-}
-
-void Pin::setMode(PinMode _mode) {
-    clearValues();
-    mode = _mode;
 }
 
 std::string Pin::getPinString() {
@@ -91,29 +85,16 @@ void Pin::unsetOneDigit() {
     }
 }
 
-bool Pin::savePin() {
-    switch (mode) {
-        case PinMode::SET:
-            assignArray(savedCombination, rawCombination);
-            break;
-        case PinMode::CONFIRM:
-            if (areTheSame(savedCombination, rawCombination)) {
-                dataHolder->savePin(savedCombination);
-            } else {
-                return false;
-            }
-            break;
-        case PinMode::UNLOCK:
-            uint8_t pinFromFlash[4];
-            dataHolder->getPin(pinFromFlash);
-            if (areTheSame(pinFromFlash, rawCombination)) {
-                dataHolder->resetTries();
-            } else {
-                dataHolder->saveFailTryOrReset();
-                return false;
-            }
-    }
-    return true;
+void Pin::setPin() {
+    assignArray(savedCombination, rawCombination);
+}
+
+bool Pin::confirmPin() {
+    return areTheSame(savedCombination, rawCombination);
+}
+
+bool Pin::unlockPin(uint8_t pinFromFlash[4]) {
+    return areTheSame(pinFromFlash, rawCombination);
 }
 
 void Pin::assignArray(uint8_t saved[4], const int raw[4]) {
