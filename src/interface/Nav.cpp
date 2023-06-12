@@ -254,7 +254,7 @@ void Nav::sendAddress() {
 
 void Nav::listenTx() {
     if (deviceConnected) {
-        string receivedValue = bt->receiveTx();
+        string receivedValue = bt->receiveData();
         if (receivedValue.length() > 0) {
             repository->saveTx(new EthTx(receivedValue));
             receivedTxCalled.set();

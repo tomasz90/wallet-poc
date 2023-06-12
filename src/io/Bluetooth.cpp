@@ -53,7 +53,7 @@ void Bluetooth::sendAddress(const string &address) {
     pCharacteristicSenderAddress->notify();
 }
 
-string Bluetooth::receiveTx() {
+string Bluetooth::receiveData() {
     return pCharacteristicReceiver->getValue();
 }
 
