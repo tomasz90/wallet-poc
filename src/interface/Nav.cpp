@@ -248,7 +248,7 @@ void Nav::sendAddress() {
     if (deviceConnected) {
         delay(2200);
         string address = repository->getAddress();
-        bt->sendAddress(address);
+        bt->sendAddress("0x");
     }
 }
 

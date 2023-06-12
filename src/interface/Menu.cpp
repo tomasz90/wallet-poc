@@ -7,12 +7,11 @@
 
 CustomMachine machine = CustomMachine();
 
-CustomState *S9_3 = nullptr;
-
 using std::string;
 
 CustomState *S1_0 = nullptr;
 CustomState *S1_0_ = nullptr;
+CustomState *S9_3 = nullptr;
 
 Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Repository *_repository,
            Pin *_pin) {
@@ -48,7 +47,6 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     S9_3 = machine.addState([this]() { s9_3(); });
     CustomState *S9_4 = machine.addState([this]() { s9_4(); });
 
-    // NEXT
     S1_0_->addTransition(S1_1_,nav->pinMismatchCalled);
     S1_0_->addTransition(S1_2_,nav->resetDeviceCalled);
     S1_0_->addTransition(S9_0,nav->confirmPinCalled);
@@ -56,27 +54,19 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     S1_2_->addTransition(S0,nav->bothCalled);
     S1_0->addTransition(S1_1,nav->nextCalled);
     S1_1->addTransition(S2,  nav->bothCalled);
+    S1_1->addTransition(S1_0,nav->previousCalled);
+    S2->addTransition(S1_0,  nav->dropPinCalled);
     S2->addTransition(S3,    nav->confirmPinCalled);
+    S3->addTransition(S2,    nav->dropPinCalled);
     S3->addTransition(S4_0,  nav->confirmPinCalled);
     S3->addTransition(S4_1,  nav->pinMismatchCalled);
     S4_0->addTransition(S5,  nav->bothCalled);
     S4_1->addTransition(S2,  nav->bothCalled);
-
-    S9_0->addTransition(S9_1, nav->btConnectedCalled);
-    S9_1->addTransition(S9_2, nav->receivedTxCalled);
-    S9_2->addTransition(S9_3, nav->nextCalled);
-    S9_3->addTransition(S9_4, nav->bothCalled);
-
-    // PREVIOUS
-    S1_1->addTransition(S1_0,nav->previousCalled);
-    S2->addTransition(S1_0,  nav->dropPinCalled);
-    S3->addTransition(S2,    nav->dropPinCalled);
-
     S5->addTransition(S6_0,    nav->bothCalled);
     S6_0->addTransition(S6_1,nav->nextSeedScreenCalled);
     S6_1->addTransition(S6_2,nav->previousCalled);
-    S6_2->addTransition(S6_1,nav->nextCalled);
     S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
+    S6_2->addTransition(S6_1,nav->nextCalled);
     S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
     S7->addTransition(S8_0,  nav->bothCalled);
     S8_0->addTransition(S8_1, nav->nextSeedScreenCalled); //todo: change to generic wrapper of next and previous
@@ -84,12 +74,14 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     S8_1->addTransition(S9_0, nav->confirmSeedScreenCalled);
     S8_2->addTransition(S8_1, nav->nextCalled);
     S8_2->addTransition(S8_0, nav->firstSeedScreenCalled);
-
+    S9_0->addTransition(S9_1, nav->btConnectedCalled);
+    S9_1->addTransition(S9_2, nav->receivedTxCalled);
     S9_1->addTransition(S9_0, nav->btDisconnectedCalled);
-    S9_2->addTransition(S9_0, nav->btDisconnectedCalled);
-    S9_3->addTransition(S9_0, nav->btDisconnectedCalled);
-
+    S9_2->addTransition(S9_3, nav->nextCalled);
     S9_2->addTransition(S9_1, nav->bothCalled);
+    S9_2->addTransition(S9_0, nav->btDisconnectedCalled);
+    S9_3->addTransition(S9_4, nav->bothCalled);
+    S9_3->addTransition(S9_0, nav->btDisconnectedCalled);
     S9_3->addTransition(S9_2, nav->previousCalled);
     S9_4->addTransition(S9_1, nav->bothCalled);
 
