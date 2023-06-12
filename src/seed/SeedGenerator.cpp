@@ -11,9 +11,9 @@ void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier)
     generateRandomSequence(seq);
 
     // GENERATE MNEMONIC
-    vector<uint8_t> entropy = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//generateEntropy();
+    vector <uint8_t> entropy = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//generateEntropy();
     word_list mnemonic = create_mnemonic(entropy, language::en);
-
+    Serial.println(mnemonic.to_string().c_str());
     seedViewer->setMnemonic(mnemonic);
     seedVerifier->setMnemonic(mnemonic);
     seedVerifier->setRandomSequence(seq);
