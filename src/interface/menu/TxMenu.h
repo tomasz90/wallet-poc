@@ -5,12 +5,10 @@
 
 class TxMenu : public AbstractMenu {
 public:
-    Repository *repository;
+    Repository* repository;
 
-    TxMenu(CustomMachine *_machine, Nav *_nav, Disp *_disp, Repository *_repository)
-            : AbstractMenu(_machine, _nav, _disp) {
-        this->repository = _repository;
-    };
+    TxMenu(CustomMachine* machine, Nav* nav, Disp* disp, Repository* repository)
+            : AbstractMenu(machine, nav, disp), repository(repository) {};
 
     void s0() {
         doOnce([this]() { disp->clearMenu(); });

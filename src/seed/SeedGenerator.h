@@ -16,7 +16,7 @@ using namespace BIP39;
 
 class SeedGenerator {
 public:
-    static void generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier);
+    static void generate(SeedViewer* seedViewer, SeedVerifier* seedVerifier);
 private:
     static array<int, MNEMONIC_LENGTH> generateRandomSequence();
     static vector<uint8_t> generateEntropy();

@@ -1,7 +1,7 @@
 #include <bootloader_random.h>
 #include "SeedGenerator.h"
 
-void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier) {
+void SeedGenerator::generate(SeedViewer* seedViewer, SeedVerifier* seedVerifier) {
     // todo: find out if bt can be initlized to produce random, but not advertised
     bootloader_random_enable();
 

@@ -18,8 +18,8 @@ using std::string;
 
 class Menu {
 public:
-    Menu(Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository,
-         Pin *pin, Led *led, ButtonsHandler &buttonHandler) {
+    Menu(Disp* disp, SeedViewer* seedViewer, SeedVerifier* seedVerifier, Repository* repository,
+         Pin* pin, Led* led, ButtonsHandler &buttonHandler) {
 
         auto nav = new Nav(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);
 
@@ -29,32 +29,32 @@ public:
         auto txMenu = new TxMenu(&machine, nav, disp, repository);
 
         // STATES
-        CustomState *unlockS0 = machine.addState([unlock]() { unlock->s0(); });
-        CustomState *unlockS1 = machine.addState([unlock]() { unlock->s1(); });
-        CustomState *unlockS2 = machine.addState([unlock]() { unlock->s2(); });
-        CustomState *unlockS3 = machine.addState([unlock]() { unlock->s3(); });
+        CustomState* unlockS0 = machine.addState([unlock]() { unlock->s0(); });
+        CustomState* unlockS1 = machine.addState([unlock]() { unlock->s1(); });
+        CustomState* unlockS2 = machine.addState([unlock]() { unlock->s2(); });
+        CustomState* unlockS3 = machine.addState([unlock]() { unlock->s3(); });
 
-        CustomState *setPinS0 = machine.addState([setPin]() { setPin->s0(); });
-        CustomState *setPinS1 = machine.addState([setPin]() { setPin->s1(); });
-        CustomState *setPinS2 = machine.addState([setPin]() { setPin->s2(); });
-        CustomState *setPinS3 = machine.addState([setPin]() { setPin->s3(); });
-        CustomState *setPinS4 = machine.addState([setPin]() { setPin->s4(); });
-        CustomState *setPinS5 = machine.addState([setPin]() { setPin->s5(); });
+        CustomState* setPinS0 = machine.addState([setPin]() { setPin->s0(); });
+        CustomState* setPinS1 = machine.addState([setPin]() { setPin->s1(); });
+        CustomState* setPinS2 = machine.addState([setPin]() { setPin->s2(); });
+        CustomState* setPinS3 = machine.addState([setPin]() { setPin->s3(); });
+        CustomState* setPinS4 = machine.addState([setPin]() { setPin->s4(); });
+        CustomState* setPinS5 = machine.addState([setPin]() { setPin->s5(); });
 
-        CustomState *setMneS0 = machine.addState([setMne]() { setMne->s0(); });
-        CustomState *setMneS1 = machine.addState([setMne]() { setMne->s1(); });
-        CustomState *setMneS2 = machine.addState([setMne]() { setMne->s2(); });
-        CustomState *setMneS3 = machine.addState([setMne]() { setMne->s3(); });
-        CustomState *setMneS4 = machine.addState([setMne]() { setMne->s4(); });
-        CustomState *setMneS5 = machine.addState([setMne]() { setMne->s5(); });
-        CustomState *setMneS6 = machine.addState([setMne]() { setMne->s6(); });
-        CustomState *setMneS7 = machine.addState([setMne]() { setMne->s7(); });
+        CustomState* setMneS0 = machine.addState([setMne]() { setMne->s0(); });
+        CustomState* setMneS1 = machine.addState([setMne]() { setMne->s1(); });
+        CustomState* setMneS2 = machine.addState([setMne]() { setMne->s2(); });
+        CustomState* setMneS3 = machine.addState([setMne]() { setMne->s3(); });
+        CustomState* setMneS4 = machine.addState([setMne]() { setMne->s4(); });
+        CustomState* setMneS5 = machine.addState([setMne]() { setMne->s5(); });
+        CustomState* setMneS6 = machine.addState([setMne]() { setMne->s6(); });
+        CustomState* setMneS7 = machine.addState([setMne]() { setMne->s7(); });
 
-        CustomState *txMenuS0 = machine.addState([txMenu]() { txMenu->s0(); });
-        CustomState *txMenuS1 = machine.addState([txMenu]() { txMenu->s1(); });
-        CustomState *txMenuS2 = machine.addState([txMenu]() { txMenu->s2(); });
-        CustomState *txMenuS3 = machine.addState([txMenu]() { txMenu->s3(); });
-        CustomState *txMenuS4 = machine.addState([txMenu]() { txMenu->s4(); });
+        CustomState* txMenuS0 = machine.addState([txMenu]() { txMenu->s0(); });
+        CustomState* txMenuS1 = machine.addState([txMenu]() { txMenu->s1(); });
+        CustomState* txMenuS2 = machine.addState([txMenu]() { txMenu->s2(); });
+        CustomState* txMenuS3 = machine.addState([txMenu]() { txMenu->s3(); });
+        CustomState* txMenuS4 = machine.addState([txMenu]() { txMenu->s4(); });
 
         unlockS0->addTransition(unlockS1, nav->bothCalledAndInit);
         unlockS0->addTransition(setPinS0, nav->bothCalledAndNotInit);

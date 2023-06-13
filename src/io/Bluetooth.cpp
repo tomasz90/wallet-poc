@@ -4,22 +4,22 @@
 #include <Arduino.h>
 #include "Bluetooth.h"
 
-BLEServer *pServer = NULL;
-BLECharacteristic *pCharacteristicSender = NULL;
-BLECharacteristic *pCharacteristicSenderAddress = NULL;
-BLECharacteristic *pCharacteristicReceiver = NULL;
+BLEServer* pServer = NULL;
+BLECharacteristic* pCharacteristicSender = NULL;
+BLECharacteristic* pCharacteristicSenderAddress = NULL;
+BLECharacteristic* pCharacteristicReceiver = NULL;
 
-Bluetooth::Bluetooth(BLEServerCallbacks *_nav) {
+Bluetooth::Bluetooth(BLEServerCallbacks* nav) {
     // Create the BLE Device
     BLEDevice::init("ESP32");
 
     // Create the BLE Server
     pServer = BLEDevice::createServer();
-    pServer->setCallbacks(_nav);
+    pServer->setCallbacks(nav);
 
     // Create the BLE Services
-    BLEService *pServiceAddress = pServer->createService(SERVICE_ADDRESS_UUID);
-    BLEService *pService = pServer->createService(SERVICE_UUID);
+    BLEService* pServiceAddress = pServer->createService(SERVICE_ADDRESS_UUID);
+    BLEService* pService = pServer->createService(SERVICE_UUID);
 
     // Create a BLE Characteristic
     pCharacteristicSenderAddress = pServiceAddress->createCharacteristic(SENDER_ADDRESS_UUID,
@@ -41,7 +41,7 @@ Bluetooth::Bluetooth(BLEServerCallbacks *_nav) {
     pService->start();
 
     // Start advertising
-    BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+    BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(SERVICE_ADDRESS_UUID);
     pAdvertising->addServiceUUID(SERVICE_UUID);
 
@@ -65,7 +65,7 @@ string Bluetooth::receiveData() {
     return s;
 }
 
-void Bluetooth::sendTx(char *buffer) {
+void Bluetooth::sendTx(char* buffer) {
     Serial.println("Sending transaction");
     pCharacteristicSender->setValue(buffer);
     pCharacteristicSender->notify();

@@ -6,19 +6,16 @@
 class SetMnemonicMenu : public AbstractMenu {
 public:
 
-    Pin *pin;
-    Repository *repository;
-    SeedViewer *seedViewer;
-    SeedVerifier *seedVerifier;
+    Pin* pin;
+    Repository* repository;
+    SeedViewer* seedViewer;
+    SeedVerifier* seedVerifier;
 
-    SetMnemonicMenu(CustomMachine *_machine, Nav *_nav, Disp *_disp, Pin *_pin,
-                    Repository *_repository, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier)
-            : AbstractMenu(_machine, _nav, _disp) {
-        this->pin = _pin;
-        this->repository = _repository;
-        this->seedViewer = _seedViewer;
-        this->seedVerifier = _seedVerifier;
-    }
+    SetMnemonicMenu(CustomMachine* machine, Nav* nav, Disp* disp, Pin* pin, Repository* repository,
+                    SeedViewer* seedViewer, SeedVerifier* seedVerifier)
+            : AbstractMenu(machine, nav, disp), pin(pin), repository(repository), seedViewer(seedViewer),
+              seedVerifier(seedVerifier) {}
+
     void s0() {
         doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
         disp->blinkTextWithSign("Now please save your seed phrase!");
@@ -58,7 +55,7 @@ public:
             nav->notifyUninitializedDevice();
         });
 
-        // todo: resolve this problem:
+        //todo: resolve this problem:
 
         //    doOnce([this]() {
         //        disp->drawOnlyRightBox("NEXT");

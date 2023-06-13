@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <sstream>
 #include "EthTx.h"
-#include "Contract.h"
 
 #define SIGNATURE_LENGTH 64
 
@@ -12,16 +11,12 @@ EthTx::EthTx(std::string &receiverValue) {
         return;
     }
     nonce = obj["nonce"].as<uint32_t>();
-    chainId = std::stoull(obj["chainId"].as<char *>());
-    gasPrice = std::stoull(obj["gasPrice"].as<char *>());
+    chainId = std::stoull(obj["chainId"].as<char* >());
+    gasPrice = std::stoull(obj["gasPrice"].as<char* >());
     gasLimit = obj["gasLimit"].as<uint32_t>();
-    destinationAddress = obj["destinationAddress"].as<char *>();
-    value = uint256_t(obj["valueHex"].as<char *>());
-    data = obj["data"].as<char *>();
-
-}
-
-void EthTx::sign(char *&buffer, const char *key) {
+    destinationAddress = obj["destinationAddress"].as<char* >();
+    value = uint256_t(obj["valueHex"].as<char* >());
+    data = obj["data"].as<char* >();
 
 }
 

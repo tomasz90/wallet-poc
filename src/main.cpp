@@ -18,7 +18,7 @@ Button previous(PREVIOUS_BUTTON, IN_PULLDOWN);
 Button next(NEXT_BUTTON, IN_PULLDOWN);
 ButtonsHandler buttonHandler(previous, next);
 
-Menu *menu;
+Menu* menu;
 void setup() {
     Serial.begin(115200);
     Serial.println('\n');

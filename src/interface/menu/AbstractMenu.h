@@ -6,11 +6,11 @@
 
 class AbstractMenu {
 protected:
-    CustomMachine *machine;
-    Nav *nav;
-    Disp *disp;
+    CustomMachine* machine;
+    Nav* nav;
+    Disp* disp;
 
-    AbstractMenu(CustomMachine *_machine, Nav *_nav, Disp *_disp): machine(_machine), nav(_nav), disp(_disp) {}
+    AbstractMenu(CustomMachine* machine, Nav* nav, Disp* disp): machine(machine), nav(nav), disp(disp) {}
 
     void doOnce(const std::function<void()> &_doOnce) const {
         if (machine->executeOnce) {

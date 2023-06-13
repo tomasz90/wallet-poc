@@ -6,7 +6,7 @@
 
 using std::string;
 
-Nav::Nav(Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository, Pin *pin, Led *led,
+Nav::Nav(Disp* disp, SeedViewer* seedViewer, SeedVerifier* seedVerifier, Repository* repository, Pin* pin, Led* led,
          ButtonsHandler &buttonHandler) : led(led), disp(disp), seedViewer(seedViewer), seedVerifier(seedVerifier),
                                           repository(repository), pin(pin), signer(new Signer()), bt(new Bluetooth(this)) {
 
@@ -203,14 +203,14 @@ void Nav::checkSerialData() {
     }
 }
 
-void Nav::onConnect(BLEServer *pServer) {
+void Nav::onConnect(BLEServer* pServer) {
     Serial.println("connected");
     btConnectedCalled.set();
     deviceConnected = true;
     connectionTime = millis();
 }
 
-void Nav::onDisconnect(BLEServer *pServer) {
+void Nav::onDisconnect(BLEServer* pServer) {
     Serial.println("disconnected");
     delete repository->getTx();
     pServer->startAdvertising(); // restart advertising
@@ -245,7 +245,7 @@ void Nav::listenTx() {
 
 void Nav::signTx() const {
     if (deviceConnected) {
-        char *buffer;
+        char* buffer;
         auto key = repository->getPrivateKey();
         auto tx = repository->getTx();
         signer->sign(tx, key, buffer);

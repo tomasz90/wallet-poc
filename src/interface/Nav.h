@@ -37,7 +37,7 @@ public:
     bool deviceConnected = false;
     unsigned long connectionTime = 0;
 
-    Nav(Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Repository *_repository, Pin *_pin, Led *led,
+    Nav(Disp* _disp, SeedViewer* _seedViewer, SeedVerifier* _seedVerifier, Repository* _repository, Pin* _pin, Led* led,
         ButtonsHandler &buttonHandler);
 
     void resetFlags();
@@ -50,8 +50,8 @@ public:
     void viewSeed(bool nextHighlighted);
     void verifySeed(bool nextHighlighted);
     void checkSerialData();
-    void onConnect(BLEServer *pServer) override;
-    void onDisconnect(BLEServer *pServer) override;
+    void onConnect(BLEServer* pServer) override;
+    void onDisconnect(BLEServer* pServer) override;
     void resetBtBuffer();
     void notifyUninitializedDevice();
     void sendAddress();
@@ -60,13 +60,13 @@ public:
 
 private:
     Led* led;
-    Disp *disp;
-    SeedViewer *seedViewer;
-    SeedVerifier *seedVerifier;
-    Pin *pin;
-    Bluetooth *bt;
-    Repository *repository;
-    Signer *signer;
+    Disp* disp;
+    SeedViewer* seedViewer;
+    SeedVerifier* seedVerifier;
+    Pin* pin;
+    Bluetooth* bt;
+    Repository* repository;
+    Signer* signer;
 
     void enterPin(bool _bothCalled);
 };

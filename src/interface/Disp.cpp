@@ -167,7 +167,7 @@ void Disp::drawOneBox(const string &text, uint8_t width) {
 }
 
 void Disp::setCursorRelativeToCenter(const string &text, uint8_t textCenter, uint8_t y) {
-    uint8_t halfTextWidth = ((text.length() * 6)) / 2;
+    uint8_t halfTextWidth = ((text.length()*  6)) / 2;
     display.setCursor(textCenter - halfTextWidth, y);
 }
 

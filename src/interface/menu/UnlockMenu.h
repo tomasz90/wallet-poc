@@ -7,14 +7,11 @@
 class UnlockMenu : public AbstractMenu {
 
 public:
-    Pin *pin;
-    Repository *repository;
+    Pin* pin;
+    Repository* repository;
 
-    UnlockMenu(CustomMachine *_machine, Nav *_nav, Disp *_disp, Pin *_pin, Repository *_repository)
-            : AbstractMenu(_machine, _nav, _disp) {
-        this->pin = _pin;
-        this->repository = _repository;
-    }
+    UnlockMenu(CustomMachine* machine, Nav* nav, Disp* disp, Pin* pin, Repository* repository)
+            : AbstractMenu(machine, nav, disp), pin(pin), repository(repository) {}
 
     void s0() {
         doOnce([this]() {

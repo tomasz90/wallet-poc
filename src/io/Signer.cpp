@@ -1,7 +1,7 @@
 #include "Signer.h"
 #include "Contract.h"
 
-void Signer::sign(EthTx *tx, string &key, char* &buffer) {
+void Signer::sign(EthTx* tx, string &key, char* &buffer) {
     JsonObject &obj = jb.createObject();
 
     Contract contract(tx->chainId);
@@ -26,14 +26,14 @@ void Signer::sign(EthTx *tx, string &key, char* &buffer) {
     obj["data"] = tx->data.c_str();
     obj["encoded"] = encoded.c_str();
 
-    Serial.println(obj["nonce"].as<char *>());
-    Serial.println(obj["chainId"].as<char *>());
-    Serial.println(obj["gasPrice"].as<char *>());
-    Serial.println(obj["gasLimit"].as<char *>());
-    Serial.println(obj["destinationAddress"].as<char *>());
-    Serial.println(obj["value"].as<char *>());
-    Serial.println(obj["data"].as<char *>());
-    Serial.println(obj["encoded"].as<char *>());
+    Serial.println(obj["nonce"].as<char* >());
+    Serial.println(obj["chainId"].as<char* >());
+    Serial.println(obj["gasPrice"].as<char* >());
+    Serial.println(obj["gasLimit"].as<char* >());
+    Serial.println(obj["destinationAddress"].as<char* >());
+    Serial.println(obj["value"].as<char* >());
+    Serial.println(obj["data"].as<char* >());
+    Serial.println(obj["encoded"].as<char* >());
 
     // Get the size of the JSON string
     size_t bufferSize = obj.measureLength() + 1;

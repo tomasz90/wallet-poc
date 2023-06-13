@@ -7,12 +7,9 @@
 class SetPinMenu : public AbstractMenu {
 
 public:
-    Pin *pin;
+    Pin* pin;
 
-    SetPinMenu(CustomMachine *_machine, Nav *_nav, Disp *_disp, Pin *_pin)
-    : AbstractMenu(_machine, _nav, _disp) {
-        this->pin = _pin;
-    }
+    SetPinMenu(CustomMachine* machine, Nav* nav, Disp* disp, Pin* pin) : AbstractMenu(machine, nav, disp), pin(pin) {}
 
     void s0() {
         doOnce([this]() { disp->drawTwoBoxes("NO", "YES", false); });

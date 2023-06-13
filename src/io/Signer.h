@@ -7,7 +7,7 @@ using std::string;
 
 class Signer {
 public:
-    void sign(EthTx *tx, string &key, char *&buffer);
+    void sign(EthTx* tx, string &key, char* &buffer);
 private:
     DynamicJsonBuffer jb;
 };
