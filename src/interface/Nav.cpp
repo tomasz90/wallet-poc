@@ -185,7 +185,7 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
     if (bothCalled.check()) {
         // CONFIRM SEED PHRASE
         if (nextHighlighted && seedVerifier->isCurrentWordValid() && seedVerifier->isLast()) {
-            confirmSeedScreenCalled.set();
+            confirmSeedScreenCalled.set(); // todo: improvment change to endCalled, this can be reused
             repository->saveMnemonic(seedVerifier->getMnemonic());
             seedVerifier->resetIndex();
             return;
@@ -214,13 +214,9 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
 }
 
 void Nav::checkSerialData() {
-    string s;
-    while (Serial.available() > 0) {
-        char incomingByte = Serial.read();
-        if (incomingByte == '\n') { break; }
-        s += incomingByte;
-    }
+    string s = bt->receiveData();
     if (s.length() > 0 && !seedVerifier->isCurrentWordValid()) {
+        s.erase(std::remove(s.begin(), s.end(), '\"'), s.end());
         if (seedVerifier->validateWord(s)) {
             disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         } else {
