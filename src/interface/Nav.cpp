@@ -63,7 +63,7 @@ void Nav::setPin() {
     if (_bothCalled && !pin->isArrow() && pin->isLastDigit()) {
         pin->setOneDigit();
         pin->setPin();
-        confirmPinCalled.set();
+        successCalled.set();
         pin->clearValues();
         return;
     }
@@ -79,9 +79,9 @@ void Nav::confirmPin() {
         pin->setOneDigit();
         if (pin->confirmPin()) {
             repository->savePin(pin->savedCombination);
-            confirmPinCalled.set();
+            successCalled.set();
         } else {
-            pinMismatchCalled.set();
+            failureCalled.set();
         }
         pin->clearValues();
         return;
@@ -100,11 +100,11 @@ void Nav::unlockPin() {
         repository->getPin(pinFromFlash);
         if (pin->unlockPin(pinFromFlash)) {
             repository->resetTries();
-            confirmPinCalled.set();
+            successCalled.set();
         } else {
             if (repository->getLeftTries() > 1) {
                 repository->incrementUsedTries();
-                pinMismatchCalled.set();
+                failureCalled.set();
             } else {
                 repository->resetDevice();
                 resetDeviceCalled.set();
@@ -127,11 +127,6 @@ void Nav::enterPin(bool _bothCalled) {
         pin->decrementCurrentDigit();
         disp->drawPin(pin->getPinString());
     }
-    // DROP PIN
-    else if (_bothCalled && pin->isArrow() && pin->isFirstDigit()) {
-        dropPinCalled.set();
-        pin->clearValues();
-    }
     // SET DIGIT
     else if (_bothCalled && !pin->isArrow()) {
         pin->setOneDigit();
@@ -149,7 +144,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
     if (bothCalled.check()) {
         // CONFIRM SEED PHRASE
         if (nextHighlighted && seedViewer->isLast()) {
-            confirmSeedScreenCalled.set();
+            successCalled.set();
             seedViewer->resetIndex();
             return;
         }
@@ -160,7 +155,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
         }
         // DECREMENT WORD GO FIRST SCREEN
         else if (seedViewer->isSecond()) {
-            firstSeedScreenCalled.set();
+            beginCalled.set();
             seedViewer->decrement();
         }
         // DECREMENT WORD GO PREVIOUS SCREEN
@@ -177,7 +172,7 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
     if (bothCalled.check()) {
         // CONFIRM SEED PHRASE
         if (nextHighlighted && seedVerifier->isCurrentWordValid() && seedVerifier->isLast()) {
-            confirmSeedScreenCalled.set(); // todo: improvment change to endCalled, this can be reused
+            successCalled.set();
             repository->saveMnemonic(seedVerifier->getMnemonic());
             seedVerifier->resetIndex();
             return;
@@ -193,7 +188,7 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         }
         // DECREMENT WORD GO FIRST SCREEN
         else if (seedVerifier->isSecond()) {
-            firstSeedScreenCalled.set();
+            beginCalled.set();
             seedVerifier->decrement();
         }
         // DECREMENT WORD GO PREVIOUS SCREEN

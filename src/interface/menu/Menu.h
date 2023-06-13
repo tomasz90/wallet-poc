@@ -56,35 +56,33 @@ public:
 
         unlockS0->addTransition(unlockS1, nav->bothCalledAndInit);
         unlockS0->addTransition(setPinS0, nav->bothCalledAndNotInit);
-        unlockS1->addTransition(unlockS2, nav->pinMismatchCalled);
+        unlockS1->addTransition(unlockS2, nav->failureCalled);
         unlockS1->addTransition(unlockS3, nav->resetDeviceCalled);
-        unlockS1->addTransition(txMenuS0, nav->confirmPinCalled);
+        unlockS1->addTransition(txMenuS0, nav->successCalled);
         unlockS2->addTransition(unlockS1, nav->bothCalled);
         unlockS3->addTransition(unlockS0, nav->bothCalled);
 
         setPinS0->addTransition(setPinS1, nav->nextCalled);
         setPinS1->addTransition(setPinS2, nav->bothCalled);
         setPinS1->addTransition(setPinS0, nav->previousCalled);
-        setPinS2->addTransition(setPinS0, nav->dropPinCalled);
-        setPinS2->addTransition(setPinS3, nav->confirmPinCalled);
-        setPinS3->addTransition(setPinS2, nav->dropPinCalled);
-        setPinS3->addTransition(setPinS4, nav->confirmPinCalled);
-        setPinS3->addTransition(setPinS5, nav->pinMismatchCalled);
+        setPinS2->addTransition(setPinS3, nav->successCalled);
+        setPinS3->addTransition(setPinS4, nav->successCalled);
+        setPinS3->addTransition(setPinS5, nav->failureCalled);
         setPinS4->addTransition(setMneS0, nav->bothCalled);
         setPinS5->addTransition(setPinS2, nav->bothCalled);
 
         setMneS0->addTransition(setMneS1, nav->bothCalled);
         setMneS1->addTransition(setMneS2, nav->bothCalledWrapped);
         setMneS2->addTransition(setMneS3, nav->previousCalled);
-        setMneS2->addTransition(setMneS4, nav->confirmSeedScreenCalled);
+        setMneS2->addTransition(setMneS4, nav->successCalled);
         setMneS3->addTransition(setMneS2, nav->nextCalled);
-        setMneS3->addTransition(setMneS1, nav->firstSeedScreenCalled);
+        setMneS3->addTransition(setMneS1, nav->beginCalled);
         setMneS4->addTransition(setMneS5, nav->bothCalledAndBtConnected);
-        setMneS5->addTransition(setMneS6, nav->bothCalledWrapped); // this is set internally after checking bothCalled
+        setMneS5->addTransition(setMneS6, nav->bothCalledWrapped);
         setMneS6->addTransition(setMneS7, nav->previousCalled);
-        setMneS6->addTransition(txMenuS0, nav->confirmSeedScreenCalled);
+        setMneS6->addTransition(txMenuS0, nav->successCalled);
         setMneS7->addTransition(setMneS6, nav->nextCalled);
-        setMneS7->addTransition(setMneS5, nav->firstSeedScreenCalled);
+        setMneS7->addTransition(setMneS5, nav->beginCalled);
 
         txMenuS0->addTransition(txMenuS1, nav->btConnectedCalled);
         txMenuS1->addTransition(txMenuS2, nav->receivedTxCalled);

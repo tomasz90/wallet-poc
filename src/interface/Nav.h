@@ -17,15 +17,13 @@ public:
     Flag previousCalled;
     Flag nextCalled;
     Flag bothCalled;
-    Flag confirmPinCalled;
-    Flag dropPinCalled;
-    Flag pinMismatchCalled;
-    Flag resetDeviceCalled;
-
-    Flag firstSeedScreenCalled;
     Flag bothCalledWrapped;
-    Flag confirmSeedScreenCalled;
-    Flag isValidWordCalled;
+
+    Flag successCalled;
+    Flag failureCalled;
+    Flag beginCalled;
+
+    Flag resetDeviceCalled;
 
     Flag btConnectedCalled;
     Flag btDisconnectedCalled;
