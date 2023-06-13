@@ -2,9 +2,8 @@
 #include "SeedGenerator.h"
 
 void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier) {
-    // GENERATE RANDOMNESS
-//    bootloader_random_enable();
-//    bootloader_random_disable();
+    // todo: find out if bt can be initlized to produce random, but not advertised
+    bootloader_random_enable();
 
     // GENERATE RANDOM SEQUENCE
     array<int, MNEMONIC_LENGTH> seq = generateRandomSequence();
@@ -16,6 +15,8 @@ void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier)
     Serial.println(mnemonic.to_string().c_str());
     seedViewer->setMnemonic(mnemonic);
     seedVerifier->setMnemonic(mnemonic);
+
+    bootloader_random_disable();
 }
 
 array<int, MNEMONIC_LENGTH> SeedGenerator::generateRandomSequence() {

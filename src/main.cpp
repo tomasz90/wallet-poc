@@ -16,8 +16,8 @@ Led* led = new Led(LED, 0, 20, 4);
 
 Button previous(PREVIOUS_BUTTON, IN_PULLDOWN);
 Button next(NEXT_BUTTON, IN_PULLDOWN);
-
 ButtonsHandler buttonHandler(previous, next);
+
 Menu *menu;
 void setup() {
     Serial.begin(115200);
@@ -28,13 +28,10 @@ void setup() {
     auto repository = new Repository();
     auto seedViewer = new SeedViewer();
     auto seedVerifier = new SeedVerifier();
-    auto pin = new Pin();
-    auto nav = new Nav(led, buttonHandler, disp, seedViewer, seedVerifier, repository, pin);
-    auto bt = new Bluetooth(nav);
-
-    // THIS HAS TO BE AFTER BT INIT TO GENERATE TRUE RANDOM NUMBERS
     SeedGenerator::generate(seedViewer, seedVerifier);
-    nav->setBt(bt);
+
+    auto pin = new Pin();
+    auto nav = new Nav(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);
     menu = new Menu(nav, disp, seedViewer, seedVerifier, repository, pin);
 
     repository->printInfo();

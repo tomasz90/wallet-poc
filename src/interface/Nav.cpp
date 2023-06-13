@@ -6,20 +6,11 @@
 
 using std::string;
 
-Nav::Nav(Led *_led,
-         ButtonsHandler &buttonHandler,
-         Disp *_disp,
-         SeedViewer *_seedViewer,
-         SeedVerifier *_seedVerifier,
-         Repository *_repository,
-         Pin *_pin) {
-    led = _led;
-    disp = _disp;
-    seedViewer = _seedViewer;
-    seedVerifier = _seedVerifier;
-    repository = _repository;
-    pin = _pin;
-    signer = new Signer();
+Nav::Nav(Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository, Pin *pin, Led *led,
+         ButtonsHandler &buttonHandler) : led(led), disp(_disp), seedViewer(_seedViewer), seedVerifier(_seedVerifier),
+                                          repository(_repository), pin(_pin), signer(new Signer()), bt(new Bluetooth(this)) {
+
+    //todo: bluetooth can be risky - loop dependency
     buttonHandler.setDebounceTime(10);
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
@@ -34,10 +25,6 @@ void Nav::resetFlags() {
     nextCalled.unset();
     bothCalled.unset();
     bothCalledWrapped.unset();
-}
-
-void Nav::setBt(Bluetooth *_bt) {
-    bt = _bt;
 }
 
 void Nav::onPrevious() {

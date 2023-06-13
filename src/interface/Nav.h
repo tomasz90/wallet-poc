@@ -37,15 +37,9 @@ public:
     bool deviceConnected = false;
     unsigned long connectionTime = 0;
 
-    Nav(Led *_led,
-        ButtonsHandler &buttonHandler,
-        Disp *_disp,
-        SeedViewer *_seedViewer,
-        SeedVerifier *_seedVerifier,
-        Repository *_repository,
-        Pin *_pin);
+    Nav(Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedVerifier, Repository *_repository, Pin *_pin, Led *led,
+        ButtonsHandler &buttonHandler);
 
-    void setBt(Bluetooth *_bt);
     void resetFlags();
     void onPrevious();
     void onNext();
