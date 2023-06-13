@@ -53,8 +53,8 @@ public:
     void unlockPin();
     void confirmPin();
     void setPin();
-    void navigateSeed(bool nextHighlighted);
-    void navigateSeedConfirm(bool nextHighlighted);
+    void viewSeed(bool nextHighlighted);
+    void verifySeed(bool nextHighlighted);
     void checkSerialData();
     void onConnect(BLEServer *pServer) override;
     void onDisconnect(BLEServer *pServer) override;

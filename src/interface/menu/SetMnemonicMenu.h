@@ -31,7 +31,7 @@ public:
             disp->setTextAtCenter(seedViewer->getCurrentWord(), 24);
         });
         disp->blinkTextWithSign(std::to_string(seedViewer->currentIndex + 1) + ". word is: ", 20);
-        nav->navigateSeed(true);
+        nav->viewSeed(true);
     }
 
     void s2() {
@@ -39,7 +39,7 @@ public:
             disp->drawTwoBoxes("BACK", "NEXT", true);
         });
         disp->blinkTextWithSign(std::to_string(seedViewer->currentIndex + 1) + ". word is: ", 20);
-        nav->navigateSeed(true);
+        nav->viewSeed(true);
     }
 
     void s3() {
@@ -47,7 +47,7 @@ public:
             disp->drawTwoBoxes("BACK", "NEXT", false);
         });
         disp->blinkTextWithSign(std::to_string(seedViewer->currentIndex + 1) + ". word is: ", 20);
-        nav->navigateSeed(false);
+        nav->viewSeed(false);
     }
 
     void s4() {
@@ -74,19 +74,19 @@ public:
         });
         disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:",
                                 22); // todo: introduce some const for 22
-        nav->navigateSeedConfirm(true);
+        nav->verifySeed(true);
     }
 
     void s6() {
         doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
         disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
-        nav->navigateSeedConfirm(true);
+        nav->verifySeed(true);
     }
 
     void s7() {
         doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
         disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
-        nav->navigateSeedConfirm(false);
+        nav->verifySeed(false);
     }
 };
 

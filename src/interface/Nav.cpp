@@ -140,7 +140,7 @@ void Nav::enterPin(bool _bothCalled) {
     }
 }
 
-void Nav::navigateSeed(bool nextHighlighted) {
+void Nav::viewSeed(bool nextHighlighted) {
     if (bothCalled.check()) {
         // CONFIRM SEED PHRASE
         if (nextHighlighted && seedViewer->isLast()) {
@@ -167,7 +167,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
     }
 }
 
-void Nav::navigateSeedConfirm(bool nextHighlighted) {
+void Nav::verifySeed(bool nextHighlighted) {
     checkSerialData();
     if (bothCalled.check()) {
         // CONFIRM SEED PHRASE
