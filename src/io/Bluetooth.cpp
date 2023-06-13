@@ -54,7 +54,11 @@ void Bluetooth::sendAddress(const string &address) {
 }
 
 string Bluetooth::receiveData() {
-    return pCharacteristicReceiver->getValue();
+    string s = pCharacteristicReceiver->getValue();
+    if(s.length() > 0) {
+        pCharacteristicReceiver->setValue("");
+    }
+    return s;
 }
 
 void Bluetooth::sendTx(char *buffer) {
