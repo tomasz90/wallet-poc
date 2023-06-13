@@ -24,12 +24,6 @@ private:
     Pin *pin;
     Repository *repository;
 
-    void s1_0();
-    void s1_1();
-    void s2();
-    void s3();
-    void s4_0();
-    void s4_1();
     void s5();
     void s6_0();
     void s6_1();

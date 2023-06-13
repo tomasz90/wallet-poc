@@ -5,6 +5,7 @@
 #include "seed/SeedVerifier.h"
 #include "io/Bluetooth.h"
 #include "interface/menu/UnlockMenu.h"
+#include "interface/menu/SetPinMenu.h"
 
 CustomMachine machine = CustomMachine();
 
@@ -22,18 +23,19 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     repository = _repository;
 
     auto unlock = new UnlockMenu(&machine, nav, disp, pin, repository);
+    auto setPin = new SetPinMenu(&machine, nav, disp, pin);
 
     // STATES
     CustomState *S0 =   machine.addState([unlock]() { unlock->s0();});
-    CustomState *S1_0 = machine.addState([this]() { s1_0();});
+    CustomState *S1_0 = machine.addState([setPin]() { setPin->s1_0();});
     CustomState *S1_0_ = machine.addState([unlock]() { unlock->s1_0_();});
     CustomState *S1_1_ = machine.addState([unlock]() { unlock->s1_1_();});
     CustomState *S1_2_ = machine.addState([unlock]() { unlock->s1_2_();});
-    CustomState *S1_1 = machine.addState([this]() { s1_1();});
-    CustomState *S2 =   machine.addState([this]() { s2();});
-    CustomState *S3 =   machine.addState([this]() { s3();});
-    CustomState *S4_0 = machine.addState([this]() { s4_0();});
-    CustomState *S4_1 = machine.addState([this]() { s4_1();});
+    CustomState *S1_1 = machine.addState([setPin]() { setPin->s1_1();});
+    CustomState *S2 =   machine.addState([setPin]() { setPin->s2();});
+    CustomState *S3 =   machine.addState([setPin]() { setPin->s3();});
+    CustomState *S4_0 = machine.addState([setPin]() { setPin->s4_0();});
+    CustomState *S4_1 = machine.addState([setPin]() { setPin->s4_1();});
     CustomState *S5 = machine.addState([this]() { s5(); });
     CustomState *S6_0 = machine.addState([this]() { s6_0(); });
     CustomState *S6_1 = machine.addState([this]() { s6_1(); });
@@ -100,43 +102,6 @@ void Menu::doOnce(const std::function<void()> &_doOnce) {
         nav->resetFlags();
         _doOnce();
     }
-}
-
-void Menu::s1_0() {
-    doOnce([this]() { disp->drawTwoBoxes("NO", "YES", false); });
-    disp->blinkTextWithSign("Do you want to set as new device?");
-}
-
-void Menu::s1_1() {
-    doOnce([this]() { disp->drawTwoBoxes("NO", "YES", true); });
-    disp->blinkTextWithSign("Do you want to set as new device?");
-}
-
-void Menu::s2() {
-    doOnce([this]() {
-        disp->drawPin(pin->getPinString());
-    });
-
-    disp->blinkTextWithSign("Set pin:");
-    nav->setPin();
-}
-
-void Menu::s3() {
-    doOnce([this]() {
-        disp->drawPin(pin->getPinString());
-    });
-    disp->blinkTextWithSign("Confirm pin:");
-    nav->confirmPin();
-}
-
-void Menu::s4_0() {
-    doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
-    disp->blinkTextWithSign("Pin confirmed!");
-}
-
-void Menu::s4_1() {
-    doOnce([this]() { disp->drawOnlyLeftBox("BACK"); });
-    disp->blinkTextWithSign("Pin not matching ;(  try again...");
 }
 
 void Menu::s5() {
