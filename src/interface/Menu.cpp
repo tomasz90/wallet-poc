@@ -33,11 +33,11 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
 //    CustomState *S3 =   machine.addState([this]() { s3();});
 //    CustomState *S4_0 = machine.addState([this]() { s4_0();});
 //    CustomState *S4_1 = machine.addState([this]() { s4_1();});
-    CustomState *S5 =   machine.addState([this]() { s5();});
-    CustomState *S6_0 = machine.addState([this]() { s6_0();});
-    CustomState *S6_1 = machine.addState([this]() { s6_1();});
-    CustomState *S6_2 = machine.addState([this]() { s6_2();});
-    CustomState *S7 =   machine.addState([this]() { s7();});
+    CustomState *S5 = machine.addState([this]() { s5(); });
+    CustomState *S6_0 = machine.addState([this]() { s6_0(); });
+    CustomState *S6_1 = machine.addState([this]() { s6_1(); });
+    CustomState *S6_2 = machine.addState([this]() { s6_2(); });
+    CustomState *S7 = machine.addState([this]() { s7(); });
     CustomState *S8_0 = machine.addState([this]() { s8_0(); });
     CustomState *S8_1 = machine.addState([this]() { s8_1(); });
     CustomState *S8_2 = machine.addState([this]() { s8_2(); });
@@ -62,13 +62,13 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
 //    S3->addTransition(S4_1,  nav->pinMismatchCalled);
 //    S4_0->addTransition(S5,  nav->bothCalled);
 //    S4_1->addTransition(S2,  nav->bothCalled);
-    S5->addTransition(S6_0,    nav->bothCalled);
-    S6_0->addTransition(S6_1,nav->bothCalledWrapped);
-    S6_1->addTransition(S6_2,nav->previousCalled);
-    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
-    S6_2->addTransition(S6_1,nav->nextCalled);
-    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
-    S7->addTransition(S8_0,  nav->bothCalledAndBtConnected);
+    S5->addTransition(S6_0, nav->bothCalled);
+    S6_0->addTransition(S6_1, nav->bothCalledWrapped);
+    S6_1->addTransition(S6_2, nav->previousCalled);
+    S6_1->addTransition(S7, nav->confirmSeedScreenCalled);
+    S6_2->addTransition(S6_1, nav->nextCalled);
+    S6_2->addTransition(S6_0, nav->firstSeedScreenCalled);
+    S7->addTransition(S8_0, nav->bothCalledAndBtConnected);
     S8_0->addTransition(S8_1, nav->bothCalledWrapped); // this is set internally after checking bothCalled
     S8_1->addTransition(S8_2, nav->previousCalled);
     S8_1->addTransition(S9_0, nav->confirmSeedScreenCalled);
@@ -102,8 +102,8 @@ void Menu::doOnce(const std::function<void()> &_doOnce) {
 void Menu::s0() {
     doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
     disp->blinkTextWithSign("Hello!");
-    if(nav->bothCalled.check()) {
-        if(repository->isInitialized()) {
+    if (nav->bothCalled.check()) {
+        if (repository->isInitialized()) {
             machine.transitionTo(S1_0_);
         } else {
             machine.transitionTo(S1_0);
@@ -204,11 +204,19 @@ void Menu::s6_2() {
 
 void Menu::s7() {
     doOnce([this]() {
-        disp->drawOnlyRightBox("NEXT");
+        disp->clearMenu();
         nav->resetBtBuffer();
+        //todo: this should be done right after connection
         nav->notifyUninitializedDevice();
     });
-    disp->blinkTextWithSign("Now please confirm  your seed. Please connect with your browser.");
+
+// todo: resolve this problem:
+
+//    doOnce([this]() {
+//        disp->drawOnlyRightBox("NEXT");
+//    }, nav->deviceConnected);
+
+    disp->blinkTextWithSign("Now please confirm  your seed. Connect with your browser.");
 }
 
 void Menu::s8_0() {

@@ -29,7 +29,7 @@ Nav::Nav(Led *_led,
 }
 
 void Nav::resetFlags() {
-    //todo: keep in mind
+    //todo: flickering problem rethink this
 //    previousCalled.unset();
 //    nextCalled.unset();
 //    bothCalled.unset();
