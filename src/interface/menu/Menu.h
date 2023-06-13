@@ -1,9 +1,8 @@
 #include <cstdint>
+#include "interface/Disp.h"
 #include "io/Led.h"
 #include "ButtonsHandler.h"
 #include "interface/Nav.h"
-#include "interface/Disp.h"
-#include "seed/SeedViewer.h"
 #include "customStateMachine/CustomMachine.h"
 #include "interface/menu/UnlockMenu.h"
 #include "interface/menu/SetPinMenu.h"
@@ -19,7 +18,10 @@ using std::string;
 
 class Menu {
 public:
-    Menu(Nav *nav, Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository, Pin *pin) {
+    Menu(Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository,
+         Pin *pin, Led *led, ButtonsHandler &buttonHandler) {
+
+        auto nav = new Nav(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);
 
         auto unlock = new UnlockMenu(&machine, nav, disp, pin, repository);
         auto setPin = new SetPinMenu(&machine, nav, disp, pin);

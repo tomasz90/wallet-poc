@@ -7,8 +7,8 @@
 using std::string;
 
 Nav::Nav(Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository, Pin *pin, Led *led,
-         ButtonsHandler &buttonHandler) : led(led), disp(_disp), seedViewer(_seedViewer), seedVerifier(_seedVerifier),
-                                          repository(_repository), pin(_pin), signer(new Signer()), bt(new Bluetooth(this)) {
+         ButtonsHandler &buttonHandler) : led(led), disp(disp), seedViewer(seedViewer), seedVerifier(seedVerifier),
+                                          repository(repository), pin(pin), signer(new Signer()), bt(new Bluetooth(this)) {
 
     //todo: bluetooth can be risky - loop dependency
     buttonHandler.setDebounceTime(10);

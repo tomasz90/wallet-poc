@@ -31,8 +31,7 @@ void setup() {
     SeedGenerator::generate(seedViewer, seedVerifier);
 
     auto pin = new Pin();
-    auto nav = new Nav(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);
-    menu = new Menu(nav, disp, seedViewer, seedVerifier, repository, pin);
+    menu = new Menu(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);
 
     repository->printInfo();
 }
