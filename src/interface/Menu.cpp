@@ -4,6 +4,7 @@
 #include "Nav.h"
 #include "seed/SeedVerifier.h"
 #include "io/Bluetooth.h"
+#include "interface/menu/UnlockMenu.h"
 
 CustomMachine machine = CustomMachine();
 
@@ -20,12 +21,14 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     pin = _pin;
     repository = _repository;
 
+    auto unlock = new UnlockMenu(&machine, nav, disp, pin, repository);
+
     // STATES
-    CustomState *S0 =   machine.addState([this]() { s0();});
+    CustomState *S0 =   machine.addState([unlock]() { unlock->s0();});
     CustomState *S1_0 = machine.addState([this]() { s1_0();});
-    CustomState *S1_0_ = machine.addState([this]() { s1_0_();});
-    CustomState *S1_1_ = machine.addState([this]() { s1_1_();});
-    CustomState *S1_2_ = machine.addState([this]() { s1_2_();});
+    CustomState *S1_0_ = machine.addState([unlock]() { unlock->s1_0_();});
+    CustomState *S1_1_ = machine.addState([unlock]() { unlock->s1_1_();});
+    CustomState *S1_2_ = machine.addState([unlock]() { unlock->s1_2_();});
     CustomState *S1_1 = machine.addState([this]() { s1_1();});
     CustomState *S2 =   machine.addState([this]() { s2();});
     CustomState *S3 =   machine.addState([this]() { s3();});
@@ -97,37 +100,6 @@ void Menu::doOnce(const std::function<void()> &_doOnce) {
         nav->resetFlags();
         _doOnce();
     }
-}
-
-void Menu::s0() {
-    doOnce([this]() {
-        disp->drawOnlyRightBox("NEXT");
-        nav->isInit = repository->isInitialized();
-    });
-    disp->blinkTextWithSign("Hello!");
-}
-
-void Menu::s1_0_() {
-    doOnce([this]() {
-        disp->drawPin(pin->getPinString());
-    });
-    disp->blinkTextWithSign("Enter pin:");
-    nav->unlockPin();
-}
-
-void Menu::s1_1_() {
-    doOnce([this]() {
-        disp->drawOnlyLeftBox("BACK");
-        disp->setTextAtCenter(("Left tries: " + String(repository->getLeftTries())).c_str(), 24);
-    });
-    disp->blinkTextWithSign("Pin not matching.", 20);
-}
-
-void Menu::s1_2_() {
-    doOnce([this]() {
-        disp->drawOnlyLeftBox("BACK");
-    });
-    disp->blinkTextWithSign("Device was reset.");
 }
 
 void Menu::s1_0() {
