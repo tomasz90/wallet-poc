@@ -14,12 +14,12 @@ public:
         this->pin = _pin;
     }
 
-    void s1_0() {
+    void s0() {
         doOnce([this]() { disp->drawTwoBoxes("NO", "YES", false); });
         disp->blinkTextWithSign("Do you want to set as new device?");
     }
 
-    void s1_1() {
+    void s1() {
         doOnce([this]() { disp->drawTwoBoxes("NO", "YES", true); });
         disp->blinkTextWithSign("Do you want to set as new device?");
     }
@@ -41,12 +41,12 @@ public:
         nav->confirmPin();
     }
 
-    void s4_0() {
+    void s4() {
         doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
         disp->blinkTextWithSign("Pin confirmed!");
     }
 
-    void s4_1() {
+    void s5() {
         doOnce([this]() { disp->drawOnlyLeftBox("BACK"); });
         disp->blinkTextWithSign("Pin not matching ;(  try again...");
     }

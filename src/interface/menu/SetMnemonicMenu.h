@@ -19,12 +19,12 @@ public:
         this->seedViewer = _seedViewer;
         this->seedVerifier = _seedVerifier;
     }
-    void s5() {
+    void s0() {
         doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
         disp->blinkTextWithSign("Now please save your seed phrase!");
     }
 
-    void s6_0() {
+    void s1() {
         doOnce([this]() {
             disp->drawOnlyRightBox("NEXT");
             disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
@@ -34,7 +34,7 @@ public:
         nav->navigateSeed(true);
     }
 
-    void s6_1() {
+    void s2() {
         doOnce([this]() {
             disp->drawTwoBoxes("BACK", "NEXT", true);
         });
@@ -42,7 +42,7 @@ public:
         nav->navigateSeed(true);
     }
 
-    void s6_2() {
+    void s3() {
         doOnce([this]() {
             disp->drawTwoBoxes("BACK", "NEXT", false);
         });
@@ -50,7 +50,7 @@ public:
         nav->navigateSeed(false);
     }
 
-    void s7() {
+    void s4() {
         doOnce([this]() {
             disp->clearMenu();
             nav->resetBtBuffer();
@@ -67,7 +67,7 @@ public:
         disp->blinkTextWithSign("Now please confirm  your seed. Connect with your browser.");
     }
 
-    void s8_0() {
+    void s5() {
         doOnce([this]() {
             disp->clearTextCenter();
             disp->drawOnlyRightBox("NEXT");
@@ -77,13 +77,13 @@ public:
         nav->navigateSeedConfirm(true);
     }
 
-    void s8_1() {
+    void s6() {
         doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
         disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
         nav->navigateSeedConfirm(true);
     }
 
-    void s8_2() {
+    void s7() {
         doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
         disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
         nav->navigateSeedConfirm(false);

@@ -12,12 +12,12 @@ public:
         this->repository = _repository;
     };
 
-    void s9_0() {
+    void s0() {
         doOnce([this]() { disp->clearMenu(); });
         disp->blinkTextWithSign("Waiting for bluetooth connection...");
     }
 
-    void s9_1() {
+    void s1() {
         doOnce([this]() {
             disp->clearMenu();
             nav->sendAddress();
@@ -26,7 +26,7 @@ public:
         nav->listenTx();
     }
 
-    void s9_2() {
+    void s2() {
         doOnce([this]() {
             //todo: possible flickering, keep in mind
             disp->clearText(SCREEN_TEXT_MENU_BORDER_POSITION);
@@ -40,13 +40,13 @@ public:
         });
     }
 
-    void s9_3() {
+    void s3() {
         doOnce([this]() {
             disp->drawTwoBoxes("DECLINE", "ACCEPT", true);
         });
     }
 
-    void s9_4() {
+    void s4() {
         doOnce([this]() {
             nav->signTx();
             disp->drawOnlyLeftBox("BACK");

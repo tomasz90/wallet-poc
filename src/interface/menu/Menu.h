@@ -19,79 +19,83 @@ using std::string;
 
 class Menu {
 public:
-    Menu(Nav *nav, Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository,
-         Pin *pin) {
+    Menu(Nav *nav, Disp *disp, SeedViewer *seedViewer, SeedVerifier *seedVerifier, Repository *repository, Pin *pin) {
 
         auto unlock = new UnlockMenu(&machine, nav, disp, pin, repository);
         auto setPin = new SetPinMenu(&machine, nav, disp, pin);
-        auto setMnemonic = new SetMnemonicMenu(&machine, nav, disp, pin, repository, seedViewer, seedVerifier);
+        auto setMne = new SetMnemonicMenu(&machine, nav, disp, pin, repository, seedViewer, seedVerifier);
         auto txMenu = new TxMenu(&machine, nav, disp, repository);
 
         // STATES
-        CustomState *S0 = machine.addState([unlock]() { unlock->s0(); });
-        CustomState *S1_0 = machine.addState([setPin]() { setPin->s1_0(); });
-        CustomState *S1_0_ = machine.addState([unlock]() { unlock->s1_0_(); });
-        CustomState *S1_1_ = machine.addState([unlock]() { unlock->s1_1_(); });
-        CustomState *S1_2_ = machine.addState([unlock]() { unlock->s1_2_(); });
-        CustomState *S1_1 = machine.addState([setPin]() { setPin->s1_1(); });
-        CustomState *S2 = machine.addState([setPin]() { setPin->s2(); });
-        CustomState *S3 = machine.addState([setPin]() { setPin->s3(); });
-        CustomState *S4_0 = machine.addState([setPin]() { setPin->s4_0(); });
-        CustomState *S4_1 = machine.addState([setPin]() { setPin->s4_1(); });
-        CustomState *S5 = machine.addState([setMnemonic]() { setMnemonic->s5(); });
-        CustomState *S6_0 = machine.addState([setMnemonic]() { setMnemonic->s6_0(); });
-        CustomState *S6_1 = machine.addState([setMnemonic]() { setMnemonic->s6_1(); });
-        CustomState *S6_2 = machine.addState([setMnemonic]() { setMnemonic->s6_2(); });
-        CustomState *S7 = machine.addState([setMnemonic]() { setMnemonic->s7(); });
-        CustomState *S8_0 = machine.addState([setMnemonic]() { setMnemonic->s8_0(); });
-        CustomState *S8_1 = machine.addState([setMnemonic]() { setMnemonic->s8_1(); });
-        CustomState *S8_2 = machine.addState([setMnemonic]() { setMnemonic->s8_2(); });
-        CustomState *S9_0 = machine.addState([txMenu]() { txMenu->s9_0(); });
-        CustomState *S9_1 = machine.addState([txMenu]() { txMenu->s9_1(); });
-        CustomState *S9_2 = machine.addState([txMenu]() { txMenu->s9_2(); });
-        CustomState *S9_3 = machine.addState([txMenu]() { txMenu->s9_3(); });
-        CustomState *S9_4 = machine.addState([txMenu]() { txMenu->s9_4(); });
+        CustomState *unlockS0 = machine.addState([unlock]() { unlock->s0(); });
+        CustomState *unlockS1 = machine.addState([unlock]() { unlock->s1(); });
+        CustomState *unlockS2 = machine.addState([unlock]() { unlock->s2(); });
+        CustomState *unlockS3 = machine.addState([unlock]() { unlock->s3(); });
 
-        S0->addTransition(S1_0_, nav->bothCalledAndInit);
-        S0->addTransition(S1_0, nav->bothCalledAndNotInit);
-        S1_0_->addTransition(S1_1_, nav->pinMismatchCalled);
-        S1_0_->addTransition(S1_2_, nav->resetDeviceCalled);
-        S1_0_->addTransition(S9_0, nav->confirmPinCalled);
-        S1_1_->addTransition(S1_0_, nav->bothCalled);
-        S1_2_->addTransition(S0, nav->bothCalled);
-        S1_0->addTransition(S1_1, nav->nextCalled);
-        S1_1->addTransition(S2, nav->bothCalled);
-        S1_1->addTransition(S1_0, nav->previousCalled);
-        S2->addTransition(S1_0, nav->dropPinCalled);
-        S2->addTransition(S3, nav->confirmPinCalled);
-        S3->addTransition(S2, nav->dropPinCalled);
-        S3->addTransition(S4_0, nav->confirmPinCalled);
-        S3->addTransition(S4_1, nav->pinMismatchCalled);
-        S4_0->addTransition(S5, nav->bothCalled);
-        S4_1->addTransition(S2, nav->bothCalled);
-        S5->addTransition(S6_0, nav->bothCalled);
-        S6_0->addTransition(S6_1, nav->bothCalledWrapped);
-        S6_1->addTransition(S6_2, nav->previousCalled);
-        S6_1->addTransition(S7, nav->confirmSeedScreenCalled);
-        S6_2->addTransition(S6_1, nav->nextCalled);
-        S6_2->addTransition(S6_0, nav->firstSeedScreenCalled);
-        S7->addTransition(S8_0, nav->bothCalledAndBtConnected);
-        S8_0->addTransition(S8_1, nav->bothCalledWrapped); // this is set internally after checking bothCalled
-        S8_1->addTransition(S8_2, nav->previousCalled);
-        S8_1->addTransition(S9_0, nav->confirmSeedScreenCalled);
-        S8_2->addTransition(S8_1, nav->nextCalled);
-        S8_2->addTransition(S8_0, nav->firstSeedScreenCalled);
-        S9_0->addTransition(S9_1, nav->btConnectedCalled);
-        S9_1->addTransition(S9_2, nav->receivedTxCalled);
-        S9_1->addTransition(S9_0, nav->btDisconnectedCalled);
-        S9_2->addTransition(S9_3, nav->nextCalled);
-        S9_2->addTransition(S9_1, nav->bothCalled);
-        S9_2->addTransition(S9_0, nav->btDisconnectedCalled);
-        S9_3->addTransition(S9_4, nav->bothCalled);
-        S9_3->addTransition(S9_0, nav->btDisconnectedCalled);
-        S9_3->addTransition(S9_2, nav->previousCalled);
-        S9_4->addTransition(S9_1, nav->bothCalled);
+        CustomState *setPinS0 = machine.addState([setPin]() { setPin->s0(); });
+        CustomState *setPinS1 = machine.addState([setPin]() { setPin->s1(); });
+        CustomState *setPinS2 = machine.addState([setPin]() { setPin->s2(); });
+        CustomState *setPinS3 = machine.addState([setPin]() { setPin->s3(); });
+        CustomState *setPinS4 = machine.addState([setPin]() { setPin->s4(); });
+        CustomState *setPinS5 = machine.addState([setPin]() { setPin->s5(); });
 
+        CustomState *setMneS0 = machine.addState([setMne]() { setMne->s0(); });
+        CustomState *setMneS1 = machine.addState([setMne]() { setMne->s1(); });
+        CustomState *setMneS2 = machine.addState([setMne]() { setMne->s2(); });
+        CustomState *setMneS3 = machine.addState([setMne]() { setMne->s3(); });
+        CustomState *setMneS4 = machine.addState([setMne]() { setMne->s4(); });
+        CustomState *setMneS5 = machine.addState([setMne]() { setMne->s5(); });
+        CustomState *setMneS6 = machine.addState([setMne]() { setMne->s6(); });
+        CustomState *setMneS7 = machine.addState([setMne]() { setMne->s7(); });
+
+        CustomState *txMenuS0 = machine.addState([txMenu]() { txMenu->s0(); });
+        CustomState *txMenuS1 = machine.addState([txMenu]() { txMenu->s1(); });
+        CustomState *txMenuS2 = machine.addState([txMenu]() { txMenu->s2(); });
+        CustomState *txMenuS3 = machine.addState([txMenu]() { txMenu->s3(); });
+        CustomState *txMenuS4 = machine.addState([txMenu]() { txMenu->s4(); });
+
+        unlockS0->addTransition(unlockS1, nav->bothCalledAndInit);
+        unlockS0->addTransition(setPinS0, nav->bothCalledAndNotInit);
+        unlockS1->addTransition(unlockS2, nav->pinMismatchCalled);
+        unlockS1->addTransition(unlockS3, nav->resetDeviceCalled);
+        unlockS1->addTransition(txMenuS0, nav->confirmPinCalled);
+        unlockS2->addTransition(unlockS1, nav->bothCalled);
+        unlockS3->addTransition(unlockS0, nav->bothCalled);
+
+        setPinS0->addTransition(setPinS1, nav->nextCalled);
+        setPinS1->addTransition(setPinS2, nav->bothCalled);
+        setPinS1->addTransition(setPinS0, nav->previousCalled);
+        setPinS2->addTransition(setPinS0, nav->dropPinCalled);
+        setPinS2->addTransition(setPinS3, nav->confirmPinCalled);
+        setPinS3->addTransition(setPinS2, nav->dropPinCalled);
+        setPinS3->addTransition(setPinS4, nav->confirmPinCalled);
+        setPinS3->addTransition(setPinS5, nav->pinMismatchCalled);
+        setPinS4->addTransition(setMneS0, nav->bothCalled);
+        setPinS5->addTransition(setPinS2, nav->bothCalled);
+
+        setMneS0->addTransition(setMneS1, nav->bothCalled);
+        setMneS1->addTransition(setMneS2, nav->bothCalledWrapped);
+        setMneS2->addTransition(setMneS3, nav->previousCalled);
+        setMneS2->addTransition(setMneS4, nav->confirmSeedScreenCalled);
+        setMneS3->addTransition(setMneS2, nav->nextCalled);
+        setMneS3->addTransition(setMneS1, nav->firstSeedScreenCalled);
+        setMneS4->addTransition(setMneS5, nav->bothCalledAndBtConnected);
+        setMneS5->addTransition(setMneS6, nav->bothCalledWrapped); // this is set internally after checking bothCalled
+        setMneS6->addTransition(setMneS7, nav->previousCalled);
+        setMneS6->addTransition(txMenuS0, nav->confirmSeedScreenCalled);
+        setMneS7->addTransition(setMneS6, nav->nextCalled);
+        setMneS7->addTransition(setMneS5, nav->firstSeedScreenCalled);
+
+        txMenuS0->addTransition(txMenuS1, nav->btConnectedCalled);
+        txMenuS1->addTransition(txMenuS2, nav->receivedTxCalled);
+        txMenuS1->addTransition(txMenuS0, nav->btDisconnectedCalled);
+        txMenuS2->addTransition(txMenuS3, nav->nextCalled);
+        txMenuS2->addTransition(txMenuS1, nav->bothCalled);
+        txMenuS2->addTransition(txMenuS0, nav->btDisconnectedCalled);
+        txMenuS3->addTransition(txMenuS4, nav->bothCalled);
+        txMenuS3->addTransition(txMenuS0, nav->btDisconnectedCalled);
+        txMenuS3->addTransition(txMenuS2, nav->previousCalled);
+        txMenuS4->addTransition(txMenuS1, nav->bothCalled);
     }
 
     void run() {

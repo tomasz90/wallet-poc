@@ -24,7 +24,7 @@ public:
         disp->blinkTextWithSign("Hello!");
     }
 
-    void s1_0_() {
+    void s1() {
         doOnce([this]() {
             disp->drawPin(pin->getPinString());
         });
@@ -32,7 +32,7 @@ public:
         nav->unlockPin();
     }
 
-    void s1_1_() {
+    void s2() {
         doOnce([this]() {
             disp->drawOnlyLeftBox("BACK");
             disp->setTextAtCenter(("Left tries: " + String(repository->getLeftTries())).c_str(), 24);
@@ -40,7 +40,7 @@ public:
         disp->blinkTextWithSign("Pin not matching.", 20);
     }
 
-    void s1_2_() {
+    void s3() {
         doOnce([this]() {
             disp->drawOnlyLeftBox("BACK");
         });
