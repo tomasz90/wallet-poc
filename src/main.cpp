@@ -4,7 +4,7 @@
 #include "seed/SeedViewer.h"
 #include "seed/SeedVerifier.h"
 #include "interface/Disp.h"
-#include "interface/Menu.h"
+#include "interface/menu/Menu.h"
 #include "interface/Nav.h"
 #include "io/Bluetooth.h"
 
