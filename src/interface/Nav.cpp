@@ -30,19 +30,10 @@ Nav::Nav(Led *_led,
 
 void Nav::resetFlags() {
     //todo: flickering problem rethink this
-//    previousCalled.unset();
-//    nextCalled.unset();
-//    bothCalled.unset();
-//    confirmPinCalled.unset();
-//    dropPinCalled.unset();
-//    pinMismatchCalled.unset();
-//    firstSeedScreenCalled.unset();
-//    bothCalledWrapped.unset();
-//    confirmSeedScreenCalled.unset();
-//    isValidWordCalled.unset();
-//    btConnectedCalled.unset();
-//    btDisconnectedCalled.unset();
-//    receivedTxCalled.unset();
+    previousCalled.unset();
+    nextCalled.unset();
+    bothCalled.unset();
+    bothCalledWrapped.unset();
 }
 
 void Nav::setBt(Bluetooth *_bt) {
