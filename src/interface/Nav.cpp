@@ -36,8 +36,7 @@ void Nav::resetFlags() {
     dropPinCalled.unset();
     pinMismatchCalled.unset();
     firstSeedScreenCalled.unset();
-    previousSeedScreenCalled.unset();
-    nextSeedScreenCalled.unset();
+    bothCalledWrapped.unset();
     confirmSeedScreenCalled.unset();
     isValidWordCalled.unset();
     btConnectedCalled.unset();
@@ -164,7 +163,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
         }
         // INCREMENT WORD GO NEXT SCREEN
         else if (nextHighlighted) {
-            nextSeedScreenCalled.set();
+            bothCalledWrapped.set();
             seedViewer->increment();
         }
         // DECREMENT WORD GO FIRST SCREEN
@@ -174,7 +173,7 @@ void Nav::navigateSeed(bool nextHighlighted) {
         }
         // DECREMENT WORD GO PREVIOUS SCREEN
         else {
-            previousSeedScreenCalled.set();
+            bothCalledWrapped.set();
             seedViewer->decrement();
         }
         disp->setTextAtCenter(seedViewer->getCurrentWord(), SEED_WORD_Y_POSITION);
@@ -193,7 +192,7 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         }
         // INCREMENT WORD GO NEXT SCREEN
         else if (nextHighlighted && seedVerifier->isCurrentWordValid()) {
-            nextSeedScreenCalled.set();
+            bothCalledWrapped.set();
             seedVerifier->increment();
         }
         // SCREEN NO WORD RECEIVED
@@ -207,7 +206,7 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
         }
         // DECREMENT WORD GO PREVIOUS SCREEN
         else {
-            previousSeedScreenCalled.set();
+            bothCalledWrapped.set();
             seedVerifier->decrement();
         }
         disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);

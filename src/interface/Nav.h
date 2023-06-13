@@ -23,8 +23,7 @@ public:
     Flag resetDeviceCalled;
 
     Flag firstSeedScreenCalled;
-    Flag previousSeedScreenCalled;
-    Flag nextSeedScreenCalled;
+    Flag bothCalledWrapped;
     Flag confirmSeedScreenCalled;
     Flag isValidWordCalled;
 
