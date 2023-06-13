@@ -1,12 +1,12 @@
 #ifndef SIGNER_H
 #define SIGNER_H
 
-#include "util/Repository.h"
+#include "EthTx.h"
+
+using std::string;
 
 class Signer {
 public:
-    Repository *repository;
-    explicit Signer(Repository *repository) : repository(repository) {}
     void sign(EthTx *tx, string &key, char *&buffer);
 private:
     DynamicJsonBuffer jb;

@@ -19,7 +19,7 @@ Nav::Nav(Led *_led,
     seedVerifier = _seedVerifier;
     repository = _repository;
     pin = _pin;
-    signer = new Signer(repository);
+    signer = new Signer();
     buttonHandler.setDebounceTime(10);
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
