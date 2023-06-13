@@ -33,10 +33,10 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
 //    CustomState *S3 =   machine.addState([this]() { s3();});
 //    CustomState *S4_0 = machine.addState([this]() { s4_0();});
 //    CustomState *S4_1 = machine.addState([this]() { s4_1();});
-//    CustomState *S5 =   machine.addState([this]() { s5();});
-//    CustomState *S6_0 = machine.addState([this]() { s6_0();});
-//    CustomState *S6_1 = machine.addState([this]() { s6_1();});
-//    CustomState *S6_2 = machine.addState([this]() { s6_2();});
+    CustomState *S5 =   machine.addState([this]() { s5();});
+    CustomState *S6_0 = machine.addState([this]() { s6_0();});
+    CustomState *S6_1 = machine.addState([this]() { s6_1();});
+    CustomState *S6_2 = machine.addState([this]() { s6_2();});
     CustomState *S7 =   machine.addState([this]() { s7();});
     CustomState *S8_0 = machine.addState([this]() { s8_0(); });
     CustomState *S8_1 = machine.addState([this]() { s8_1(); });
@@ -62,12 +62,12 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
 //    S3->addTransition(S4_1,  nav->pinMismatchCalled);
 //    S4_0->addTransition(S5,  nav->bothCalled);
 //    S4_1->addTransition(S2,  nav->bothCalled);
-//    S5->addTransition(S6_0,    nav->bothCalled);
-//    S6_0->addTransition(S6_1,nav->nextSeedScreenCalled);
-//    S6_1->addTransition(S6_2,nav->previousCalled);
-//    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
-//    S6_2->addTransition(S6_1,nav->nextCalled);
-//    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
+    S5->addTransition(S6_0,    nav->bothCalled);
+    S6_0->addTransition(S6_1,nav->nextSeedScreenCalled);
+    S6_1->addTransition(S6_2,nav->previousCalled);
+    S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
+    S6_2->addTransition(S6_1,nav->nextCalled);
+    S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
     S7->addTransition(S8_0,  nav->bothCalled);
     S8_0->addTransition(S8_1, nav->nextSeedScreenCalled); //todo: change to generic wrapper of next and previous
     S8_1->addTransition(S8_2, nav->previousCalled);
@@ -199,7 +199,7 @@ void Menu::s6_2() {
     doOnce([this]() {
         disp->drawTwoBoxes("BACK", "NEXT", false);
     });
-    disp->blinkTextWithSign(std::to_string(seedVerifier->currentIndex + 1) + ". word is: ", 20);
+    disp->blinkTextWithSign(std::to_string(seedViewer->currentIndex + 1) + ". word is: ", 20);
     nav->navigateSeed(false);
 }
 
