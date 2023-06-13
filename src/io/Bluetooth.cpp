@@ -53,10 +53,14 @@ void Bluetooth::sendAddress(const string &address) {
     pCharacteristicSenderAddress->notify();
 }
 
+void Bluetooth::resetBuffer() {
+    pCharacteristicReceiver->setValue("");
+}
+
 string Bluetooth::receiveData() {
     string s = pCharacteristicReceiver->getValue();
     if(s.length() > 0) {
-        pCharacteristicReceiver->setValue("");
+        resetBuffer();
     }
     return s;
 }

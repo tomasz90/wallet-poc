@@ -17,6 +17,7 @@ class Bluetooth {
 public:
     Bluetooth(BLEServerCallbacks *_nav);
     void sendAddress(const string &address);
+    void resetBuffer();
     string receiveData();
     void sendTx(char *buffer);
 };

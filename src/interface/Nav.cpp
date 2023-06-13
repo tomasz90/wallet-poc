@@ -29,19 +29,20 @@ Nav::Nav(Led *_led,
 }
 
 void Nav::resetFlags() {
-    previousCalled.unset();
-    nextCalled.unset();
-    bothCalled.unset();
-    confirmPinCalled.unset();
-    dropPinCalled.unset();
-    pinMismatchCalled.unset();
-    firstSeedScreenCalled.unset();
-    bothCalledWrapped.unset();
-    confirmSeedScreenCalled.unset();
-    isValidWordCalled.unset();
-    btConnectedCalled.unset();
-    btDisconnectedCalled.unset();
-    receivedTxCalled.unset();
+    //todo: keep in mind
+//    previousCalled.unset();
+//    nextCalled.unset();
+//    bothCalled.unset();
+//    confirmPinCalled.unset();
+//    dropPinCalled.unset();
+//    pinMismatchCalled.unset();
+//    firstSeedScreenCalled.unset();
+//    bothCalledWrapped.unset();
+//    confirmSeedScreenCalled.unset();
+//    isValidWordCalled.unset();
+//    btConnectedCalled.unset();
+//    btDisconnectedCalled.unset();
+//    receivedTxCalled.unset();
 }
 
 void Nav::setBt(Bluetooth *_bt) {
@@ -213,6 +214,10 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
     }
 }
 
+void Nav::resetBtBuffer() {
+    bt->resetBuffer();
+}
+
 void Nav::checkSerialData() {
     string s = bt->receiveData();
     if (s.length() > 0 && !seedVerifier->isCurrentWordValid()) {
@@ -229,6 +234,7 @@ void Nav::onConnect(BLEServer *pServer) {
     Serial.println("connected");
     btConnectedCalled.set();
     deviceConnected = true;
+    connectionTime = millis();
 }
 
 void Nav::onDisconnect(BLEServer *pServer) {
@@ -237,11 +243,18 @@ void Nav::onDisconnect(BLEServer *pServer) {
     pServer->startAdvertising(); // restart advertising
     btDisconnectedCalled.set();
     deviceConnected = false;
+    connectionTime = 0;
 }
 
 void Nav::sendAddress() {
-    if (deviceConnected) {
-        delay(2200);
+    if (deviceConnected && millis() - connectionTime > 2200) {
+        string address = repository->getAddress();
+        bt->sendAddress(repository->getAddress());
+    }
+}
+
+void Nav::notifyUninitializedDevice() {
+    if (deviceConnected && millis() - connectionTime > 2200) {
         string address = repository->getAddress();
         bt->sendAddress("0x");
     }

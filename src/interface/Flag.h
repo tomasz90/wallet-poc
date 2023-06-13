@@ -3,10 +3,16 @@
 
 struct Flag {
     bool flag = false;
-    bool check();
+    virtual bool check();
     void set();
     void unset();
 };
 
+struct DoubleFlag : Flag {
+    Flag &a;
+    Flag &b;
+    DoubleFlag(Flag &a, Flag &b): a(a), b(b) {};
+    bool check() override;
+};
 
 #endif //FLAG_H

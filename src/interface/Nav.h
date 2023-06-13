@@ -31,7 +31,10 @@ public:
     Flag btDisconnectedCalled;
     Flag receivedTxCalled;
 
+    DoubleFlag bothCalledAndBtConnected = DoubleFlag(bothCalled, btConnectedCalled);
+
     bool deviceConnected = false;
+    unsigned long connectionTime = 0;
 
     Nav(Led *_led,
         ButtonsHandler &buttonHandler,
@@ -54,9 +57,12 @@ public:
     void checkSerialData();
     void onConnect(BLEServer *pServer) override;
     void onDisconnect(BLEServer *pServer) override;
-    void listenTx();
+    void resetBtBuffer();
+    void notifyUninitializedDevice();
     void sendAddress();
+    void listenTx();
     void signTx() const;
+
 private:
     Led* led;
     Disp *disp;

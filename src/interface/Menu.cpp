@@ -68,7 +68,7 @@ Menu::Menu(Nav *_nav, Disp *_disp, SeedViewer *_seedViewer, SeedVerifier *_seedV
     S6_1->addTransition(S7,  nav->confirmSeedScreenCalled);
     S6_2->addTransition(S6_1,nav->nextCalled);
     S6_2->addTransition(S6_0,nav->firstSeedScreenCalled);
-    S7->addTransition(S8_0,  nav->bothCalled);
+    S7->addTransition(S8_0,  nav->bothCalledAndBtConnected);
     S8_0->addTransition(S8_1, nav->bothCalledWrapped); // this is set internally after checking bothCalled
     S8_1->addTransition(S8_2, nav->previousCalled);
     S8_1->addTransition(S9_0, nav->confirmSeedScreenCalled);
@@ -203,12 +203,17 @@ void Menu::s6_2() {
 }
 
 void Menu::s7() {
-    doOnce([this]() { disp->drawOnlyRightBox("NEXT"); });
-    disp->blinkTextWithSign("Now please confirm  your seed.");
+    doOnce([this]() {
+        disp->drawOnlyRightBox("NEXT");
+        nav->resetBtBuffer();
+        nav->notifyUninitializedDevice();
+    });
+    disp->blinkTextWithSign("Now please confirm  your seed. Please connect with your browser.");
 }
 
 void Menu::s8_0() {
     doOnce([this]() {
+        disp->clearTextCenter();
         disp->drawOnlyRightBox("NEXT");
     });
     disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 22); // todo: introduce some const for 22
