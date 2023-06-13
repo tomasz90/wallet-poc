@@ -31,6 +31,9 @@ public:
     Flag btDisconnectedCalled;
     Flag receivedTxCalled;
 
+    bool isInit;
+    MixedFlag bothCalledAndInit = MixedFlag(bothCalled, isInit);
+    MixedFlag bothCalledAndNotInit = MixedFlag(bothCalled, isInit, true);
     DoubleFlag bothCalledAndBtConnected = DoubleFlag(bothCalled, btConnectedCalled);
 
     bool deviceConnected = false;

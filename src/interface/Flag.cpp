@@ -30,3 +30,11 @@ bool DoubleFlag::check() {
     }
     return temp;
 }
+
+bool MixedFlag::check() {
+    bool temp = a.flag && inverted != b;
+    if (temp) {
+        a.flag = false;
+    }
+    return temp;
+}

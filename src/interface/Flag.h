@@ -15,4 +15,13 @@ struct DoubleFlag : Flag {
     bool check() override;
 };
 
+struct MixedFlag : Flag {
+    Flag &a;
+    bool &b;
+    bool inverted = false;
+    MixedFlag(Flag &a, bool &b): a(a), b(b) {};
+    MixedFlag(Flag &a, bool &b, bool inverted): a(a), b(b), inverted(inverted) {};
+    bool check() override;
+};
+
 #endif //FLAG_H
