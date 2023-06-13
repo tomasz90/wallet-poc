@@ -215,10 +215,13 @@ void Nav::navigateSeedConfirm(bool nextHighlighted) {
 }
 
 void Nav::checkSerialData() {
-    string s = bt->receiveData();
+    string s;
+    while (Serial.available() > 0) {
+        char incomingByte = Serial.read();
+        if (incomingByte == '\n') { break; }
+        s += incomingByte;
+    }
     if (s.length() > 0 && !seedVerifier->isCurrentWordValid()) {
-        s.erase(std::remove(s.begin(), s.end(), '\"'), s.end());
-        Serial.println(s.c_str());
         if (seedVerifier->validateWord(s)) {
             disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         } else {
