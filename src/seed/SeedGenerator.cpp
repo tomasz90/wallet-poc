@@ -7,8 +7,8 @@ void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier)
 //    bootloader_random_disable();
 
     // GENERATE RANDOM SEQUENCE
-    array<int, MNEMONIC_LENGTH> seq{};
-    generateRandomSequence(seq);
+    array<int, MNEMONIC_LENGTH> seq = generateRandomSequence();
+    seedVerifier->setRandomSequence(seq);
 
     // GENERATE MNEMONIC
     vector <uint8_t> entropy = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};//generateEntropy();
@@ -16,10 +16,10 @@ void SeedGenerator::generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier)
     Serial.println(mnemonic.to_string().c_str());
     seedViewer->setMnemonic(mnemonic);
     seedVerifier->setMnemonic(mnemonic);
-    seedVerifier->setRandomSequence(seq);
 }
 
-void SeedGenerator::generateRandomSequence(array<int, MNEMONIC_LENGTH> seq) {
+array<int, MNEMONIC_LENGTH> SeedGenerator::generateRandomSequence() {
+    array<int, MNEMONIC_LENGTH> seq{};
     seq.fill(-1);
     for (int &i: seq) {
         uint8_t temp = esp_random() % MNEMONIC_LENGTH;
@@ -28,6 +28,7 @@ void SeedGenerator::generateRandomSequence(array<int, MNEMONIC_LENGTH> seq) {
         }
         i = temp;
     }
+    return seq;
 }
 
 vector<uint8_t> SeedGenerator::generateEntropy() {

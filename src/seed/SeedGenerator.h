@@ -18,7 +18,7 @@ class SeedGenerator {
 public:
     static void generate(SeedViewer *seedViewer, SeedVerifier *seedVerifier);
 private:
-    static void generateRandomSequence(array<int, MNEMONIC_LENGTH> seq);
+    static array<int, MNEMONIC_LENGTH> generateRandomSequence();
     static vector<uint8_t> generateEntropy();
 };
 

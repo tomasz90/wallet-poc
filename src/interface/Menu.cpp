@@ -211,7 +211,7 @@ void Menu::s8_0() {
     doOnce([this]() {
         disp->drawOnlyRightBox("NEXT");
     });
-    disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
+    disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 22); // todo: introduce some const for 22
     nav->navigateSeedConfirm(true);
 }
 
