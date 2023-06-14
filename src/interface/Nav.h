@@ -30,6 +30,7 @@ public:
     Flag receivedTxCalled;
 
     bool isInit;
+    bool executeOnce = true;
     MixedFlag bothCalledAndInit = MixedFlag(bothCalled, isInit);
     MixedFlag bothCalledAndNotInit = MixedFlag(bothCalled, isInit, true);
     DoubleFlag bothCalledAndBtConnected = DoubleFlag(bothCalled, btConnectedCalled);
@@ -53,8 +54,7 @@ public:
     void onConnect(BLEServer* pServer) override;
     void onDisconnect(BLEServer* pServer) override;
     void resetBtBuffer();
-    void notifyUninitializedDevice();
-    void sendAddress();
+    void sendAddress(string _address = nullptr);
     void listenTx();
     void signTx() const;
 

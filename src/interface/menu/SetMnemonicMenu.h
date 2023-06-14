@@ -51,17 +51,15 @@ public:
         doOnce([this]() {
             disp->clearMenu();
             nav->resetBtBuffer();
-            //todo: this should be done right after connection
-            nav->notifyUninitializedDevice();
         });
 
-        //todo: resolve this problem:
-
-        //    doOnce([this]() {
-        //        disp->drawOnlyRightBox("NEXT");
-        //    }, nav->deviceConnected);
-
         disp->blinkTextWithSign("Now please confirm  your seed. Connect with your browser.");
+
+        if (nav->deviceConnected && millis() - nav->connectionTime > 2200 && nav->executeOnce) {
+            nav->executeOnce = false;
+            nav->sendAddress("0x");
+            disp->drawOnlyRightBox("NEXT");
+        }
     }
 
     void s5() {

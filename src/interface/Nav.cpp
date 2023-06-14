@@ -21,6 +21,7 @@ Nav::Nav(Disp* disp, SeedViewer* seedViewer, SeedVerifier* seedVerifier, Reposit
 
 void Nav::resetFlags() {
     //todo: flickering problem rethink this
+    executeOnce = true;
     previousCalled.unset();
     nextCalled.unset();
     bothCalled.unset();
@@ -219,17 +220,10 @@ void Nav::onDisconnect(BLEServer* pServer) {
     connectionTime = 0;
 }
 
-void Nav::sendAddress() {
+void Nav::sendAddress(string _address) {
     if (deviceConnected && millis() - connectionTime > 2200) {
-        string address = repository->getAddress();
+        string address = _address == nullptr ? repository->getAddress() : _address;
         bt->sendAddress(repository->getAddress());
-    }
-}
-
-void Nav::notifyUninitializedDevice() {
-    if (deviceConnected && millis() - connectionTime > 2200) {
-        string address = repository->getAddress();
-        bt->sendAddress("0x");
     }
 }
 
