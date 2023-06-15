@@ -6,6 +6,7 @@
 .pio/libdeps/esp32dev/LinkedList
 .pio/libdeps/esp32dev/uBitcoin
 .pio/libdeps/esp32dev/Unity
+.pio/libdeps/esp32dev/TwoButtonsInterface
 CMakeListsPrivate.txt
 cmake-build-*/
 .idea
