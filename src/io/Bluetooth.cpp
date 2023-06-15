@@ -44,7 +44,9 @@ Bluetooth::Bluetooth(BLEServerCallbacks* nav) {
     BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(SERVICE_ADDRESS_UUID);
     pAdvertising->addServiceUUID(SERVICE_UUID);
+}
 
+void Bluetooth::startAdvertising() {
     pServer->startAdvertising();
 }
 

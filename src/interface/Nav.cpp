@@ -204,6 +204,10 @@ void Nav::checkSerialData() {
     }
 }
 
+void Nav::startAdvertising() {
+    bt->startAdvertising();
+}
+
 void Nav::onConnect(BLEServer* pServer) {
     Serial.println("connected");
     btConnectedCalled.set();
@@ -214,7 +218,6 @@ void Nav::onConnect(BLEServer* pServer) {
 void Nav::onDisconnect(BLEServer* pServer) {
     Serial.println("disconnected");
     delete repository->getTx();
-    pServer->startAdvertising(); // restart advertising
     btDisconnectedCalled.set();
     deviceConnected = false;
     connectionTime = 0;

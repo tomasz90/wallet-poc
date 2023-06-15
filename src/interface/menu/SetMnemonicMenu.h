@@ -51,6 +51,7 @@ public:
         doOnce([this]() {
             disp->clearMenu();
             nav->resetBtBuffer();
+            nav->startAdvertising();
         });
 
         disp->blinkTextWithSign("Now please confirm  your seed. Connect with your browser.");
