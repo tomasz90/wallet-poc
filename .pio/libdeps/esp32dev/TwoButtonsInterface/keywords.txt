@@ -1,0 +1,6 @@
+Button	KEYWORD1
+Button::	KEYWORD1
+ButtonsHandler	KEYWORD1
+poll	KEYWORD2
+setCallbacks	KEYWORD2
+setDebounceTime	KEYWORD2

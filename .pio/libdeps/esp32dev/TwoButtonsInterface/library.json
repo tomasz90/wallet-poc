@@ -1,0 +1,20 @@
+{
+  "name": "TwoButtonsInterface",
+  "version": "1.0.3",
+  "description": "Library handles events when pressing buttons. It supports single clicks and simultaneous clicks of two buttons. It is useful to create simple projects with graphical interface when buttons are used to navigate through menu.",
+  "keywords": "button, buttons, debounce, simultaneous, input, IO",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomasz90/two-buttons-inteface"
+  },
+  "authors": [
+    {
+      "name": "Tomasz Kulig",
+      "email": "tomaszkacperkulig@gmail.com",
+      "url": "https://github.com/tomasz90"
+    }
+  ],
+  "license": "MIT",
+  "frameworks": "*",
+  "platforms": "*"
+}
