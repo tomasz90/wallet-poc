@@ -1,4 +1,5 @@
 .pio/build
+.pio/libdeps/esp32dev/integrity.dat
 .pio/libdeps/esp32dev/Adafruit BusIO
 .pio/libdeps/esp32dev/Adafruit GFX Library
 .pio/libdeps/esp32dev/Adafruit SSD1306
