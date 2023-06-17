@@ -9,13 +9,13 @@
 #include "io/Bluetooth.h"
 
 #define PREVIOUS_BUTTON 2
-#define NEXT_BUTTON 25
+#define NEXT_BUTTON 15
 #define LED 23
 
 Led* led = new Led(LED, 0, 20, 4);
 
-Button previous(PREVIOUS_BUTTON, IN_PULLDOWN);
-Button next(NEXT_BUTTON, IN_PULLDOWN);
+Button previous(PREVIOUS_BUTTON, IN_PULLUP);
+Button next(NEXT_BUTTON, IN_PULLUP);
 ButtonsHandler buttonHandler(previous, next);
 
 Menu* menu;
@@ -29,6 +29,7 @@ void setup() {
     auto seedViewer = new SeedViewer();
     auto seedVerifier = new SeedVerifier();
     SeedGenerator::generate(seedViewer, seedVerifier);
+    esp_sleep_enable_ext0_wakeup(static_cast<gpio_num_t>(NEXT_BUTTON), 0);
 
     auto pin = new Pin();
     menu = new Menu(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);

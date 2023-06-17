@@ -15,7 +15,12 @@ Nav::Nav(Disp* disp, SeedViewer* seedViewer, SeedVerifier* seedVerifier, Reposit
     buttonHandler.setCallbacks(
             [this]() { onPrevious(); },
             [this]() { onNext(); },
-            [this]() { onBoth(); }
+            [this]() { onBoth(); },
+            [&disp]() {
+                disp->clearText(64);
+                disp->disp();
+                esp_deep_sleep_start();
+            }
     );
 }
 
