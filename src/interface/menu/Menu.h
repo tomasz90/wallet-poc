@@ -80,7 +80,7 @@ public:
         setMneS2->addTransition(setMneS4, nav->successCalled);
         setMneS3->addTransition(setMneS2, nav->nextCalled);
         setMneS3->addTransition(setMneS1, nav->beginCalled);
-        setMneS4->addTransition(setMneS5, nav->bothCalledAndBtConnected);
+        setMneS4->addTransition(setMneS5, nav->successCalled);
         setMneS5->addTransition(setMneS6, nav->bothCalledWrapped);
         setMneS5->addTransition(setMneS4, nav->btDisconnectedCalled);
         setMneS6->addTransition(setMneS7, nav->previousCalled);
