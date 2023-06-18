@@ -13,6 +13,8 @@
 #define NEXT_BUTTON 15
 #define LED 23
 #define BATTERY_PIN 33
+#define SDA 19
+#define SCL 23
 
 Led* led = new Led(LED, 0, 20, 4);
 
@@ -25,7 +27,7 @@ void setup() {
     Serial.begin(115200);
     Serial.println('\n');
     EEPROM.begin(115);
-
+    Wire.begin(SDA, SCL);
     auto battery = new Battery(BATTERY_PIN);
     auto disp = new Disp();
     auto repository = new Repository();
