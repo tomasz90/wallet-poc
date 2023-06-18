@@ -58,7 +58,7 @@ public:
 
         if (nav->deviceConnected && millis() - nav->connectionTime > 2200 && nav->executeOnce) {
             nav->executeOnce = false;
-            nav->sendAddress("0x");
+            nav->sendZeroAddress();
             disp->drawOnlyRightBox("NEXT");
         }
     }

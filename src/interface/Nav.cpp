@@ -228,11 +228,12 @@ void Nav::onDisconnect(BLEServer* pServer) {
     connectionTime = 0;
 }
 
-void Nav::sendAddress(string _address) {
-    if (deviceConnected && millis() - connectionTime > 2200) {
-        string address = _address == nullptr ? repository->getAddress() : _address;
+void Nav::sendAddress() {
         bt->sendAddress(repository->getAddress());
-    }
+}
+
+void Nav::sendZeroAddress() {
+        bt->sendAddress("0x");
 }
 
 void Nav::listenTx() {

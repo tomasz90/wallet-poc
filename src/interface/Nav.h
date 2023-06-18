@@ -55,7 +55,8 @@ public:
     void onDisconnect(BLEServer* pServer) override;
     void resetBtBuffer();
     void startAdvertising();
-    void sendAddress(string _address = nullptr);
+    void sendAddress();
+    void sendZeroAddress();
     void listenTx();
     void signTx() const;
 

@@ -17,8 +17,6 @@ void Repository::getPin(uint8_t pinCombination[4]) {
 void Repository::savePin(uint8_t pinCombination[4]) {
     Serial.println("saving pin: " + String(pinCombination[0]) + String(pinCombination[1]) + String(pinCombination[2]) +
                    String(pinCombination[3]));
-    // bool initialized
-    EEPROM.writeBool(INITIALIZED_ADDRESS, true);
     EEPROM.writeBytes(PIN_ADDRESS, pinCombination, 4);
     EEPROM.commit();
 }
@@ -51,7 +49,7 @@ void Repository::saveMnemonic(const std::string &mnemonicStr) const {
     // COPY MNEMONIC TO CHAR ARRAY
     std::size_t length = mnemonicStr.length();
     std::strncpy(_mnemonic, mnemonicStr.c_str(), length);
-
+    EEPROM.writeBool(INITIALIZED_ADDRESS, true);
     EEPROM.writeBytes(MNEMONIC_ADDRESS, _mnemonic, MNEMONIC_BYTES_LENGTH);
     EEPROM.commit();
 }

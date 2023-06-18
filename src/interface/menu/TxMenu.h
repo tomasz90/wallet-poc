@@ -11,7 +11,10 @@ public:
             : AbstractMenu(machine, nav, disp), repository(repository) {};
 
     void s0() {
-        doOnce([this]() { disp->clearMenu(); });
+        doOnce([this]() {
+            disp->clearMenu();
+            nav->startAdvertising();
+        });
         disp->blinkTextWithSign("Waiting for bluetooth connection...");
     }
 
