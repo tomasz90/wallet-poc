@@ -21,10 +21,13 @@ public:
     void s1() {
         doOnce([this]() {
             disp->clearMenu();
-            nav->sendAddress();
         });
         disp->blinkTextWithSign("Device connected!   Listening for txs..");
         nav->listenTx();
+        if (nav->deviceConnected && millis() - nav->connectionTime > 2200 && nav->executeOnce) {
+            nav->executeOnce = false;
+            nav->sendAddress();
+        }
     }
 
     void s2() {
