@@ -201,7 +201,7 @@ void Nav::checkSerialData() {
     string s = bt->receiveData();
     if (s.length() > 0 && !seedVerifier->isCurrentWordValid()) {
         s.erase(std::remove(s.begin(), s.end(), '\"'), s.end());
-        if (seedVerifier->validateWord(s)) {
+        if (seedVerifier->validateHash(s)) {
             disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         } else {
             disp->blinkTextWarningAtCenter("Invalid word!");
