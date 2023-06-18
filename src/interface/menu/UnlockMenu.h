@@ -3,22 +3,24 @@
 
 #include "util/Repository.h"
 #include "AbstractMenu.h"
+#include "util/Battery.h"
 
 class UnlockMenu : public AbstractMenu {
 
 public:
     Pin* pin;
     Repository* repository;
+    Battery* battery;
 
-    UnlockMenu(CustomMachine* machine, Nav* nav, Disp* disp, Pin* pin, Repository* repository)
-            : AbstractMenu(machine, nav, disp), pin(pin), repository(repository) {}
+    UnlockMenu(CustomMachine* machine, Nav* nav, Disp* disp, Pin* pin, Repository* repository, Battery* battery)
+            : AbstractMenu(machine, nav, disp), pin(pin), repository(repository), battery(battery) {}
 
     void s0() {
         doOnce([this]() {
             disp->drawOnlyRightBox("NEXT");
             nav->isInit = repository->isInitialized();
         });
-        disp->blinkTextWithSign("Hello!");
+        disp->blinkTextWithSign(("Hello!\n Battery lvl: " + String(battery->getStatus())).c_str());
     }
 
     void s1() {

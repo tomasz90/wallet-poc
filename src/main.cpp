@@ -7,10 +7,12 @@
 #include "interface/menu/Menu.h"
 #include "interface/Nav.h"
 #include "io/Bluetooth.h"
+#include "util/Battery.h"
 
 #define PREVIOUS_BUTTON 2
 #define NEXT_BUTTON 15
 #define LED 23
+#define BATTERY_PIN 33
 
 Led* led = new Led(LED, 0, 20, 4);
 
@@ -24,6 +26,7 @@ void setup() {
     Serial.println('\n');
     EEPROM.begin(115);
 
+    auto battery = new Battery(BATTERY_PIN);
     auto disp = new Disp();
     auto repository = new Repository();
     auto seedViewer = new SeedViewer();
@@ -32,7 +35,7 @@ void setup() {
     esp_sleep_enable_ext0_wakeup(static_cast<gpio_num_t>(NEXT_BUTTON), 0);
 
     auto pin = new Pin();
-    menu = new Menu(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);
+    menu = new Menu(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler, battery);
 
     repository->printInfo();
 }

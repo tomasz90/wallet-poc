@@ -8,6 +8,7 @@
 #include "interface/menu/SetPinMenu.h"
 #include "interface/menu/SetMnemonicMenu.h"
 #include "interface/menu/TxMenu.h"
+#include "util/Battery.h"
 
 #ifndef MENU_H
 #define MENU_H
@@ -19,11 +20,11 @@ using std::string;
 class Menu {
 public:
     Menu(Disp* disp, SeedViewer* seedViewer, SeedVerifier* seedVerifier, Repository* repository,
-         Pin* pin, Led* led, ButtonsHandler &buttonHandler) {
+         Pin* pin, Led* led, ButtonsHandler &buttonHandler, Battery* battery) {
 
         auto nav = new Nav(disp, seedViewer, seedVerifier, repository, pin, led, buttonHandler);
 
-        auto unlock = new UnlockMenu(&machine, nav, disp, pin, repository);
+        auto unlock = new UnlockMenu(&machine, nav, disp, pin, repository, battery);
         auto setPin = new SetPinMenu(&machine, nav, disp, pin);
         auto setMne = new SetMnemonicMenu(&machine, nav, disp, pin, repository, seedViewer, seedVerifier);
         auto txMenu = new TxMenu(&machine, nav, disp, repository);
