@@ -10,7 +10,7 @@ public:
     void setRandomSequence(array<int, MNEMONIC_LENGTH> seq);
     int getCurrentRandom();
     string getCurrentRandomWord();
-    bool validateHash(const string &lastTwoBytesHash);
+    bool validateHash(const string &lastBytesHash);
     bool isCurrentWordValid();
     string getMnemonic();
 

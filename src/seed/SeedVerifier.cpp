@@ -2,7 +2,6 @@
 #include "SeedVerifier.h"
 #include "utility/trezor/sha3.h"
 #include "Conversion.h"
-//#include "io/Bluetooth.h"
 
 SeedVerifier::SeedVerifier() : AbstractSeedSetter() {
     this->verifiedWords.fill("");
@@ -24,20 +23,20 @@ bool SeedVerifier::isCurrentWordValid() {
     return !getCurrentRandomWord().empty();
 }
 
-bool SeedVerifier::validateHash(const string &lastTwoBytesHash) {
+bool SeedVerifier::validateHash(const string &lastBytesHash) {
 
-    string s = tempMnemonic.getWordAt(getCurrentRandom()) + "03d2fde6-1615-461d-897b-6b0220bdd335";
+    string s = tempMnemonic.getWordAt(getCurrentRandom()) + RECEIVER_UUID;
     auto array = reinterpret_cast<const uint8_t *>(s.c_str());
 
     uint8_t hash[32] = {0};
     keccak_256(array, s.length(), hash);
 
-    uint8_t lastTwoBytes[2] = {0};
-    memcpy(lastTwoBytes, hash + sizeof(hash) - sizeof lastTwoBytes, sizeof lastTwoBytes);
+    uint8_t lastBytes[8] = {0};
+    memcpy(lastBytes, hash + sizeof(hash) - sizeof lastBytes, sizeof lastBytes);
 
-    string cutHashString = toHex(lastTwoBytes, sizeof lastTwoBytes).c_str();
+    string cutHashString = toHex(lastBytes, sizeof lastBytes).c_str();
 
-    if (cutHashString == lastTwoBytesHash) {
+    if (cutHashString == lastBytesHash) {
         verifiedWords[getCurrentRandom()] = tempMnemonic.getWordAt(getCurrentRandom());
         return true;
     } else {
