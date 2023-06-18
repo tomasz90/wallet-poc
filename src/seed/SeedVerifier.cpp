@@ -44,10 +44,11 @@ bool SeedVerifier::findWord(const string &lastBytesHash) {
         s.append(RECEIVER_UUID);
 
         if (computeHash(s) == lastBytesHash) {
-            return lexicon[i];
+            verifiedWords[getCurrentRandom()] = lexicon[i];
+            return true;
         }
     }
-    return "";
+    return false;
 }
 
 string SeedVerifier::computeHash(const string &s) {

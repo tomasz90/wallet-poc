@@ -50,6 +50,7 @@ public:
     void setPin();
     void viewSeed(bool nextHighlighted);
     void verifySeed(bool nextHighlighted);
+    void enterSeed(bool nextHighlighted);
     void checkSerialData();
     void onConnect(BLEServer* pServer) override;
     void onDisconnect(BLEServer* pServer) override;
@@ -71,6 +72,7 @@ private:
     Signer* signer;
 
     void enterPin(bool _bothCalled);
+    void checkWords();
 };
 
 #endif //NAV_H

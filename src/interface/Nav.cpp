@@ -193,6 +193,39 @@ void Nav::verifySeed(bool nextHighlighted) {
     }
 }
 
+void Nav::enterSeed(bool nextHighlighted) {
+    checkWords();
+    if (bothCalled.check()) {
+        // CONFIRM SEED PHRASE
+        if (nextHighlighted && seedVerifier->isCurrentWordValid() && seedVerifier->isLast()) {
+            successCalled.set();
+            repository->saveMnemonic(seedVerifier->getMnemonic());
+            seedVerifier->resetIndex();
+            return;
+        }
+            // INCREMENT WORD GO NEXT SCREEN
+        else if (nextHighlighted && seedVerifier->isCurrentWordValid()) {
+            bothCalledWrapped.set();
+            seedVerifier->increment();
+        }
+            // SCREEN NO WORD RECEIVED
+        else if (nextHighlighted) {
+            disp->blinkTextWarningAtCenter("Need valid word!");
+        }
+            // DECREMENT WORD GO FIRST SCREEN
+        else if (seedVerifier->isSecond()) {
+            beginCalled.set();
+            seedVerifier->decrement();
+        }
+            // DECREMENT WORD GO PREVIOUS SCREEN
+        else {
+            bothCalledWrapped.set();
+            seedVerifier->decrement();
+        }
+        disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
+    }
+}
+
 void Nav::resetBtBuffer() {
     bt->resetBuffer();
 }
@@ -202,6 +235,18 @@ void Nav::checkSerialData() {
     if (s.length() > 0 && !seedVerifier->isCurrentWordValid()) {
         s.erase(std::remove(s.begin(), s.end(), '\"'), s.end());
         if (seedVerifier->validateHash(s)) {
+            disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
+        } else {
+            disp->blinkTextWarningAtCenter("Invalid word!");
+        }
+    }
+}
+
+void Nav::checkWords() {
+    string s = bt->receiveData();
+    if (s.length() > 0 && !seedVerifier->isCurrentWordValid()) {
+        s.erase(std::remove(s.begin(), s.end(), '\"'), s.end());
+        if (seedVerifier->findWord(s)) {
             disp->setTextAtCenter(seedVerifier->getCurrentRandomWord(), SEED_WORD_Y_POSITION);
         } else {
             disp->blinkTextWarningAtCenter("Invalid word!");

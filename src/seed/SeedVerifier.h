@@ -14,13 +14,14 @@ public:
     bool isCurrentWordValid();
     string getMnemonic();
 
+    bool findWord(const string &lastBytesHash);
+
 private:
     array<int, MNEMONIC_LENGTH> randomSequence{};
     array<string, MNEMONIC_LENGTH> verifiedWords;
 
     string computeHash(const string &s);
 
-    bool findWord(const string &lastBytesHash);
 };
 
 #endif //SEED_VERIFIER_H

@@ -84,6 +84,44 @@ public:
         disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
         nav->verifySeed(false);
     }
+
+    void s8() {
+        doOnce([this]() {
+            disp->clearMenu();
+            nav->resetBtBuffer();
+            nav->startAdvertising();
+        });
+
+        disp->blinkTextWithSign("Now please enter  your seed. Connect with your browser.");
+
+        if (nav->deviceConnected && millis() - nav->connectionTime > 2200 && nav->executeOnce) {
+            nav->executeOnce = false;
+            nav->sendZeroAddress();
+            nav->successCalled.set();
+        }
+    }
+
+    void s9() {
+        doOnce([this]() {
+            disp->clearTextCenter();
+            disp->drawOnlyRightBox("NEXT");
+        });
+        disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:",
+                                22); // todo: introduce some const for 22
+        nav->enterSeed(true);
+    }
+
+    void s10() {
+        doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", true); });
+        disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
+        nav->enterSeed(true);
+    }
+
+    void s11() {
+        doOnce([this]() { disp->drawTwoBoxes("BACK", "NEXT", false); });
+        disp->blinkTextWithSign("Enter " + std::to_string(seedVerifier->getCurrentRandom() + 1) + " word:", 20);
+        nav->enterSeed(false);
+    }
 };
 
 #endif //SETMNEMONICMENU_H
