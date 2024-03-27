@@ -4,7 +4,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_INSTALL_PREFIX ../..)
+set(CMAKE_INSTALL_PREFIX ../../..)
 
 if (MSVC)
 	add_definitions(

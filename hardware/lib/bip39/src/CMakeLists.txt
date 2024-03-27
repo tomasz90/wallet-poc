@@ -11,7 +11,7 @@ set(SOURCE_FILES
 add_library(${PROJECT_NAME} SHARED STATIC ${SOURCE_FILES})
 
 set(bip39_build_include_dirs
-        ../../..
+        ../../../..
         ../../../include
 )
 include_directories(${bip39_build_include_dirs})

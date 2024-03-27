@@ -10,4 +10,4 @@
 .pio/libdeps/esp32dev/TwoButtonsInterface
 CMakeListsPrivate.txt
 cmake-build-*/
-.idea
+./../.idea

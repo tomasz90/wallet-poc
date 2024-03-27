@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.input-row {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.input-row > * {
+    margin-left: 1rem;
+    min-height: 3.5rem;
+}
+
+.connect-row {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+}
+
+.connect-button {
+    min-height: 3.5rem;
+    width: 10rem;
+    background-color: white;
+}
+
+.field {
+   background-color: white;
+}
+
+.field.to {
+    min-width: 27rem;
+}
+
+.field.value {
+    width: 10rem;
+}
+
+.send.button {
+    background-color: white;
+    width: 7rem;
+}
+
+.progress {
+    margin-top: 1rem;
+}
+
+.link {
+    margin-bottom: 3rem;
+}
+
+.dialog-word {
+    min-width: 25rem;
+}
+
+.input-word-row {
+    margin-top: 2rem;
+    display: flex;
+}
+
+.input-word-row > * {
+    margin-left: 1rem;
+    min-height: 3.5rem;
+}
