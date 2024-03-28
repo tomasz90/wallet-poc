@@ -19,7 +19,7 @@ Project also uses my own library *EthereumHDKeysGenerator* for derivation privat
 - Secure Transaction Signing: Transactions initiated through the web interface are securely signed by the hardware wallet, safeguarding user funds against unauthorized access.
 - Ethereum Network Integration: Signed transactions are broadcasted to the Ethereum network, facilitating the execution of cryptocurrency transfers.
 
-Here is a little demo of sending transaction:
+### Here is a little demo of sending transaction:
 
 https://github.com/tomasz90/wallet-poc/assets/49351206/078449d4-4c30-4aa3-a859-fa1ef411e6ad
 
