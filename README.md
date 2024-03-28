@@ -1,5 +1,5 @@
 
-## Hardware Ethereum Wallet
+## Ethereum Hardware Wallet
 
 This project serves as a proof of concept for a hardware Ethereum wallet, designed to provide secure cryptocurrency transactions. The wallet utilizes an ESP32 microcontroller with a 128x64 OLED screen and communicates with a web interface via Bluetooth. Similar to the Ledger wallet, it enables users to securely sign transactions initiated through a web interface and broadcast them to the Ethereum network.
 
