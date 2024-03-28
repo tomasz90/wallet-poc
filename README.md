@@ -8,15 +8,16 @@ Project also uses my own library *EthereumHDKeysGenerator* for derivation privat
 ### Directory Structure
 
 - hardware:
-  Contains the firmware and code for the ESP32 microcontroller, responsible for handling the cryptographic operations and interfacing with the OLED screen and Bluetooth module.
+  Contains the code for the ESP32 microcontroller, responsible for handling the cryptographic operations and interfacing with the OLED screen and Bluetooth module.
   It includes all the necessary files to set up the ESP32-based hardware wallet. This includes the firmware code, libraries for the OLED screen and Bluetooth communication, and any additional hardware configuration instructions.
 - web: Houses the web interface used by the user to initiate Ethereum transactions. This directory contains the frontend code necessary for transaction initiation and broadcasting signed transaction.
 
 ### Features
 
+- Secure Transaction Signing: Transactions initiated through the web interface are securely signed by the hardware wallet, safeguarding user funds against unauthorized access.
+- After first setup, mnemonic or any private key is never exposed again to the browser.
 - Bluetooth Communication: The hardware wallet communicates with the web interface via Bluetooth, ensuring secure and seamless interaction between the user and the device.
 - 128x64 OLED Screen: The OLED screen provides a user-friendly display for transaction details, ensuring clarity and transparency in transaction confirmation.
-- Secure Transaction Signing: Transactions initiated through the web interface are securely signed by the hardware wallet, safeguarding user funds against unauthorized access.
 - Ethereum Network Integration: Signed transactions are broadcasted to the Ethereum network, facilitating the execution of cryptocurrency transfers.
 
 ### Here is a little demo of sending transaction:
